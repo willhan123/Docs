@@ -2,9 +2,7 @@
 
 * [主要概念](README.md)
   * [整体架构](architecture.md)
-    > tspider + tendb + tdbctl
   * [主要特性](key-features.md)
-    > MySQL协议 + 透明分库分表 + 弹性伸缩 + 高可用
 * [操作指南]()
   * [快速上手]()
     * [使用Docker Compose快速部署]()
@@ -20,7 +18,8 @@
       > tspider cpu bound特性， tdbctl对资源要求低
   * [部署]()
     * [集群搭建]()
-      > 使用Ansible或者其它方式； mysqld的默认配置建议； 如果手动安装的话，尽量提供安装脚本
+      > 使用Ansible或者其它方式； mysqld的默认配置建议；   
+      > 手动安装，尽量提供安装脚本
     * [路由管理]()
     * [集群权限]()
       > 都需要对中控节点授权；由中控节点管理集群权限；
