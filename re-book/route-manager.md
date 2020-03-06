@@ -15,7 +15,6 @@ TenDBCluster集群的数据分发、读写都会基于分区路由规则，因�
 |Socket|访问server的socket，N/A
 |Wrapper|组件类别，目前合法值为TDBCTL，mysql，SPIDER, SPIDER_SLAVE
 |Owner|N/A
-|
 
 - SPIDER
 对应TSpider节点
