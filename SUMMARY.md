@@ -14,13 +14,13 @@
       > 镜像交付
     * [源码编译]()
       > tspider/tendb/tdbctl分别编译方式及依赖
-    * [硬件要求]()
+    * [硬件要求](re-book/system.md)
       > tspider cpu bound特性， tdbctl对资源要求低
   * [部署]()
     * [集群搭建]()
       > 使用Ansible或者其它方式； mysqld的默认配置建议；   
-      > 手动安装，尽量提供安装脚本
-    * [路由管理]()
+      > 手动安装(re-book/manual-install.md)
+    * [路由管理](re-book/route-manager.md)
     * [集群权限]()
       > 都需要对中控节点授权；由中控节点管理集群权限；
   * [运维]()
