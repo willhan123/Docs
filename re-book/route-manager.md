@@ -27,16 +27,17 @@ server_name默认从0~N递增
 
 ### 示例
 下表是个4 TenDB分片，2 TSpider节点，1 TenDBCTL中控的本地集群路由表
+
 |Server_name|Host|Db|Username|Password|Port|Socket|Wrapper|
-| :--- | :----|:--- | :----|:--- | :----|:--- | :----|:--- |
-|TDBCTL0|127.0.0.1||mysql|mysql|26000||TDBCTL|
+| :--- | :----|:--- | :----|:--- | :----|:--- | :---|
+|TDBCTL0|127.0.0.1|de|mysql|mysql|26000||TDBCTL|
 |SPIDER0|127.0.0.1||mysql|mysql|25000||SPIDER|
 |SPIDER1|127.0.0.1||mysql|mysql|25001||SPIDER|
 |SPT0|127.0.0.1||mysql|mysql|20000||mysql|
 |SPT1|127.0.0.1||mysql|mysql|20001||mysql|
 |SPT2|127.0.0.1||mysql|mysql|20002||mysql|
 |SPT3|127.0.0.1||mysql|mysql|20003||mysql|
-|
+
 
 ## 路由配置
 目前路由配置INSERT方式，通过SQL在TenDBCTL中控节点维护，由TenDBCTL下发同步给其他节点，因此只需要在TenDBCTL配置即可
