@@ -19,7 +19,7 @@
   * [部署]()
     * [集群搭建]()
       > 使用Ansible或者其它方式； mysqld的默认配置建议；   
-      > 手动安装(re-book/manual-install.md)
+      > [手动安装](re-book/manual-install.md)
     * [路由管理](re-book/route-manager.md)
     * [集群权限]()
       > 都需要对中控节点授权；由中控节点管理集群权限；
