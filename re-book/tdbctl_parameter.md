@@ -1,81 +1,42 @@
-集群的中控节点是一个MySQL分支，在兼容MySQL的参数的基础上新增了一些参数。
-其主要参数以及配置可以参照mysql官方手册，本文将主要介绍新增的参数。
+# Tdbctl参数说明
+
+中控节点Tdbctl是在一个精简TenDB上实现的，因此Tdbctl参数的配置方法和MySQL一致。通过SET指令或者改my.cnf配置文件重启mysqld可以修改配置。   
+下面介绍Tdbctl作为中控节点的几个参数：   
+
+**`TC_ADMIN`**  
+作用域: SESSION|GLOBAL   
+默认值: OFF     
+值为OFF时中控节点会临时成为一个普通MySQL；值为ON时中控节点会将接受到的DDL分发到集群中TSpider节点和TenDB节点。
+TSpider往中控节点分发DDL时会执行 *set tc_admin=on*
+
+**`TC_FORCE_EXECUTE`**   
+作用域: SESSION|GLOBAL   
+默认值: ON   
+值为ON表示中控节点在对TenDB节点分发DDL出错后，继续对TSpider分发DDL；否则在TenDB节点执行DDL出错后， 不再继续对TSpider节点分发DDL
 
 
+**`TC_CHECK_REPAIR_ROUTING`**   
+作用域: GLOBAL   
+默认值: ON   
+值为ON表示中控节点会自动检查TSpider节点中的路由配置和中控节点是否一致，如果不一致就修正到一致； 否则不检查路由配置一致性   
+
+**`TC_CHECK_REPAIR_ROUTING_INTERVAL`**   
+作用域: GLOBAL   
+默认值: 300   
+值为300表示检查集群中各TSpider节点路由信息一致性的时间间隔为300秒
+
+**`TC_MYSQL_WRAPPER_PREFIX`**   
+作用域: GLOBAL   
+默认值: SPT   
+中控节点在构建TSpider节点上执行的建表语句时，需要按一定分片顺序进行。本参数约束集群中存储节点的路由信息对应的Server_name的前缀。如果前缀为SPT，则存储节点的Server_name写法必须是SPT0、SPT1...SPTn，数字部分为从0开始的连续整数。
+
+**`TC_SPIDER_WRAPPER_PREFIX`**  
+作用域: GLOBAL   
+默认值: SPIDER   
+本参数约束集群中TSpider节点的路由信息对应的Server_name的前缀。
 
 
-
-`TC_ADMIN`
-```
-VARIABLE_SCOPE: SESSION|GLOBAL
-
-DEFAULT_VALUE: FALSE   
-
-VARIABLE_COMMENT: If set to TRUE, as config center to process query
-
-使用这个参数后，中控节点才会进行转发，不然就是个普通mysql
-```
-
-
-
-
-`TC_FORCE_EXECUTE`
-```
-VARIABLE_SCOPE: SESSION|GLOBAL
-
-DEFAULT_VALUE: ON
-
-VARIABLE_COMMENT: If set to TRUE, go on running spider query if remote failed
-
-中控节点分发时， 如果spider执行出错，是否继续分发到remote上去
-```
-
-
-
-`TC_CHECK_REPAIR_ROUTING`
-```
-VARIABLE_SCOPE: GLOBAL
-
-DEFAULT_VALUE: ON
-
-VARIABLE_COMMENT: If set to TRUE, check and repair routing between tdbctl and spiders
-默认开启，表示定期会监查和修复中控节点和spider的路由信息
-```
-
-
-
-
-
-`TC_CHECK_REPAIR_ROUTING_INTERVAL`
-```
-VARIABLE_SCOPE: GLOBAL
-
-DEFAULT_VALUE: 300
-
-VARIABLE_COMMENT: The interval time of checking and reparing routing betwwen tdbctl and spiders
-监查和修复中控节点和spider的路由信息的时间间隔，单位为秒
-```
-
-`TC_SPIDER_WRAPPER_PREFIX`
-```
-VARIABLE_SCOPE: GLOBAL
-
-DEFAULT_VALUE: SPIDER
-
-VARIABLE_COMMENT: prefix of server name for SPIDER wrapper
-
-spider的名称前缀
-```
-
-
-`TC_MYSQL_WRAPPER_PREFIX`
-```
-VARIABLE_SCOPE: GLOBAL
-
-DEFAULT_VALUE: SPT
-
-VARIABLE_COMMENT: prefix of server name for MYSQL wrapper
-
-后端mysql的名称前缀
-```
-
+**`tc_set_changed_node_read_only`**   
+作用域: GLOBAL   
+默认值: OFF   
+值为ON时表示在进行更新集群中的存储节点时，将存储节点设置为只读；否则，不设置为只读
