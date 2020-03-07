@@ -1,6 +1,6 @@
 # TenDBCluster手工部署
 本章节描述如何在一个单机上部署TenDBCluster集群
-下文将会部署一个2个TSpider节点，4个TenDB节点，1个TenDBCTL节点的集群
+下文将会部署一个2个TSpider节点，4个TenDB节点，1个Tdbctl节点的集群
 
 ## 部署TenDB
 部署4个后端节点，端口号依次为20000~20003
@@ -120,6 +120,11 @@ no-auto-rehash
 port=25000
 socket=/home/mysql/mysqldata/25000/mysql.sock                                        
 ```
+#### 重要参数说明
+- ddl_execute_by_ctl  
+集群支持DDL变更下，此参数必须在TSpider节点开启，确保在此节点执行的DDL语句会转发给Tdbctl节点，由tdbctl节点同步DDL语句到集群的各个TSpider节点和TenDB节点
+
+
 ### 创建目录
 ```
 mkdir -p /home/mysql/mysqldata/25000/data
@@ -144,8 +149,8 @@ cd /usr/local/tspider && ./scripts/mysql_install_db --defaults-file=/home/mysql/
 ### 部署其他节点
 重复步骤1,2,3部署其他25000实例，部署前需要替换my.cnf文件中的端口号，同时修改spider_auto_increment_mode_value=2
 
-## 部署TenDBCTL
-部署1个中控节点TenDBCTL，端口号为26000
+## 部署Tdbctl
+部署1个中控节点Tdbctl，端口号为26000
 ### 创建配置文件
 ```bash
 touch /home/mysql/my.cnf.26000
@@ -167,8 +172,8 @@ socket=/home/mysql/mysqldata/26000/mysql.sock
 ```bash
 mkdir -p /home/mysql/mysqldata/26000/data
 ```
-### 安装TenDBCTL
-下载TenDBCTL介质包到/usr/local
+### 安装Tdbctl
+下载Tdbctl介质包到/usr/local
 
 ```bash
 cd /usr/local
@@ -176,9 +181,9 @@ cd /usr/local
 tar xzvf  tdbctl-1.4-linux-x86_64.tar.gz
 ln -s tdbctl-1.4-linux-x86_64 tdbctl
 chown -R tspider mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs
-# 初始化tendbctl
+# 初始化Tdbctl
 cd /usr/local/tdbctl && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.26000 --initialize-insecure --user=mysql
-# 启动tendbctl
+# 启动Tdbctl
 ./bin/mysqld_safe --defaults-file=/home/mysql/my.cnf.26000 --user=mysql &
 ```
 
@@ -192,7 +197,7 @@ cd /usr/local/tdbctl && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.26000 --
 create user mysql@'127.0.0.1' identified by 'mysql';
 grant all privileges on *.* to mysql@'127.0.0.1';
 ```
-### 配置TenDBCTL权限
+### 配置Tdbctl权限
 >mysql -uroot --socket=/home/mysql/mysqldata/26000/mysql.sock
 ```sql
 create user mysql@'127.0.0.1' identified by 'mysql';
@@ -208,7 +213,7 @@ grant all privileges on *.* to mysql@'127.0.0.1';
 ```
 
 ### 配置集群
-连接TenDBCTL节点，配置mysql.servers路由表
+连接Tdbctl节点，配置mysql.servers路由表
 >mysql -umysql -pmysql -h127.0.0.1 -P26000
 ```sql
 #插入路由信息
@@ -231,7 +236,71 @@ tdbctl flush routing;
 ```sql
 create database test1;
 use test1;
+# 创建表需要指定唯一键，否则会报错
 create table t1(a int primary key, b int);
 # 查看分片情况
 show create table t1;
+#TSpider节点表结构如下，
+#在原表结构基础上，多了分片信息，可以看到库名在各个TenDB分片是不同的，以_0~N结尾
+CREATE TABLE `t1` (
+  `a` int(11) NOT NULL,
+  `b` int(11) DEFAULT NULL,
+  PRIMARY KEY (`a`)
+) ENGINE=SPIDER DEFAULT CHARSET=utf8mb4
+ PARTITION BY LIST (crc32(`a`) MOD 4)
+(PARTITION `pt0` VALUES IN (0) COMMENT = 'database "test1_0", table "t1", server "SPT0"' ENGINE = SPIDER,
+ PARTITION `pt1` VALUES IN (1) COMMENT = 'database "test1_1", table "t1", server "SPT1"' ENGINE = SPIDER,
+ PARTITION `pt2` VALUES IN (2) COMMENT = 'database "test1_2", table "t1", server "SPT2"' ENGINE = SPIDER,
+ PARTITION `pt3` VALUES IN (3) COMMENT = 'database "test1_3", table "t1", server "SPT3"' ENGINE = SPIDER)
+```
+连接任意一个TenDB节点查看表结构
+> mysql -umysql -pmysql -h127.0.0.1 -P20000
+```sql
+#在TenDB节点，库名会跟TSpider多一个后缀_N,
+use test1_0;
+show create table t1;
+#一个正常的InnoDB表，字段定义与TSpider相同
+CREATE TABLE `t1` (
+  `a` int(11) NOT NULL,
+  `b` int(11) DEFAULT NULL,
+  PRIMARY KEY (`a`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+```
+
+#### DDL & DML 操作
+通过连接TSpider节点操作整个集群，sql语法与单机MySQL大致相同
+>mysql -umysql -pmysql -h127.0.0.1 -P25000
+```sql
+use test1;
+#crc32(a)%4,插入如下数据，确保每个分片都存在一条
+insert into t1 values(1,2);
+insert into t1 values(2,3);
+insert into t1 values(4,5);
+insert into t1 values(7,8);
+select * from t1;
++---+------+
+| a | b    |
++---+------+
+| 4 |    5 |
+| 2 |    3 |
+| 7 |    8 |
+| 1 |    2 |
++---+------+
+```
+连接20000端口的TenDB查看
+>mysql -umysql -pmysql -h127.0.0.1 -P20000
+```sql
+use test1_0;
+select * from t1;
+#存在一条数据crc(4)%4为0
++---+------+
+| a | b    |
++---+------+
+| 4 |    5 |
++---+------+
+```
+连接Tspider25000端口清理库
+>mysql -umysql -pmysql -h127.0.0.1 -P25000
+```sql
+drop database test1;
 ```
