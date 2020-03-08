@@ -1,4 +1,6 @@
-TSpider能够兼容绝多MySQL标准用法，但还是有些地方和单实例MySQL有一些差异，下文将阐述Tspider新增的语法，以及与MySQL的兼容性差异。
+# TenDB Cluster语法
+
+TSpider能够兼容绝多MySQL标准用法，但还是有些地方和单实例MySQL有一些差异，下文将阐述Tspider新增的语法，以及与MySQL的差异。
 
 
 
@@ -7,23 +9,36 @@ TSpider能够兼容绝多MySQL标准用法，但还是有些地方和单实例My
 
 ### kill thread
 
-实现三种kill threads的方式：
-1). kill thread_id safe(kill 9 safe)
-与直接kill thread_id不同的是，只有当该thread id是sleep状态且非事务中，才会被kill,
-否则报错： ER_THREAD_IN_USING_OR_TRANSACTION , "thread %lu is in using or in transaction, can't be killed safe"
-2). kill threads all
-用来安全的kill当前threads。 sleep状态且非事务中的threads会被kill掉，其它thread则等待当前query执行完成或者事务结束才被kill
-3). kill threads all force
-用来kill当前所有运行的thread
+实现三种kill threads的方式:  
+1). kill thread_id safe(kill 9 safe)  
+与直接kill thread_id不同的是，只有当该thread id是sleep状态且非事务中，才会被kill,  
+否则报错： ER_THREAD_IN_USING_OR_TRANSACTION , "thread %lu is in using or in transaction, can't be killed safe"  
+2). kill threads all  
+用来安全的kill当前threads。 sleep状态且非事务中的threads会被kill掉，其它thread则等待当前query执行完成或者事务结束才被kill  
+3). kill threads all force  
+用来kill当前所有运行的thread  
 
-另外，增加一个会话级状态: 'Max_thread_id_on_kill'， 表示在执行kill threads all (force)时，当前最大的thread id
+增加一个会话级状态: 'Max_thread_id_on_kill'， 表示在执行kill threads all (force)时，当前最大的thread id  
 show status like 'Max_thread_id_on_kill';
 
 
+示例SQL：
+```
+MariaDB [tendb_test]>  kill threads all force;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [tendb_test]> show status like 'Max_thread_id_on_kill';
++-----------------------+--------+
+| Variable_name         | Value  |
++-----------------------+--------+
+| Max_thread_id_on_kill | 171010 |
++-----------------------+--------+
+1 row in set (0.00 sec)
+```
 
 ### 新增语法 flush  table with write lock
 
-开启事务锁，阻塞新的事务开启,保证分布式场景下的spider集群主备安全切换，由unlock tables解锁。
+开启事务锁，阻塞新的事务开启,保证分布式场景下的TSpider集群主备安全切换，由unlock tables解锁。
 
 ```
 执行 `flush  table with write lock`会阻塞新的事务开启。
@@ -77,17 +92,6 @@ option:
 | limit x,y(不带order by) | 从RemoteDB节点拉取一部分数据在Tspider汇集后返回 | 直接取,按主键顺序返回 | limit x,y用法通常用于业务逻辑中分批，分页拉取数据。当x非常大的时候，要拉取x+y的数据再取得y行数据，性能很差。TSpider通过在limit x,y时先对相关分片count(*)计算行数，优化了查询效率 |
 | limit x,y(带order by) | 从RemoteDB节点各拉取一部分数据在TSpider排序后再取 | 按要求排序后再取 | 需要按序更新或删除，需要先select后逐行update/delete |
 | save_point | 不支持 | 支持 |  |
-| Innodb特有的操作，如不支持FLUSH TABLES tbl_name ... FOR EXPORT | 不支持 | 支持 |  |
+| Innodb特有的操作，如不支持FLUSH TABLES tbl_name ... FOR EXPORT | 不支持 | 支持 |   |
+| | | |
 
-
-
-
-##  TSpider使用要求
-
-业务中不允许表的唯一键（含主键）超过一个，在存在主键的情况下，其他索引只能为普通索引
-不推荐使用存储过程、函数、视图
-不频繁有对主键的更新，频繁使用会影响性能
-不频繁使用join操作，若使用join要求业务通过straight_join指定驱动表
-不频繁使用聚集函数（avg，group by, having），使用会影响性能
-如果有自增列，必须使用bigint类型，只保证唯一，不保证递增
-建表不应该使用外键约束

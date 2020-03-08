@@ -12,25 +12,49 @@
 
 
 
-示例：
 
-创建函数
+## 创建函数
 ```
-CREATE FUNCTION f2(num1 SMALLINT UNSIGNED, num2 SMALLINT UNSIGNED)
-RETURNS FLOAT(10,2) UNSIGNED
-RETURN (num1+num2)/2;
-```
-调用函数
-```
-SELECT f2(1,2);
-+---------+
-| f2(1,2) |
-+---------+
-|    1.50 |
-+---------+
+MariaDB [tendb_test]> DELIMITER //
+MariaDB [tendb_test]> CREATE FUNCTION GetEmployeeInformationByID(id INT)
+    -> RETURNS VARCHAR(300)
+    -> BEGIN
+    -> RETURN(SELECT CONCAT('employee name:',employee_name,'---','salary: ',employee_salary) FROM employees WHERE employee_id=id);
+    -> END//
+Query OK, 0 rows affected (0.03 sec)
 ```
 
-删除函数
+## 调用函数
 ```
-DROP FUNCTION f2;
+MariaDB [tendb_test]> create table employees
+    -> (
+    -> employee_id int(11) primary key not null auto_increment,
+    -> employee_name varchar(50) not null,
+    -> employee_sex varchar(10) default '男',
+    -> hire_date datetime not null default current_timestamp,
+    -> employee_mgr int(11),
+    -> employee_salary float default 3000,
+    -> department_id int(11)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+
+MariaDB [tendb_test]> insert into employees(employee_name,employee_sex,employee_mgr,employee_salary,department_id) values ('David Tian','男',10,7500,1);
+Query OK, 1 row affected (0.00 sec)
+
+
+MariaDB [tendb_test]> select  GetEmployeeInformationByID(1);
++-----------------------------------------+
+| GetEmployeeInformationByID(1)           |
++-----------------------------------------+
+| employee name:David Tian---salary: 7500 |
++-----------------------------------------+
+1 row in set (0.00 sec)
+
+```
+
+## 删除函数
+```
+MariaDB [tendb_test]> DROP FUNCTION GetEmployeeInformationByID;
+Query OK, 0 rows affected (0.04 sec)
 ```
