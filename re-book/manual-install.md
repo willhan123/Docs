@@ -3,6 +3,9 @@
 下文将会部署一个2个TSpider节点，4个TenDB节点，1个Tdbctl节点的集群
 
 ## 部署TenDB
+
+<a id="jump1"></a>
+
 部署4个后端节点，端口号依次为20000~20003
 下文以20000端口为例说明，其他3个实例更改相应端口号即可
 
@@ -41,6 +44,7 @@ default-character-set=utf8
 port=20000
 socket=/home/mysql/mysqldata/20000/mysql.sock                                          
 ```
+
 ### 创建目录
 ```bash
 #创建TenDB初始化时需要的目录
@@ -51,6 +55,7 @@ mkdir -p /home/mysql/mysqldata/20000/relay-log
 mkdir -p /home/mysql/mysqldata/20000/tmp
 ```
 ### 安装TenDB
+
 下载TenDB介质包到/usr/local
 ```bash
 cd /usr/local
@@ -123,6 +128,12 @@ socket=/home/mysql/mysqldata/25000/mysql.sock
 #### 重要参数说明
 - ddl_execute_by_ctl  
 集群支持DDL变更下，此参数必须在TSpider节点开启，确保在此节点执行的DDL语句会转发给Tdbctl节点，由tdbctl节点同步DDL语句到集群的各个TSpider节点和TenDB节点
+- spider_auto_increment_mode_switch  
+是否启用全局非唯一自增键功能
+- spider_auto_increment_mode_value  
+集群全局非唯一自增起始值，集群各TSpider节点配置不能重复
+- spider_auto_increment_step  
+集群全局非唯一自增步长，集群各TSpider节点配置相同
 
 
 ### 创建目录
@@ -134,7 +145,11 @@ mkdir -p /home/mysql/mysqldata/25000/tmp
 ```
 
 ### 安装TSpider
+
+<a id="jump2"></a>
+
 下载TSpider介质包到/usr/local
+
 ```bash
 cd /usr/local
 #解压软链介质
@@ -146,8 +161,9 @@ cd /usr/local/tspider && ./scripts/mysql_install_db --defaults-file=/home/mysql/
 # 启动TSpider
 ./bin/mysqld_safe --defaults-file=/home/mysql/my.cnf.25000 --user=mysql &
 ```
+
 ### 部署其他节点
-重复步骤1,2,3部署其他25000实例，部署前需要替换my.cnf文件中的端口号，同时修改spider_auto_increment_mode_value=2
+重复步骤1,2,3部署25001实例，部署前需要替换my.cnf文件中的端口号，同时修改spider_auto_increment_mode_value=2
 
 ## 部署Tdbctl
 部署1个中控节点Tdbctl，端口号为26000
@@ -155,6 +171,7 @@ cd /usr/local/tspider && ./scripts/mysql_install_db --defaults-file=/home/mysql/
 ```bash
 touch /home/mysql/my.cnf.26000
 ```
+
 配置内容如下
 ```sql
 [client]
@@ -172,6 +189,7 @@ socket=/home/mysql/mysqldata/26000/mysql.sock
 ```bash
 mkdir -p /home/mysql/mysqldata/26000/data
 ```
+
 ### 安装Tdbctl
 下载Tdbctl介质包到/usr/local
 
@@ -191,25 +209,31 @@ cd /usr/local/tdbctl && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.26000 --
 示例权限仅供参考，实际权限控制需结合应用访问安全考虑
 
 ### 配置TenDB权限
+<a id="jump3"></a>
+
 分别连接TenDB 20000~20003授权，下面以20000端口为例，其他实例替换相应端口操作即可
 > mysql -uroot --socket=/home/mysql/mysqldata/20000/mysql.sock
 ```sql
 create user mysql@'127.0.0.1' identified by 'mysql';
-grant all privileges on *.* to mysql@'127.0.0.1';
+grant all privileges on *.* to mysql@'127.0.0.1' with grant option;
 ```
+
 ### 配置Tdbctl权限
 >mysql -uroot --socket=/home/mysql/mysqldata/26000/mysql.sock
 ```sql
 create user mysql@'127.0.0.1' identified by 'mysql';
-grant all privileges on *.* to mysql@'127.0.0.1';
+grant all privileges on *.* to mysql@'127.0.0.1' with grant option;
 ```
+
 ### 配置TSpider权限
 分别连接TSpider 25000, 25001授权
 下面以25000端口为例,25001替换相应端口即可
 >mysql -uroot --socket=/home/mysql/mysqldata/25000/mysql.sock
 ```sql
+# 设定off，确保此操作不会发送给中控节点
+set ddl_execute_by_ctl=off;
 create user mysql@'127.0.0.1' identified by 'mysql';
-grant all privileges on *.* to mysql@'127.0.0.1';
+grant all privileges on *.* to mysql@'127.0.0.1' with grant option;
 ```
 
 ### 配置集群
@@ -305,3 +329,7 @@ select * from t1;
 ```sql
 drop database test1;
 ```
+
+## 其他说明
+部署多个TSpider接入层节点的集群，为了简化应用侧使用配置，同时因为故障、扩缩容等场景导致节点数变化而频繁修改连接配置，建议配合域名系统使用。  
+将同一集群的各接入层节点接入域名系统，分配一个相同的域名，应用侧使用域名来访问集群。由于域名解析结果只能获取节点ip，因此在部署时尽量让同一集群分部在不同主机的TSpider节点使用相同端口号，能降低系统管理、使用的复杂度
