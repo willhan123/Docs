@@ -227,6 +227,7 @@ insert into mysql.servers values('TDBCTL0','127.0.0.1','','mysql','mysql',26000,
 #刷新路由，同步路由到TSpider节点
 tdbctl flush routing;
 ```
+
 ### 集群验证
 #### 连接集群
 >mysql -umysql -pmysql -h127.0.0.1 -P25000
