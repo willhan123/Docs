@@ -1,18 +1,26 @@
 # TenDB Cluster 权限管理
+权限的语法与普通MySQL相同，在使用上没有太大的区别。
 
-应用层的权限管理将在TSpider中完成，权限语句和管理模式跟单一mysql完全一致。
+<font color="#dd0000">注意：</font>   
+>ddl_execute_by_ctl=0  
+在TSpider节点执行grant语句，仅对当前节点授权，用法和普通MySQL无差别  
+ddl_execute_by_ctl=1    
+存在中控节点，且参数打开。在TSpider节点执行grant语句，是集群对业务的授权。TSpider会转授权语句转发到Tdbctl，再由Tdbctl对所有TSpider授权。
 
 
 ## FLUSH PRIVILEGES
+FLUSH PRIVILEGES 语句可以重新load授权。
 
-FLUSH PRIVILEGES 语句可触发 Tspider 从权限表中重新加载权限的内存副本。在对如 mysql.user 一类的表进行手动编辑后，应当执行 FLUSH PRIVILEGES。使用如 GRANT 或 REVOKE 一类的权限语句后，不需要执行 FLUSH PRIVILEGES 语句。
+
+<font color="#dd0000">注意：</font>   
+>在单机TSpider(无中控节点）维护mysql.servers时，需要flush privileges让mysql.servers信息生效 ； 
 
 
 
 ## GRANT
 
 GRANT <privileges> to user@'ip' identified by password  
-用于为 Tspider 创建用户，并分配权限。
+用于为 TSpider 创建用户，并分配权限。
 
 ```
 MariaDB [tendb_test]> GRANT SELECT, INSERT, UPDATE, DELETE, DROP, EXECUTE on *.* to spider@'***' identified by '***';
@@ -35,4 +43,4 @@ MariaDB [tendb_test]> show grants;
 
 
 ## SHOW PRIVILEGES 
-用于显示 Tspider 中可分配权限的列表。
+用于显示 TSpider 中可分配权限的列表。

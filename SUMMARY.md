@@ -27,7 +27,7 @@
     * [变更]()
     * [授权]()
     * [备份]()
-      > 如果需要从提取表结构，则需要特别处理
+      > 如果需要提取表结构，则需要特别处理
     * [监控]()
     * [工具]()
       > 提供的一些集群管理工具
@@ -48,12 +48,13 @@
 * [参考手册]()
   * [SQL]()
     * [SQL语法](re-book/sql_grammar.md)
-      * [DDL](re-book/ddl.md)
-      * [DML](re-book/dml.md)
+      * [DDL](re-book/ddl_syntax.md)
+      * [DML](re-book/dml_syntax.md)
       * [权限](re-book/grant.md)
       * [存储过程](re-book/stored_procedure.md)
       * [函数](re-book/function.md)
       * [触发器](re-book/trigger.md)  
+      * [新增语法](re-book/new_grammar.md)
     * [自增列](re-book/auto_increase.md)
     * [事务](re-book/transaction.md)
   * [与单实例MySQL异同](re-book/mysql-compatibility.md/#jump)

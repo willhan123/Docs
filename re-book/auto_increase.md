@@ -1,6 +1,6 @@
 # TenDB Cluster自增列
 
-TenDB Cluster只保证自增ID的唯一性，不保证连续和递增。当前各个TSpider节点维护各自的自增值，并保证各个节点维护的自增id不会产生重复。
+TenDB Cluster的接入层由多个TSpider节点组成，保证自增ID的唯一性，但不保证连续和递增。当前各个TSpider节点维护各自的自增值，并保证各个节点维护的自增ID不会产生重复。
 
 
 ## 用法
@@ -22,8 +22,10 @@ spider_auto_increment_step=17
 ```
 那么此TSpider节点上自增列依次为 3 20 37 54 ...
 
+
+那么如何是实现的呢？下面将简单的说明下实现原理。
 ## 原理
-让各个TSpider节点维护各自的自增值，并保证各个TSpider节点不会生成相同的自增值。TSpider也是一个mysql节点，每个自增列表中都有自己的last_insert_id。如果整个集群中的各个TSpider节点都使用自己维护的last_insert_id，性能必然很好（本地维护，无网络交互）。
+TSpider也是一个MySQL节点，每个自增列表中都有自己的last_insert_id。如果整个集群中的各个TSpider节点都使用自己维护的last_insert_id，性能必然很好（本地维护，无网络交互）。
 
 但整个集群会有多个TSpider节点，如果按传统的自增方式每个TSpider节点自己维护的话，则必然重复键冲突。但根据目前的业务特点：自增列值无实际意义，大都是做为唯一标识，即不对生成顺序无要求。
 
