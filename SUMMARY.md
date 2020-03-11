@@ -23,24 +23,24 @@
     * [路由管理](re-book/route-manager.md)
     * [集群权限]()
       > 都需要对中控节点授权；由中控节点管理集群权限；
-  * [运维]()
-    * [变更]()
-    * [授权]()
+  * [运维](re-book/cluster-operator.md)
+    * [变更](re-book/alter-operator.md)
+    * [授权](re-book/grant-operator.md)
     * [备份]()
       > 如果需要从提取表结构，则需要特别处理
     * [监控]()
     * [工具]()
       > 提供的一些集群管理工具
-  * [扩缩容]()
-    * [接入层扩缩容]()
+  * [扩缩容](re-book/scale-up-down.md)
+    * [接入层扩缩容](re-book/TSpider-scale.md)
       > 增加节点需要中控节点提供支持；操作中控节点即可完成；   
       > 扩缩容和变更不能同时进行，需要中控节点保证
-    * [存储层扩缩容]()
-  * [高可用]()
-    * [接入层故障]()
-    * [存储层故障]()
+    * [存储层扩缩容](re-book/TenDB-scale.md)
+  * [高可用](re-book/High-availability.md)
+    * [接入层高可用](re-book/TSpider-failover.md)
+    * [存储层高可用](re-book/TenDB-failover.md)
       > 通过中控节点完成切换
-    * [中控节点故障]()
+    * [中控节点高可用]()
       > mgr维护，提供脚本
   * [数据迁移]()
     * [从单机MySQL到集群]()
