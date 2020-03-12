@@ -32,7 +32,7 @@ dml
 
 将SPIDER_INTERNAL_XA打开，表示使用分布式事务；
 
-注意：
+<font color="#dd0000">注意：</font> 
  XA事务需要打开spider_trans_rollback，保证分布式事务原子性，即事务中某个SQL请求失败则事务自动回滚；保证要么全部成功，要么全部失败。
 
  ```
@@ -102,7 +102,7 @@ tendb2: xa commit xid;
 ### 不支持save_point
 
 ```
-ariaDB [test1]> create table t1(c1 int primary key);
+MariaDB [test1]> create table t1(c1 int primary key);
 Query OK, 0 rows affected (0.03 sec)
 
 MariaDB [test1]> begin;
@@ -114,16 +114,4 @@ Query OK, 1 row affected (0.00 sec)
 MariaDB [test1]> savepoint a;
 ERROR 1178 (42000): The storage engine for the table doesn't support SAVEPOINT
 
-```
-
-
-
-### 新增语法 flush  table with write lock
-
-开启事务锁，阻塞新的事务开启,保证分布式场景下的TSpider集群主备安全切换，由unlock tables解锁。
-
-```
-执行 `flush  table with write lock`会阻塞新的事务开启。
-在已有事务commit后，加锁成功，阻塞新的事务开启。
-由unlock tables解锁。
 ```
