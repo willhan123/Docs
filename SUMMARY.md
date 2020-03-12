@@ -18,7 +18,7 @@
 	* [运维](re-book/cluster-operator.md) 
 	  * [变更](re-book/alter-operator.md) 
 	  * [授权](re-book/grant-operator.md) 
-	  * [备份]() 
+	  * [备份](re-book/backup.md) 
 	  * [监控]() 
 	  * [工具]() 
 	* [扩缩容](re-book/scale-up-down.md) 
