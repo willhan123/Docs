@@ -29,8 +29,47 @@
 8. 如果业务有存在随机limit n这种请求，可以开启SPIDER_RONE_SHARD特性，select SPIDER_RONE_SHARD * from t limit n这类语句会随机分发到后端一个分片执行。
 
 ## **TSpider实例管理**
-1. spider_max_connections参数值初始建议设置为200。可以根据后端压力情况进行调节，并不建议设置太大。
-2. 拉取大量数据建议增加临时TSpider节点来支持，同时将spider_quick_mode参数设置为3。
+对于TSpider实例的管理，有如下建议：
+1. 常见参数设置，参考下节:TSpider常用参数设置说明。
+2. 如果应用有拉取大量数据以及类似合服类的需求，建议增加临时TSpider节点来支持。
+
+
+## **TSpider常用参数设置说明**
+### spider_quick_mode
+
+
+> 此参数用来控制从后端获取数据的时候缓存到RemoteDB还是spider的本地buffer中。
+> 目前上架时此配置默认值是1。如果有合服之类的需求，建议将此参数设置为0。
+> 个别业务上设置为3，用来应对拉取大量数据而导致spider进程被oom kill的情况。有个副作用，在拉取大量数据时会造成spider临时空间耗用问题。
+
+
+### spider_max_connections
+
+>此参数用来控制从Spider到RemoteDB的最大连接数。从实际运营经验来看，200这个值能满足绝大多数业务的需要。此值设置过大，会导致RemoteDB上连接数过多。
+另外，spider_max_connections * < tspider数量> 需要小于TenDB存储节点上max_connections的设置值。
+
+### spider_bgs_mode
+
+>此参数用于控制是否打开后端并行查询的功能。建议设置为1，打开后端并行查询的功能。
+
+### spider_index_hint_pushdown
+
+>此参数用以控制是否可以index hints的下放，比如force_index。建议设置为1。
+
+### spider_get_sts_or_crd
+
+>此参数用以控制show table status、show index语句能否在RemoteDB上执行来搜集统计信息。建议设置为1。
+
+### spider_ignore_autocommit
+
+>此参数用来控制set autocommit=0的语句能否分发到RemoteDB上执行。
+
+### spider_rone_shard_switch
+
+>TSpider增加了SPIDER_RONE_SHARD选项，实现select SPIDER_RONE_SHARD * from t limit 10这类语句会随机分发到后端一个分片执行。如果应用只是需要随机返回几行数据，可以打开此特性。
+
+更多的TSpider初始化参数设置，可以参考 [TSpider参数说明](./../re-book/tspider_parameter.md) 。
+
 
 ## **存储实例管理**
 对于TenDB存储实例管理，有如下建议：
