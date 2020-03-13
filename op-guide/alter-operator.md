@@ -1,5 +1,5 @@
-# TenDBCluster变更
-TenDBCluster变更是指通过任意TSpider节点对集群进行库表的DDL操作，DDL语句会透传给Tdbctl节点, 由其重写后并行分发到TSpider，TenDB节点执行  
+# TenDB Cluster变更
+TenDB Cluster变更是指通过任意TSpider节点对集群进行库表的DDL操作，DDL语句会透传给Tdbctl节点, 由其重写后并行分发到TSpider，TenDB节点执行  
 目前DDL语法与单机MySQL无太大差异性，具体参照DDL相关章节
 
 ## 变更示例 

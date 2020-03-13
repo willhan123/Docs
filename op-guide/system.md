@@ -28,5 +28,5 @@ TenDBCluster 作为一款开源分布式关系型数据库，可以很好的部�
 | :--- | :----|:----|
 |TSpider|25000|应用及 DBA 工具访问通信端口
 |Tdbctl|26000|Tdbctl通信端口
-|TenDB|20000|TenDB存储同学端口
+|TenDB|20000|TenDB存储通信端口
 

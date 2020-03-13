@@ -1,5 +1,5 @@
 # 路由管理
-TenDBCluster集群的数据分发、读写都会基于分区路由规则，因此在集群建立，数据管理，集群故障等场景维护路由显得至关重要
+TenDB Cluster集群的数据分发、读写都会基于分区路由规则，因此在集群建立，数据管理，集群故障等场景维护路由显得至关重要
 目前TSpider，Tdbctl节点都有一份路由表。其中TSpider节点的路由表由Tdbctl来同步，并全局保证各TSpider节点路由的一致性
 
 ## 路由表说明
@@ -60,7 +60,7 @@ Tdbctl会定期检查TSpider与Tdbctl的差异性，并定时同步自身配置�
 
 
 ## SLAVE路由
-TenDBCluster可配置成读写分离的集群方案，在TenDB启用主从场景下，可以配置slave集群，让读请求只访问从节点，来分担主库的压力
+TenDB Cluster可配置成读写分离的集群方案，在TenDB启用主从场景下，可以配置slave集群，让读请求只访问从节点，来分担主库的压力
 对于Slave集群，其路由也是维护在Tdbctl节点，配置方式与主集群基本相同，唯一区别是Wrapper字段为SPIDER_SLAVE
 - SPIDER_SLAVE
 > Tdbctl在同步路由时，会特殊处理Wrapper为SPIDER_SLAVE的路由信息。
