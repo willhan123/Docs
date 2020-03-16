@@ -68,7 +68,7 @@
 
 >TSpider增加了SPIDER_RONE_SHARD选项，实现select SPIDER_RONE_SHARD * from t limit 10这类语句会随机分发到后端一个分片执行。如果应用只是需要随机返回几行数据，可以打开此特性。
 
-更多的TSpider初始化参数设置，可以参考 [TSpider参数说明](./../re-book/tspider_parameter.md) 。
+更多的TSpider初始化参数设置，可以参考 [TSpider参数说明](./../re-book/tspider-parameter.md) 。
 
 
 ## **存储实例管理**

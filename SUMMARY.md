@@ -79,7 +79,7 @@
 	* [高可用]() 
 	* [常见问题]() 
 * [最佳实践]() 
-	* [普通应用](practice/common_bestpractice.md) 
+	* [普通应用](practice/common-bestpractice.md) 
 	* [大数据应用](practice/bigdatapractice.md) 
 	* [事务应用]() 
 * [常见问题]() 
