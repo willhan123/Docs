@@ -52,7 +52,7 @@ TSpider兼容MySQL的参数，下文主要介绍新增的参数。
 只读  : 1  
 值为ON表示支持XA事务
 
-<a id="jump1"></a>
+<a id="spider_bgs_mode"></a>
 
 **`spider_bgs_mode`**  
 作用域: SESSION|GLOBAL  
@@ -61,12 +61,15 @@ TSpider兼容MySQL的参数，下文主要介绍新增的参数。
 
 
 
-<a id="jump2"></a>
+<a id="spider_bgs_dml"></a>
 
 **`spider_bgs_dml`**  
 作用域: SESSION|GLOBAL  
 默认值: 0  
 当开启并行功能时，值为1表示insert  update  delete开启并行功能;否则insert  update  delete不开启并行功能。
+
+
+<a id="SPIDER_INTERNAL_XA"></a>
 
 **`SPIDER_INTERNAL_XA`**  
 作用域: GLOBAL  
@@ -90,6 +93,7 @@ TSpider兼容MySQL的参数，下文主要介绍新增的参数。
 默认值: ON  
 值为ON表示，在TSpider节点上执行create table like时，忽略每个分区中comment信息。 避免TSpider使用create table like后的误操作。
 
+<a id="SPIDER_IGNORE_AUTOCOMMIT"></a>
 **`SPIDER_IGNORE_AUTOCOMMIT`**  
 作用域: GLOBAL   
 默认值: OFF  
@@ -483,6 +487,7 @@ xid的类型
 值为1000，表示当匹取数据时一次取的行数为1000。
 
 
+<a id="SPIDER_WITH_BEGIN_COMMIT"></a>
 
 **`SPIDER_WITH_BEGIN_COMMIT`**  
 作用域: SESSION|GLOBAL  

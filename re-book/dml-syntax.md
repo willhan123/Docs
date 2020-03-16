@@ -88,8 +88,8 @@ Empty set (0.00 sec)
 
 
 >对于select insert  update  delete，如果where条件指定了shard_key，TSpider根据分区规则，将SQL路由到指定后端TenDB。如果没有指定，SQL会分发到所有后端TenDB执行。   
-当select语句需要分发到多个TenDB实例时，如果[spider_bgs_mode](tspider_parameter.md/#jump1)为0，则串行分发请求；为1则并行请求。  
-当insert  update  delete语句需要分发到多个TenDB实例时，如果[spider_bgs_dml](tspider_parameter.md/#jump2)为0，则串行分发请求；为1则并行请求。
+当select语句需要分发到多个TenDB实例时，如果[spider_bgs_mode](tspider-parameter.md/#spider_bgs_mode)为0，则串行分发请求；为1则并行请求。  
+当insert  update  delete语句需要分发到多个TenDB实例时，如果[spider_bgs_dml](tspider-parameter.md/#spider_bgs_dml)为0，则串行分发请求；为1则并行请求。
 
 
 
@@ -188,7 +188,7 @@ ERROR 1734 (HY000): Transaction across different partitions denied to user 'use'
 
 ```
 <font color="#dd0000">注意：</font>   
-spider_query_one_shard、spider_transaction_one_shard仅在非super权限下生效。
+>spider_query_one_shard、spider_transaction_one_shard仅在非super权限下生效。
 
 ## 建议
 1.不频繁有对分区键的更新（频繁使用会影响性能，下同)  
