@@ -1,5 +1,5 @@
-# TenDBCluster手工部署
-本章节描述如何在一个单机上部署TenDBCluster集群
+# TenDB Cluster手工部署
+本章节描述如何在一个单机上部署TenDB Cluster集群
 下文将会部署一个2个TSpider节点，4个TenDB节点，1个Tdbctl节点的集群
 
 ## 部署TenDB

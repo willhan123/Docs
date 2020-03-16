@@ -10,7 +10,10 @@ TSpider跟普通分区表一样支持范围/hash/列表分区，TSpider扩展了
 # 一. 开启Tdbctl
 
 当ddl_execute_by_ctl=ON时，由Tdbctl对集群中的TSpider+TenDB节点进行统一变更处理。  
-需要注意的的是默认在：`performance_schema,information_schema,mysql,test,db_infobase` 这些库下的ddl操作，不会转发到后端TenDB，由参数TDBCTL_SKIP_DDL_CONVERT_DB决定。
+需要注意的的是默认在：`performance_schema,information_schema,mysql,test,db_infobase` 这些库下的ddl操作，不会转发到后端TenDB。 
+
+<a id="jump1"></a>
+
 ## 1. create table
 用户可以通过普通MySQL一样的方式来建表，但会建出不一样的表。例如，用户建一个InnoDB表，建表SQL如下：
 ```

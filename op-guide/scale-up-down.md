@@ -1,4 +1,4 @@
-# TenDBCluster扩缩容
+# TenDB Cluster扩缩容
 TenDBCluster可以在不影响线上服务的情况下，灵活的对集群进行扩容和缩容  
 目前集群支持接入层TSpider的水平扩缩容，存储层TenDB的垂直扩缩容
 - TSpider水平扩缩容

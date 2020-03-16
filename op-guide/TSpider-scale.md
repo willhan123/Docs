@@ -11,7 +11,7 @@ TSpider本身并不存储数据，基本是无状态的（各TSpider节点部分
 <a id="jump1"></a>
 
 
-假定有个当前拓扑结构的TenDBCluster集群  
+假定有个当前拓扑结构的TenDB Cluster集群  
 
 | 节点类型 | 	Host|端口|Server_name|
 | :--- | :----|:----|:----|
@@ -70,7 +70,7 @@ tdbctl flush routing;
 |TenDB|127.0.0.1|20003|SPT3|
 
 ## 缩容
-假定有个当前拓扑结构的TenDBCluster集群  
+假定有个当前拓扑结构的TenDB Cluster集群  
 
 | 节点类型 | 	Host|端口|Server_name|
 | :--- | :----|:----|:----|

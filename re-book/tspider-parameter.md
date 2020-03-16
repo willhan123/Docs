@@ -95,7 +95,9 @@ TSpider兼容MySQL的参数，下文主要介绍新增的参数。
 默认值: OFF  
 当值为1。若后端TenDB使用了autocommit=0，在启用这个参数后，当前事务提交，再次使用到该TSpider到remote实例的，会自动将session级状态为设置autocommit=1（不再是应用层指定的0），后续执行的SQL都为自动提交；否则不将TenDB session级状态为设置autocommit=1。
 
+<a id="quick-mode"></a>
 **`SPIDER_QUICK_MODE`**  
+
 作用域: SESSION|GLOBAL  
 默认值：1  
 决定后端query结果集，缓冲到后端缓存还是本地缓冲区  
