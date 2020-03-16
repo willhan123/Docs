@@ -65,6 +65,8 @@ TSpider会按照表分区键来进行数据切片，如4个存储节点的集群
 对于指定shard_key的SQL，TSpider会根据分区规则，提高请求性能，只会路由到指定的分片执行。<font color="#dd0000">因此用户对shard_key的选取要十分谨慎。</font>   
 下面来讲解TSpider的默认分区规则，以及用户该如何显示指定shard_key。
 
+<a id="shard_key"></a>
+
 ####  不指定shard_key
 
 ##### 如果只有一个唯一键（含主键),不指定shard_key, 默认会用唯一键的第一个字段作为分区key
