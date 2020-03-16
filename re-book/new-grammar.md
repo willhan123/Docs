@@ -32,11 +32,11 @@ MariaDB [tendb_test]> show status like 'Max_thread_id_on_kill';
 ```
 
 ### 新增语法 flush  table with write lock
-
+<a id="write_lock"></a>
 开启事务锁，阻塞新的事务开启,保证分布式场景下的TSpider集群主备安全切换，由unlock tables解锁。
 
 ```
-执行 `flush  table with write lock`会阻塞新的事务开启。
+执行 flush  table with write lock 会阻塞新的事务开启。
 在已有事务commit后，加锁成功，阻塞新的事务开启。
 由unlock tables解锁。
 ```
