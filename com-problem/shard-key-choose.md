@@ -20,6 +20,10 @@ TSpider会按照表分区键来进行数据分片,分区键的选择尤为重要
 
 
 ## Note
-可通过打开general log来分析应用的各个Table的请求模式，来进行Shard Key的调整，尽量减小跨分片扫描。
-
-另外也可以设置log_sql_use_mutil_partition为true将跨分区扫描的SQL打印到慢查询日志中进行分析。
+1. 可通过打开general log来分析应用的各个Table的请求模式，来进行Shard Key的调整，尽量减小跨分片扫描。
+2. 另外也可以设置log_sql_use_mutil_partition为true将跨分区扫描的SQL打印到慢查询日志中进行分析。
+3. 可以通过查看QUERY_RESPONSE_TIME table来展示TSpider上查询和跨分片扫描的信息。
+    ```
+     mysql> show QUERY_RESPONSE_TIME;
+     mysql> SELECT * FROM information_schema.QUERY_RESPONSE_TIME;
+    ```
