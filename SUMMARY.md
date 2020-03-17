@@ -3,36 +3,36 @@
 	* [整体架构](architecture.md) 
 	* [主要特性](key-features.md) 
 * 操作指南
-  * [快速上手]() 
-	  * [使用Docker Compose快速部署]()
-	  * [基本操作]()
-  * [软硬件环境]() 
-     * [软件介质]() 
-     * [源码编译]() 
+  * 快速上手
+	  * [使用Docker Compose快速部署]
+	  * [基本操作]
+  * 软硬件环境 
+     * [软件介质]
+     * [源码编译]
      * [硬件要求](op-guide/system.md) 
   * 部署 
-	  * [集群搭建]() 
+	  * [集群搭建] 
 	  * [手动安装](op-guide/manual-install.md) 
 	  * [路由管理](op-guide/route-manager.md) 
-	  * [集群权限]() 
+	  * [集群权限] 
   * [运维](op-guide/cluster-operator.md) 
 	  * [变更](op-guide/alter-operator.md) 
 	  * [授权](op-guide/grant-operator.md) 
 	  * [备份](op-guide/backup.md) 
-	  * [监控]() 
-	  * [工具]() 
+	  * [监控]
+	  * [工具]
   * [扩缩容](op-guide/scale-up-down.md) 
 	  * [接入层扩缩容](op-guide/TSpider-scale.md) 
 	  * [存储层扩缩容](op-guide/TenDB-scale.md) 
   * [高可用](op-guide/High-availability.md) 
 	  * [接入层高可用](op-guide/TSpider-failover.md) 
 	  * [存储层高可用](op-guide/TenDB-failover.md) 
-	  * [中控节点高可用]() 
+	  * [中控节点高可用]
   * 数据迁移 
 	  * [从单机MySQL到集群](op-guide/Data-migrate.md/#jump1) 
 	  * [从集群到单机MySQL](op-guide/Data-migrate.md/#jump3) 
 * 参考手册
-	* [SQL]()
+	* [SQL]
 	  * [SQL语法](re-book/sql-grammar.md) 
 	    * [DDL](re-book/ddl-syntax.md) 
 	    * [DML](re-book/dml-syntax.md) 
@@ -43,6 +43,14 @@
 	    * [新增语法](re-book/new-grammar.md) 
 	  * [自增列](re-book/auto-increase.md) 
 	  * [事务](re-book/transaction.md)
+        * [事务使用](re-book/transaction.md#jump2)
+        * [普通事务](re-book/transaction.md#jump3)
+        * [分布式事务](re-book/transaction.md#jump4)
+          * [xa commit xid one phase with logs](re-book/transaction.md#jump41) 
+          * [参数spider_trans_rollback](re-book/transaction.md#jump42)
+          * [事务执行结果](re-book/transaction.md#jump43) 
+          * [悬挂事务处理](re-book/transaction.md#jump44) 
+		* [其它](re-book/transaction.md#jump5)
     * [与单实例MySQL异同](re-book/mysql-compatibility.md/#jump) 
       * [不支持特性](re-book/mysql-compatibility.md/#jump1) 
       * [DDL](re-book/mysql-compatibility.md/#jump21) 
@@ -50,45 +58,41 @@
       * [自增](re-book/mysql-compatibility.md/#jump23)  
       * [执行计划](re-book/mysql-compatibility.md#jump24)
       * [分布式事务](re-book/mysql-compatibility.md/#jump25)
-        * [xa commit xid one phase with logs](re-book/mysql-compatibility.md/#jump251) 
-        * [参数spider_trans_rollback](re-book/mysql-compatibility.md#jump252) 
-        * [事务执行结果](re-book/mysql-compatibility.md/#jump253) 
-        * [悬挂事务处理](re-book/mysql-compatibility.md/#jump254) 
-        * [存储过程](re-book/mysql-compatibility.md#jump26)
+      * [存储过程](re-book/mysql-compatibility.md#jump26)
   * [参数说明](re-book/parameter.md)
   	  * [TSpider](re-book/tspider-parameter.md)   
         * [TenDB](re-book/tendb-parameter.md)   
         * [Tdbctl](re-book/tdbctl-parameter.md)  
   * [错误码](re-book/errorno.md)
   * [API](re-book/api.md) 
-* [关于TenDB]() 
+* 关于TenDB 
 	* [加字段]() 
 	* [大字段压缩](tendb/blob-compress.md) 
 	* [binlog压缩](tendb/binlog-compress.md) 
-	* [binlog限速]() 
-	* [XA事务优化]() 
-	* [其它]() 
-* [TenDB Cluster in Kubernetes]() 
-	* [TenDB Operator简介]() 
-	* [部署]() 
-	* [配置]() 
-	* [监控]() 
-	* [运维]() 
-	* [升级]() 
-	* [扩缩容]() 
-	* [高可用]() 
-	* [常见问题]() 
-* [最佳实践]() 
+	* [binlog限速] 
+	* [XA事务优化](tendb/xafeatures.md) 
+	* [其它] 
+* TenDB Cluster in Kubernetes 
+	* [TenDB Operator简介] 
+	* [部署] 
+	* [配置] 
+	* [监控] 
+	* [运维] 
+	* [升级] 
+	* [扩缩容] 
+	* [高可用] 
+	* [常见问题] 
+* 最佳实践 
 	* [普通应用](practice/common-bestpractice.md) 
 	* [大数据应用](practice/bigdatapractice.md) 
 	* [事务应用](practice/transactionapplication.md) 
-* [常见问题]() 
+* 常见问题 
 	* [多唯一键调整](com-problem/multi-unique-key-adjust.md) 
 	* [shard key选取](com-problem/shard-key-choose.md)
-* [性能测试]() 
-* [技术支持]() 
-	* [联系我们]() 
-* [贡献]() 
-	* [源码贡献]() 
-	* [问题反馈]() 
-	* [源码架构]() 
+* [性能测试]
+* 技术支持
+	* [联系我们]
+* 贡献
+	* [源码贡献]
+	* [问题反馈] 
+	* [源码架构]
