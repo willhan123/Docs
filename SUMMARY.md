@@ -19,8 +19,8 @@
 	  * [变更](op-guide/alter-operator.md) 
 	  * [授权](op-guide/grant-operator.md) 
 	  * [备份](op-guide/backup.md) 
-	  * [监控]
-	  * [工具]
+	  * [监控](op-guide/monitor.md) 
+	  * [工具]() 
   * [扩缩容](op-guide/scale-up-down.md) 
 	  * [接入层扩缩容](op-guide/TSpider-scale.md) 
 	  * [存储层扩缩容](op-guide/TenDB-scale.md) 
