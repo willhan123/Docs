@@ -27,7 +27,7 @@
   * [高可用](op-guide/High-availability.md) 
 	  * [接入层高可用](op-guide/TSpider-failover.md) 
 	  * [存储层高可用](op-guide/TenDB-failover.md) 
-	  * [中控节点高可用]
+	  * [中控节点高可用](op-guide/Tdbctl-failover.md)
   * 数据迁移 
 	  * [从单机MySQL到集群](op-guide/Data-migrate.md/#jump1) 
 	  * [从集群到单机MySQL](op-guide/Data-migrate.md/#jump3) 
