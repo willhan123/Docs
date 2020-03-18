@@ -31,7 +31,7 @@ TSpider也是一个MySQL节点，每个自增列表中都有自己的last_insert
 
 为此，可以让每个节点维护一个的id%m=n，而每个节点的n值不同。比如节点1维护的序列为：1，1+17，1+17+17，节点2维护的序列为2，2+17，2+17+17…依次类推。只有在需要获取最大值的时候，才从后端TenDB中求一个max(id)，再通过max(id)生成一个本地id。下图所示，为在极端情况下需要从后端TenDB来生成唯一id的方式。
 
-<img src="../pic/auto_increment.png" width = "500" height = "300" alt="图片名称" align=center />
+<img src="../pic/auto-increment.png" width = "500" height = "300" alt="图片名称" align=center />
 
 ## 注意
 

@@ -8,13 +8,13 @@
 	  * [基本操作]
   * 软硬件环境 
      * [软件介质]
-     * [源码编译]
+     * [源码编译](op-guide/compile.md)
      * [硬件要求](op-guide/system.md) 
   * 部署 
 	  * [集群搭建] 
 	  * [手动安装](op-guide/manual-install.md) 
 	  * [路由管理](op-guide/route-manager.md) 
-	  * [集群权限] 
+	  * [集群权限](op-guide/cluster-grant.md)
   * [运维](op-guide/cluster-operator.md) 
 	  * [变更](op-guide/alter-operator.md) 
 	  * [授权](op-guide/grant-operator.md) 
@@ -66,10 +66,10 @@
   * [错误码](re-book/errorno.md)
   * [API](re-book/api.md) 
 * 关于TenDB 
-	* [加字段]() 
+	* [加字段](tendb/instant-add-column.md) 
 	* [大字段压缩](tendb/blob-compress.md) 
 	* [binlog压缩](tendb/binlog-compress.md) 
-	* [binlog限速] 
+	* [binlog限速](tendb/binlog-speed-limit.md)
 	* [XA事务优化](tendb/xafeatures.md) 
 	* [其它] 
 * TenDB Cluster in Kubernetes 

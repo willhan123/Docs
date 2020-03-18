@@ -206,6 +206,8 @@ cd /usr/local/tdbctl && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.26000 --
 ```
 
 ## 配置集群
+<a id="cluster-privilege"></a>
+
 示例权限仅供参考，实际权限控制需结合应用访问安全考虑
 
 ### 配置TenDB权限
