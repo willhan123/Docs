@@ -1,6 +1,6 @@
 # TenDB Cluster手工部署
 本章节描述如何在一个单机上部署TenDB Cluster集群
-下文将会部署一个2个TSpider节点，4个TenDB节点，1个Tdbctl节点的集群
+下文将会部署一个2个TSpider节点，4个TenDB节点，3个Tdbctl节点(MGR方案)的集群
 
 ## 部署TenDB
 
@@ -166,8 +166,13 @@ cd /usr/local/tspider && ./scripts/mysql_install_db --defaults-file=/home/mysql/
 重复步骤1,2,3部署25001实例，部署前需要替换my.cnf文件中的端口号，同时修改spider_auto_increment_mode_value=2
 
 ## 部署Tdbctl
-部署1个中控节点Tdbctl，端口号为26000
+采用MGR复制方案部署3个中控节点Tdbctl，端口号分别为26000, 26001, 26002，其中26000为主节点，26000、26001为只读从节点。
+关于MGR复制方案的细节，可以参考[组复制](https://dev.mysql.com/doc/refman/5.7/en/group-replication.html)  
+下面以26000为例说明
 ### 创建配置文件
+
+<a id="mgr-cnf"></a>
+
 ```bash
 touch /home/mysql/my.cnf.26000
 ```
@@ -183,11 +188,40 @@ socket=/home/mysql/mysqldata/26000/mysql.sock
 port=26000
 [mysql]
 port=26000
-socket=/home/mysql/mysqldata/26000/mysql.sock                                       
+socket=/home/mysql/mysqldata/26000/mysql.sock
+log_bin=/home/mysql/mysqldata/26000/binlog/binlog26000.bin
+relay-log=/home/mysql/mysqldata/26000/relay-log/relay-log.bin
+#MGR配置如下#############
+#server_id不同实例不能相同
+server_id=1
+gtid_mode=ON
+enforce_gtid_consistency=ON
+master_info_repository=TABLE
+relay_log_info_repository=TABLE
+binlog_checksum=NONE
+log_slave_updates=ON
+binlog_format=ROW
+report_host=127.0.0.1
+transaction_write_set_extraction=XXHASH64
+loose-group_replication_group_name="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+loose-group_replication_start_on_boot=off
+loose-group_replication_local_address= "127.0.0.1:46000"
+loose-group_replication_group_seeds= "127.0.0.1:46000,127.0.0.1:46001,127.0.0.1:46002"
+loose-group_replication_bootstrap_group=off
+#loose-group_replication_single_primary_mode=off
+loose-group_replication_ip_whitelist='127.0.0.1'
 ```
+#### MGR重要参数说明
+- group_replication_single_primary_mode  
+在单主模式下，需要设定为on, 默认为on
+- group_replication_local_address  
+MGR通信的端口，不能与实例运行的socket端口冲突，例如本实例服务端口为26000，MGR通信端口设定为46000
+
 ### 创建目录
 ```bash
 mkdir -p /home/mysql/mysqldata/26000/data
+mkdir -p /home/mysql/mysqldata/26000/binlog
+mkdir -p /home/mysql/mysqldata/26000/relay-log
 ```
 
 ### 安装Tdbctl
@@ -204,6 +238,29 @@ cd /usr/local/tdbctl && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.26000 --
 # 启动Tdbctl
 ./bin/mysqld_safe --defaults-file=/home/mysql/my.cnf.26000 --user=mysql &
 ```
+
+### 配置MGR复制方案
+在3个节点启动后，分别连接节点执行如下操作
+```sql
+SET SQL_LOG_BIN=0;grant REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by 'repl';
+SET SQL_LOG_BIN=1;
+reset master;
+change master to master_user='repl',master_password='repl' for channel 'group_replication_recovery';
+INSTALL PLUGIN group_replication SONAME 'group_replication.so';
+```
+- 启动主节点
+```sql
+SET GLOBAL group_replication_bootstrap_group=ON;
+START GROUP_REPLICATION;
+SET GLOBAL group_replication_bootstrap_group=OFF;
+```
+
+- 启动从节点
+```sql
+START GROUP_REPLICATION;
+```
+
+
 
 ## 配置集群
 <a id="cluster-privilege"></a>
@@ -250,6 +307,8 @@ insert into mysql.servers values('SPT3','127.0.0.1','','mysql','mysql',20003,'',
 insert into mysql.servers values('SPIDER0','127.0.0.1','','mysql','mysql',25000,'','SPIDER','');
 insert into mysql.servers values('SPIDER1','127.0.0.1','','mysql','mysql',25001,'','SPIDER','');
 insert into mysql.servers values('TDBCTL0','127.0.0.1','','mysql','mysql',26000,'','TDBCTL','');
+insert into mysql.servers values('TDBCTL1','127.0.0.1','','mysql','mysql',26001,'','TDBCTL','');
+insert into mysql.servers values('TDBCTL2','127.0.0.1','','mysql','mysql',26002,'','TDBCTL','');
 #刷新路由，同步路由到TSpider节点
 tdbctl flush routing;
 ```
