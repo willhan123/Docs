@@ -32,7 +32,7 @@
 	  * [从单机MySQL到集群](op-guide/Data-migrate.md/#jump1) 
 	  * [从集群到单机MySQL](op-guide/Data-migrate.md/#jump3) 
 * 参考手册
-	* [SQL]
+	* SQL
 	  * [SQL语法](re-book/sql-grammar.md) 
 	    * [DDL](re-book/ddl-syntax.md) 
 	    * [DML](re-book/dml-syntax.md) 
@@ -60,20 +60,19 @@
       * [分布式事务](re-book/mysql-compatibility.md/#jump25)
       * [存储过程](re-book/mysql-compatibility.md#jump26)
   * [参数说明](re-book/parameter.md)
-  	  * [TSpider](re-book/tspider-parameter.md)   
-        * [TenDB](re-book/tendb-parameter.md)   
-        * [Tdbctl](re-book/tdbctl-parameter.md)  
+  	  * [TSpider参数说明](re-book/tspider-parameter.md)   
+      * [TenDB参数说明](re-book/tendb-parameter.md)   
+      * [Tdbctl参数说明](re-book/tdbctl-parameter.md)  
   * [错误码](re-book/errorno.md)
   * [API](re-book/api.md) 
-* 关于TenDB 
+* [关于TenDB](tendb/tendb.md) 
 	* [加字段](tendb/instant-add-column.md) 
 	* [大字段压缩](tendb/blob-compress.md) 
 	* [binlog压缩](tendb/binlog-compress.md) 
 	* [binlog限速](tendb/binlog-speed-limit.md)
 	* [XA事务优化](tendb/xafeatures.md) 
-	* [其它] 
 * [TenDB Cluster in Kubernetes](kubernetes/cluster-in-k8s.md)
-	* [TenDB Operator简介] (kubernetes/cluster-operator.md)
+	* [TenDB Operator简介](kubernetes/cluster-operator.md)
 	* [部署] 
 	* [配置] 
 	* [监控] 
@@ -91,8 +90,7 @@
 	* [shard key选取](com-problem/shard-key-choose.md)
 * [性能测试]
 * 技术支持
-	* [联系我们]
+	* [联系我们](contribution/concat.md)
 * 贡献
-	* [源码贡献]
-	* [问题反馈] 
-	* [源码架构]
+	* [源码贡献](contribution/contribute.md)
+	* [问题反馈](contribution/contribute.md#jump2)
