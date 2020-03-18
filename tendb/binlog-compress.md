@@ -16,13 +16,14 @@
 ### 解压
 
 `set global relay_log_uncompress = ON`  
-表示在IO线程中解压，解压后写入relaylog。
+表示binlog在IO线程中解压。
 
 `set global relay_log_uncompress = OFF`  
-拉取binlog以后直接写入relaylog，然后在执行的时候解压。
+表示binlog在sql线程中解压 。
 
->目前默认relay_log_uncompress = ON，因为样做的好处是分担sql线程的压力，减少relay log的积压。
-如果slave机器磁盘空间不足，可以set global relay_log_uncompress=OFF。
+>如果slave机器，relay-log空间够，可以set global relay_log_uncompress=ON(默认配置)，在IO线程中解压。  
+如果slave机器，relay-log空间不够，可以set global relay_log_uncompress=OFF，在sql线程中解压，但是这样可能会导致sql线程变慢。  
+不过目前slave都有并行同步能力，一般不对sql线程速度造成较大影响。
 
 
 ## 兼容性
