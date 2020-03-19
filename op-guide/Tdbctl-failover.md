@@ -1,33 +1,33 @@
 # Tdbctl控制层高可用
-Tdbctl控制层的高可用相对比较简单，目前我们采用MySQL官方推荐的GROUP REPLICATION方案，3个节点，一主二从的方式  
+Tdbctl控制层的高可用相对比较简单，目前我们采用MySQL官方推荐的GROUP REPLICATION方案，配置3个节点，一主二从的MGR方式  
 
 ## 故障发现
-不同于TSpider，TenDB节点的外围探测的方式发现故障，Tdbctl的故障发现，更多的是依赖MGR方案内部的故障探测机制来决策故障。
-具体决策机制实现细节可以参考MySQL GROUP REPLICATION相关文档
+不同于TSpider、TenDB节点通过外围探测的方式发现故障，Tdbctl的故障发现，更多的是依赖MGR方案本身的故障探测机制来决策故障。
+具体实现细节可以参考[MySQL GROUP REPLICATION](https://dev.mysql.com/doc/refman/5.7/en/group-replication-network-partitioning.html)相关文档
 
 ## 故障切换
-在故障发生后，MGR会从复制组剔除故障节点，通过选举方式提升一个从节点为主节点来保证服务。
-鉴于我们的mysql.servers表记录了所有MGR节点的路由信息，因此故障处理上，除了MGR本身提供的故障切换功能外，我们还需要从mysql.servers表中去掉故障节点  
+在检测到故障发生后，MGR会从复制组剔除故障节点，通过选举方式提升一个从节点为主节点来保证服务。
+具体组成员的状态等信息，可以通过MGR提供的[成员视图](https://dev.mysql.com/doc/refman/5.7/en/group-replication-monitoring.html)来查看
+鉴于我们的mysql.servers表记录了所有MGR节点的路由信息，因此故障处理上，除了MGR本身故障剔除功能外，我们还需要从mysql.servers表中去掉故障节点，否则会影响集群的DDL请求  
 ```sql
 delete from mysql.servers where Host='$fault_tdbctl_ip' and Port='$fault_tdbctl_port';
 ```
 
 ## 故障恢复
-在故障节点恢复，或新的故障节点加入时(全量数据已经导入)，我们可以参考MGR的配置，将新的节点配置到MGR
-- 修改my.cnf，启用MGR相关配置  
->参考集群搭建的[mgr配置](manual-install.md/#mgr-cnf)
+在故障节点恢复，或新的故障节点加入时(全量数据已经导入)，我们可以参考[MGR配置](manual-install.md/#mgr-cnf)，将新的Tdbctl节点配置到复制组
+- 修改my.cnf，启用MGR相关配置
 - 配置复制权限
 - 启用MGR
 >```sql
 START GROUP_REPLICATION;
 ```
 
-在MGR同步正常后，连接tdbctl的主节点，修改mysql.servers表，将新节点信息插入
+在MGR同步正常后，连接Tdbctl的主节点，修改mysql.servers表，将新节点信息插入
 
 ## 其他说明
-我们以26000实例故障为例，演示说明tdbctl的故障切换和故障恢复
+我们以26000实例故障为例，演示说明Tdbctl的故障切换和故障恢复
 ### 故障切换
-关闭26000实例
+关闭26000实例, 模拟成员26000故障
 
 - 连接26001实例，查看MGR切换情况
 ```sql
@@ -59,6 +59,7 @@ ERROR 4150 (HY000): Error happened before execute ddl in tdbctl when connect to 
 - 连接tdbctl 26001实例，将故障的26000剔除
 ```sql
 mysql -umysql -pmysql -h127.0.0.1 -P26001
+#TDBCTL0对应的故障节点26000
 delete from mysql.servers where Server_name='TDBCTL0';
 tdbctl flush routing;
 ```
@@ -78,6 +79,7 @@ Query OK, 0 rows affected (0.00 sec)
 ```sql
 #连接26000
 mysql -umysql -pmysql -h127.0.0.1 -P26000
+#26000之前已经配置过MGR，因此无需再次配置，直接启用组复制即可
 start group_replication;
 
 #连接26001查看成员情况

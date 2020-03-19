@@ -9,7 +9,7 @@
 
 | 请求节点| 	授权节点| 权限|说明|
 | :--- | :----|:----|:----|
-|TSpider|Tdbctl|ALL PRIVILEGES WITH GRANT OPTION|TSpider需要转发DDL给Tdbctl重写分发后端TenDB|
+|TSpider|Tdbctl|ALL PRIVILEGES WITH GRANT OPTION|TSpider收到客户端DDL请求后，会直接转发给Tdbctl，Tdbctl重写后分发给TSpider、TenDB节点执行|
 |TSpider|TenDB|SELECT, INSERT, TRUNCATE|TSpider需要有读写后端TenDB的权限
 |Tdbctl|TSpider, TenDB|ALL PRIVILEGES WITH GRANT OPTION| Tdbctl需要连接TSpider，TenDB节点分发DDL操作|
 |TenDB|N/A|N/A|N/A|
@@ -17,5 +17,5 @@
 具体权限的授权，管理可以参考集群安装的[集群权限](manual-install.md/#cluster-privilege)
 
 ## 集群外部权限
-集群外部权限是指引用请求集群时所需要的权限  
-我们可以使用管理用户直接连接任意TSpider节点，根据应用需要给一定账户，主机来源授权，在权限管理、授予上与单机MySQL没有区别，具体参考[集群授权](grant-operator.md)
+集群外部权限是指应用请求集群时所需要的权限  
+我们可以使用管理用户直接连接任意TSpider节点，根据应用需要给特定的账户、主机授权，在权限管理上与单机MySQL没有区别，具体参考[集群授权](grant-operator.md)

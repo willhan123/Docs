@@ -1,6 +1,6 @@
 # TenDB Cluster授权
-应用在请求TenDBCluster时, 需要在TSpider节点通过grant语句申请相应的权限，TSpider将grant语句发到Tdbctl节点，Tdbctl转发到其他TSpider节点执行，完成整个集群的授权操作  
-权限的语法与普通MySQL相同，在使用上没有太大的区别
+应用在请求TenDBCluster时, 需要在TSpider节点通过`GRATN`语句申请相应的权限，TSpider收到`GRATN`语句后会直接转发给Tdbctl节点，Tdbctl重写之后并行分发到其他TSpider节点执行，从而完成整个集群的授权操作  
+权限的语法与普通MySQL相同，在使用管理上可以参照单机MySQL
 
 ## 授权示例
 连接任意TSpider节点
