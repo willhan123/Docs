@@ -72,7 +72,7 @@
 	* [binlog限速](tendb/binlog-speed-limit.md)
 	* [XA事务优化](tendb/xafeatures.md) 
 * [TenDB Cluster in Kubernetes](kubernetes/cluster-in-k8s.md)
-	* [TenDB Operator简介](kubernetes/cluster-operator.md)
+	* [TenDB Cluster Operator简介](kubernetes/cluster-operator.md)
 	* [部署] 
 	* [配置] 
 	* [监控] 
