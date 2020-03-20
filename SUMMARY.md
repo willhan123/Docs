@@ -72,6 +72,7 @@
     * [binlog压缩](tendb/binlog-compress.md)
     * [binlog限速](tendb/binlog-speed-limit.md)
     * [XA事务优化](tendb/xafeatures.md)
+	* [语法审核工具](tendb/tmysqlparse.md)
 * [TenDB Cluster in Kubernetes](kubernetes/cluster-in-k8s.md)
     * [TenDB Cluster Operator简介](kubernetes/cluster-operator.md)
     * [部署]
@@ -89,7 +90,7 @@
 * 常见问题
     * [多唯一键调整](com-problem/multi-unique-key-adjust.md)
     * [shard key选取](com-problem/shard-key-choose.md)
-* [性能测试]
+* [性能测试](performance-test.md)
 * 技术支持
     * [联系我们](contribution/concat.md)
 * 贡献
