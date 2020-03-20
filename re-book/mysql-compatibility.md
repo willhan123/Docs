@@ -13,7 +13,6 @@ TSpider和MySQL的区别总结如下表：
 | 多唯一键   | 支持   | 不支持   |
 | 外键约束   | 支持   | 不支持   |
 | 修改Shard key | 支持 | 不支持  |
-| 增加/删除主键   | 支持   | 不支持  |
 | CREATE TABLE tblName AS SELECT stmt| 支持 | 不支持 |
 | CREATE TEMPORARY TABLE   | 支持   | 不支持   |
 | XA事务 | 支持 | 不支持 |
