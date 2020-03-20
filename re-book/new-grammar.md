@@ -42,10 +42,11 @@ MariaDB [tendb_test]> show status like 'Max_thread_id_on_kill';
 ```
 
 ### 跨分片扫描信息查询
-引入percona的QUERY_RESPONSE_TIME，TSpider额外统计了跨分区操作的响应时间。
-可以通过查看QUERY_RESPONSE_TIME table来展示TSpider上查询和跨分片扫描的信息。
-其中P_COUNT，P_TOTAL表示跨分片扫描的信息。
-示例如下：
+引入percona的QUERY_RESPONSE_TIME来统计请求时间在某个区间的query个数及总时间开销，另外TSpider额外统计了跨分区操作的响应时间。   
+跨分区时间视图依赖增加的P_COUNT，P_TOTAL两个字段，其中P_COUNT表示跨分区请求的个数，P_TOTAL表示跨分区请求花费的时间。   
+> 跨分区操作是指TSpider接受到的请求，需要分发到多于1个存储shard上请求才能返回结果      
+
+采用如下方式可以查看响应时间视图：
 ```
 MariaDB [mysql]> show QUERY_RESPONSE_TIME;
 +----------------+-------+-----------------------+---------+-----------------------+
