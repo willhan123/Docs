@@ -3,7 +3,30 @@
 # 与单实例MySQL异同
 
 TenDB Cluster集群主要是由多个接入层TSpider实例及存储TSpider通过分片规则打散后数据的TenDB存储实例构成。
-虽然TSpider利用了spider这一MySQL引擎，能够兼容绝多MySQL标准用法，但还是有些地方和单实例MySQL有一些差异。下面进行展开描述。
+
+虽然TSpider利用了spider这一MySQL引擎，能够兼容绝大多数MySQL标准用法，但还是有些用法不支持，或者和单实例MySQL使用存在差异。
+
+TSpider和MySQL的区别总结如下表：
+
+|    | MySQL   | TSpider   |
+|:----|:----|:----|
+| 多唯一键   | 支持   | 不支持   |
+| 外键约束   | 支持   | 不支持   |
+| 修改Shard key | 支持 | 不支持  |
+| 增加/删除主键   | 支持   | 不支持  |
+| CREATE TABLE tblName AS SELECT stmt| 支持 | 不支持 |
+| CREATE TEMPORARY TABLE   | 支持   | 不支持   |
+| XA事务 | 支持 | 不支持 |
+| SAVEPOINT | 支持 | 不支持 |
+| 自增列 | 支持 | 支持(只保证自增ID的唯一性，不保证连续和递增)
+| 存储过程/触发器/函数/视图   | 支持   | 支持(但不建议使用)   |
+| KILL THREADS ALL/ALL SAFE| 不支持 | 支持 |
+| KILL thread_id SAFE | 不支持 | 支持 |
+
+
+
+
+下面详细进行描述。
 
 <a id="jump1"></a>   
 
@@ -11,10 +34,11 @@ TenDB Cluster集群主要是由多个接入层TSpider实例及存储TSpider通�
 - 多唯一键
 - 外键约束
 - 修改shard key（分区键）
-- XA语法
-- CREATE TABLE tb AS SELECT语法
-- CREATE TEMPORARY TABLE语法
-- Savepoints
+- 增加/删除主键
+- CREATE TABLE tblName AS SELECT stmt语法
+- CREATE TEMPORARY TABLE 
+- XA事务
+- SAVEPOINT
 
 ## 与MySQL有差异的特性
 
