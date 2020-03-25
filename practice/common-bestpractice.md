@@ -10,7 +10,7 @@
 2. TSpider建表时，默认使用主键/唯一键的第一个字段作为shard_key；如果没有主键/唯一键，需要显式指定shard_key。
 3. TSpider建表指定shard_key时，数据按照shard_key hash取模后需要是分布均匀的。如果数据分布不均匀会造成部分分片负载过高成为瓶颈。
 4. TSpider建表不能使用外键约束。
-5. 使用自增列时，auto_increment的列类型使用bigint，同时推荐由TSpider来进行自增列维护。
+5. 使用自增列时，auto_increment的列类型使用bigint，同时推荐由TSpider来进行自增列维护。<font color="#dd0000">要注意TSpider只保证自增字段的唯一性，不保证有序和递增</font> 。
 6. 如果存在主键与唯一键 若主键为auto_increment列，而唯一键是业务/应用特征字段，推荐将auto_increment列修改为普通index。
 7. Blob大字段类型，推荐使用压缩功能。
 8. 如果有数据过期或者清理需求，TenDB存储实例推荐使用分区表。

@@ -1,7 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
-* [主要概念]()
+* 主要概念
     * [整体架构](architecture.md)
     * [主要特性](key-features.md)
 * 操作指南
