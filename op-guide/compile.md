@@ -76,3 +76,4 @@ export gccdir=/usr/local/gcc-4.7.3
 cmake .. -DDOWNLOAD_BOOST=1 -DMYSQL_SERVER_SUFFIX=1.4 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DCMAKE_C_COMPILER=$gccdir/bin/gcc -DCMAKE_CXX_COMPILER=$gccdir/bin/g++ -DCMAKE_CXX_FLAGS="-static-libgcc -static-libstdc++" -DCMAKE_C_FLAGS="-static-libgcc" -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF  -DWITH_QUERY_RESPONSE_TIME=on
 #编译，打包
 nohup make -j > mk.log 2>&1  && make package > mp.log 2>&1 &
+```
