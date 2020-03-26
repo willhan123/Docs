@@ -23,21 +23,27 @@
 ### 1.3 ERROR 1477
 > ERROR 1477 (HY000): The foreign server name you are trying to reference does not exist. Data source error:  SPT0
 
+建表使用的server(SPT0)并不存在，可以检查mysql.servers表是否真的不存在； 如果mysql.servers表中存在SPT0却还报错，说明该server没有执行flush privileges生效
 
-### 1.4 Out of sync错误
+### 1.4 ERROR 1429
+> MySQL error code 1429 (ER_CONNECT_TO_FOREIGN_DATA_SOURCE): Unable to connect to foreign data source: %.64s
+
+某个后端存储实例故障，导致对应的server不可用；需要进行主备切换或者修复故障实例
+
+### 1.5 Out of sync错误
 非预期的TSpider向存储实例请求数据时出现异常，执行flush tables可解决。
 
 
-### 1.5 自增列
+### 1.6 自增列
 TSpider只保证自增列的唯一性， 有空洞、且不保证自增字段的有序；更多信息参见[自增列](../re-book/auto-increase.md)章节
 
-### 1.6 SQL请求慢
+### 1.7 SQL请求慢
 1. 可以打开general_log、 spider_general_log，查看当前请求的分发请求是否符合预期；分发到存储实例执行的请求是否命中索引   
 2. 可以设置spider_bgs_mode=1让读操作并行
 3. 对涉及多个shard的update/delete/insert操作，在打开spider_bgs_mode前提下打开spider_bgs_dml，让update/delete/insert操作并行
 4. 关注存储实例和TSpider间的网络延迟   
 
-### 1.7 OOM
+### 1.8 OOM
 `TSpider OOM`   
 用户一次拉取的数据量过大； 尽量避免在TSpider一次性拉取过量数据，非要这样用避免OOM的办法是设置spider_quick_mode=3   
 `TenDB OOM`   
@@ -55,6 +61,13 @@ TSpider的唯一键约束规则和MySQL分区表规则相同，多唯一键问�
 
 ### 1.12 存储实例负载不均
 考虑shard_key是否配置合理，导致数据及请求分布不均
+
+### 1.13 查询超时
+执行复杂查询，可能返回结果超时，一般是因为spider_net_read_timeout/spider_net_write_timeout配置过小
+
+### 1.14 统计信息
+通过全局参数spider_get_sts_or_crd开启统计信息，统计信息存储在系统表`mysql`.`spider_table_status`中；   `spider_modify_status_interval`为刷新统计信息的间隔时间。
+
 
 
 ## 2. 与MySQL的差异性
