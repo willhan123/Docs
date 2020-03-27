@@ -6,13 +6,13 @@ TenDB Cluster集群主要是由多个接入层TSpider实例及存储TSpider通�
 
 虽然TSpider利用了spider这一MySQL引擎，能够兼容绝大多数MySQL标准用法，但还是有些用法不支持，或者和单实例MySQL使用存在差异。
 
-TSpider和MySQL的区别总结如下表：
+Tendb Cluster和MySQL的区别总结如下表：
 
-|    | MySQL   | TSpider   |
+|    | MySQL   | Tendb Cluster   |
 |:----|:----|:----|
 | 多唯一键   | 支持   | 不支持   |
 | 外键约束   | 支持   | 不支持   |
-| 修改Shard key | 支持 | 不支持  |
+| 更改表的Shard key | 支持 | 不支持  |
 | CREATE TABLE tblName AS SELECT stmt| 支持 | 不支持 |
 | CREATE TEMPORARY TABLE   | 支持   | 不支持   |
 | XA事务 | 支持 | 不支持 |
