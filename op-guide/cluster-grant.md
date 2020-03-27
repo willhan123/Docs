@@ -10,7 +10,7 @@
 | 请求节点| 	授权节点| 权限|说明|
 | :--- | :----|:----|:----|
 |TSpider|Tdbctl|ALL PRIVILEGES WITH GRANT OPTION|TSpider收到客户端DDL请求后，会直接转发给Tdbctl，Tdbctl重写后分发给TSpider、TenDB节点执行|
-|TSpider|TenDB|SELECT, INSERT, TRUNCATE|TSpider需要有读写后端TenDB的权限
+|TSpider|TenDB|SELECT, INSERT, UPDATE, TRUNCATE|TSpider需要有读写后端TenDB的权限
 |Tdbctl|TSpider, TenDB|ALL PRIVILEGES WITH GRANT OPTION| Tdbctl需要连接TSpider，TenDB节点分发DDL操作|
 |TenDB|N/A|N/A|N/A|
 
