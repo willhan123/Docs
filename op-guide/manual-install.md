@@ -47,7 +47,7 @@ socket=/home/mysql/mysqldata/20000/mysql.sock
 
 ### 创建目录
 ```bash
-#创建TenDB初始化时需要的目录
+#创建TenDB初始化时需要的目录,mysql用户
 mkdir /home/mysql/mysqldata/20000/data
 mkdir -p /home/mysql/mysqldata/20000/innodb/data
 mkdir -p /home/mysql/mysqldata/20000/innodb/log
@@ -62,7 +62,7 @@ cd /usr/local
 #解压介质
 tar xzvf  mysql-5.7.20-linux-x86_64-tmysql-3.1.5-gcs.tar.gz
 ln -s mysql-5.7.20-linux-x86_64-tmysql-3.1.5-gcs mysql
-chown -R mysql mysql-5.7.20-linux-x86_64-tmysql-3.1.5-gcs
+chown -R mysql mysql mysql-5.7.20-linux-x86_64-tmysql-3.1.5-gcs
 # 初始化mysql
 cd /usr/local/mysql && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.20000 --initialize-insecure --user=mysql
 # 启动mysql
@@ -138,6 +138,7 @@ socket=/home/mysql/mysqldata/25000/mysql.sock
 
 ### 创建目录
 ```
+#mysql用户
 mkdir -p /home/mysql/mysqldata/25000/data
 mkdir -p /home/mysql/mysqldata/25000/innodb/data
 mkdir -p /home/mysql/mysqldata/25000/innodb/log
@@ -155,7 +156,7 @@ cd /usr/local
 #解压软链介质
 tar xzvf  mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs.tar.gz
 ln -s mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs tspider
-chown -R tspider mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs
+chown -R mysql tspider mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs
 # 初始化TSpider
 cd /usr/local/tspider && ./scripts/mysql_install_db --defaults-file=/home/mysql/my.cnf.25000
 # 启动TSpider
@@ -219,6 +220,7 @@ MGR通信的端口，不能与实例运行的socket端口冲突，例如本实�
 
 ### 创建目录
 ```bash
+#mysql用户
 mkdir -p /home/mysql/mysqldata/26000/data
 mkdir -p /home/mysql/mysqldata/26000/binlog
 mkdir -p /home/mysql/mysqldata/26000/relay-log
@@ -232,7 +234,7 @@ cd /usr/local
 #解压软链介质
 tar xzvf  tdbctl-1.4-linux-x86_64.tar.gz
 ln -s tdbctl-1.4-linux-x86_64 tdbctl
-chown -R tspider mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs
+chown -R mysql tdbctl tdbctl-1.4-linux-x86_64
 # 初始化Tdbctl
 cd /usr/local/tdbctl && ./bin/mysqld --defaults-file=/home/mysql/my.cnf.26000 --initialize-insecure --user=mysql
 # 启动Tdbctl
