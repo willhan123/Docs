@@ -60,18 +60,18 @@ nohup make -j > mk.log 2>&1  && make package > mp.log 2>&1 &
 ### 环境要求
 - 主流Linux系统，具体见[操作系统要求](https://www.mysql.com/support/supportedplatforms/database.html)
 - CMAKE 2.8.2+
-- GCC 4.4+
+- GCC 4.9.2+
 - bison
 - boost 1.59
 - jemalloc
 
 ### 编译
-下面以tdbctl-1.4版本，gcc 4.7.3版本为例
+下面以tdbctl-1.4版本，gcc 5.5版本为例
 ```bash
 # 进入源码目录
 mkdir bld
 cd bld
-export gccdir=/usr/local/gcc-4.7.3
+export gccdir=/usr/local/gcc-5.5.0
 # configure
 cmake .. -DDOWNLOAD_BOOST=1 -DMYSQL_SERVER_SUFFIX=1.4 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DCMAKE_C_COMPILER=$gccdir/bin/gcc -DCMAKE_CXX_COMPILER=$gccdir/bin/g++ -DCMAKE_CXX_FLAGS="-static-libgcc -static-libstdc++" -DCMAKE_C_FLAGS="-static-libgcc" -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF  -DWITH_QUERY_RESPONSE_TIME=on
 #编译，打包
