@@ -1,6 +1,6 @@
 
 #Big data scenarios
-The ability of transparent sharding and dynamic scalability makes TenDB Cluster ideal for big data scenarios, especially for below:
+The ability of transparent sharding and online scalability makes TenDB Cluster ideal for big data scenarios, especially for below:
 Huge amount of data (50T+)
 Number of reads overwhelms the number of writes
 Scattered reads takes a large portion among the overall reads
@@ -15,8 +15,8 @@ All data in old shards must be re-organized to change the number of shards, whic
 In a big data cluster, below tips are advised:
 By default, the first column of primary key/unique key will be used as a shard key, if no primary key nor unique key is defined, you must designate a shard key explicitly.
 When designating a shard key, it's suggested that the distribution of mod(hash(shard key)) should be even. Otherwise a skewed data distribution may lead to hot spots or bottleneck on part of the shards.
-Use merged write when you write your data.
-Use shard key in your query if possible.
+Use merged write when writing your data.
+Use shard key on the right of == in your query if possible.
 Avoid retrieving large amounts of data directly from Tspider node, which may lead to an OOM issue.
 Avoid requests with a heavy calculation workload.
 Avoid join query that retrieves large amounts of data.
@@ -27,4 +27,4 @@ Compress your data. Big data compress feature of TenDB is suggested. Or you can 
 Use physical backup to backup your data.
 If old data need to be deleted periodically, It's suggested to use partitioned tables in your storage instance.
 When dropping a partition, you can use the hard link trick to avoid influence on your IO performance.
-For non-SSD disks, queries that generate scatted IO should be avoided if possible, such as (二级索引反查) or write to a heap table.
+For non-SSD disks, queries that generate scatted IO should be avoided if possible, such as (#二级索引反查) or write to a heap table.
