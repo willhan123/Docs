@@ -1,5 +1,4 @@
-
-#Big data scenarios
+### **Big data scenarios**
 The ability of transparent sharding and online scalability makes TenDB Cluster ideal for big data scenarios, especially for below:
 Huge amount of data (50T+)
 Number of reads overwhelms the number of writes
