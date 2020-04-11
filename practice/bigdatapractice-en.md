@@ -4,8 +4,9 @@ The ability of transparent sharding and online scalability makes TenDB Cluster i
 - Number of reads overwhelms the number of writes
 - Scattered reads takes a large portion among the overall reads
 - Complexed calculations take a small portion
-- Data may need to be rotated periodically
-- For TenDB Clusters with a large amount of data, It's important to avoid excessive calculation load on TSpider layer and to avoid heavy IO load on TenDB storage layer. Best practices will be advised in this manual for clusters with large data amounts.
+- Data are to be expired and deleted periodically
+
+For TenDB Clusters with a large amount of data, It's important to avoid excessive calculation load on TSpider layer and to avoid heavy IO load on TenDB storage layer. Best practices will be advised in this manual for clusters with large data amounts.
 
 ### **Sharding number**
 All data in old shards must be re-organized to change the number of shards, which could make a heavy workload to the system. So it's crucial to choose a proper sharding number. Usually it's suggested to shard your data with 1.5 times to 2 times of your expected data amount. To make it easier to scale up or scale down the cluster, It's suggested to use a sharding number with more submultiples, such as 48, 64, or 72.
