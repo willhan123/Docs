@@ -33,7 +33,7 @@ Below tips are advised when manage TSpider instances:
 1. Setting common parameters, see the next section: Setting parameters for TSpider
 2. When retrieving a large amount of data, or even the entire database, It's suggested to use temporary TSpider nodes to serve the request.
 
-## **Setting parameters for TSpider **
+## **Setting parameters for TSpider**
 
 ### spider_quick_mode
 > This parameter specifies where to cache data retrieved from backends, RemoteDB or local buffer.
@@ -62,7 +62,7 @@ And spider_max_connections * <TSpider count> should be less than the max_connect
 
 For more suggestions on TSpider parameter setting, see [TSpider parameters](./../re-book/tspider-parameter-en.md)
 
-## **存储实力管理**
+## **Storage instance management**
 Below tips are advised when manage TenDB storage instance:
 1. Use SSD/NVME disk to avoid I/O bottleneck.
 2. Use Binlog of ROW mode.
