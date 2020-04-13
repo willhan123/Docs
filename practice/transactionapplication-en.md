@@ -22,7 +22,7 @@ See [SQL reference](../re-book/new-grammar-en.md#write_lock)
 
 Issue below commands:
 ```
-update mysql.server;
+update mysql.servers;
 flush table with write lock;
 flush privileges;
 unlock tables;

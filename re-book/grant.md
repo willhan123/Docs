@@ -5,7 +5,7 @@
 >ddl_execute_by_ctl=0  
 在TSpider节点执行grant语句，仅对当前节点授权，用法和普通MySQL无差别  
 ddl_execute_by_ctl=1    
-存在中控节点，且参数打开。在TSpider节点执行grant语句，是集群对业务的授权。TSpider会转授权语句转发到Tdbctl，再由Tdbctl对所有TSpider授权。
+存在中控节点，且参数打开。在TSpider节点执行grant语句，是对所有TSpider节点的授权。TSpider会将授权语句转发到Tdbctl，再由Tdbctl对所有TSpider授权。
 
 
 ## FLUSH PRIVILEGES

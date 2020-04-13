@@ -1,21 +1,18 @@
 # TenDB Cluster DDL
 
+TSpider supports range, hash, list sharding algorithm just like ordinary partitioned tables. TSpider expands comment field of the partition column, so as to specify the server name, database name, table name of the TenDB node. And TSpider will get TenDB's IP, PORT from mysql.servers  according to server name;  
+When ddl_execute_by_ctl=ON, the ddl on TSpider will be routed to Tdbctl, the Tdbctl will do ddl to all TSpider and TenDB, which means Cluster DDL operating.      
+When ddl_execute_by_ctl=OFF, the ddl on TSpider will not be  routed to Tdbctl, user should do ddl on TSpider and TenDB respectively.  
 
-TSpider跟普通分区表一样支持范围/hash/列表分区，TSpider扩展了partition子句的comment字段，可指定分区后端TenDB的地址(server标识)及库表名。server字段会读取表mysql.servers中的后端TenDB ip地址和port等信息。  
-当ddl_execute_by_ctl=ON的时候，开发者在TSpider节点上使用的DDL会路由给Tdbctl，由Tdbctl对集群中的TSpider+TenDB节点进行统一变更处理。  
-当ddl_execute_by_ctl=OFF的时候,中控节点不会对DDL进行转发，需要分别在TSpider和后端TenDB上执行ddl操作。
+# 1. TenDB Cluster With Tdbctl
 
-
-
-# 一. 开启Tdbctl
-
-当ddl_execute_by_ctl=ON时，由Tdbctl对集群中的TSpider+TenDB节点进行统一变更处理。  
-需要注意的的是默认在：`performance_schema,information_schema,mysql,test,db_infobase` 这些库下的ddl操作，不会转发到后端TenDB。 
+when dl_execute_by_ctl=ON, Tdbctl is responsible for Cluster DDL operating.    
+It should be noted : on default config, ddl on the databases, such as `performance_schema,information_schema,mysql,test,db_infobase`, will not be routed to  TSpider  and TenDB.
 
 <a id="jump1"></a>
 
-## 1. create table
-用户可以通过普通MySQL一样的方式来建表，但会建出不一样的表。例如，用户建一个InnoDB表，建表SQL如下：
+## 1. Create table
+User can create table like standard MySQL,  but the created table is different from standard MySQL. For example, user create a innodb table, the SQL as follows:
 ```
 MariaDB [tendb_test]>  create table t1(
     ->     c int primary key)
@@ -23,8 +20,7 @@ MariaDB [tendb_test]>  create table t1(
 Query OK, 0 rows affected (0.05 sec)
 ```
 
-
-上述建表SQL会转发到中控节点Tdbctl，再由Tdbctl分发各个接入层TSpider节点和各个存储节点TenDB。在用户得到建表成功的反馈后， 执行`show create table`展示如下：
+The above SQL on TSpider will be routed to Tdbctl, the Tdbctl will do ddl to all TSpider and TenDB. After create table succeed, execute `show create table` in TSpider node, will get result:  
 ```
 MariaDB [tendb_test]> show create table t1\G;
 *************************** 1. row ***************************
@@ -40,7 +36,7 @@ PARTITION `pt2` VALUES IN (2) COMMENT = 'database "tendb_test_2", table "t1", se
 PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", server "SPT3"' ENGINE = SPIDER)
 ```
 
-此时，各存储实例TenDB分别有库tendb_test_0、tendb_test_1、tendb_test_2、tendb_test_3，每个库下都有一个t1表。
+Now, every TenDB node has schema `tendb_test_0、tendb_test_1、tendb_test_2、tendb_test_3` , and table `t1` in every above schema.
 
 
 ```
@@ -54,23 +50,23 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-分析TSpider侧表结构可以看出:  
-TSpider会按照表分区键来进行数据切片，如4个存储节点的集群，分片算法是crc32(primary_key) % 4；其中crc32是TSpider额外支持的，是为了保证int/char都可以进行求模，并均衡打散数据；  
-字段 `c` 被选为TSpider分区键；  
-那么TSpider是如何选取分区键以及用户该怎么显示指定分区键呢？
+
+Analyse the table structure in TSpider:  
+1. TSpider will shard table according to shard_key. For example a cluster with 4 TenDB node, the sharding algorithm is `crc32(primary_key) % 4`. And `crc32` is supported by TSpider which make sure distribute data evenly;  
+2. column `c` is specified as shard_key;  
+3. So how does TSpider select the shard_key and how should the user specify the shard_key?
 
 
-### 1.1 shard_key
+### 1.1 Shard_key
 
-对于指定shard_key的SQL，TSpider会根据分区规则，提高请求性能，只会路由到指定的分片执行。<font color="#dd0000">因此用户对shard_key的选取要十分谨慎。</font>   
-下面来讲解TSpider的默认分区规则，以及用户该如何显示指定shard_key。
-
+For the SQL specified with shard_key, SQL will only be routed to the specified shard  according to the sharding rules, which can improve the request performance. <font color="#dd0000">
+Therefore, users should be very careful in choosing shard_key.</font>   
+The below tips explain the default sharding rules of TSpider and how to specify shard_key.
 <a id="shard_key"></a>
 
-####  不指定shard_key
+####  Without specified shard_key
 
-##### 如果只有一个唯一键（含主键),不指定shard_key, 默认会用唯一键的第一个字段作为分区key
-
+##### If there is only one unique key (including primary key), without specified shard_key, the first column of the unique key will be used as the shard_key by default
 ```
 MariaDB [tendb_test]> create table  t1(
     ->      inf_id  int(11)  auto_increment    not  null,
@@ -101,8 +97,7 @@ Create Table: CREATE TABLE `t1` (
 
 
 
-##### 如果只有一个普通索引,不指定shard_key, 默认会用索引的第一个字段作为分区key
- 
+##### If there is only one common index and without specified shard_key, the first column of the index will be used as the shard_key by default. 
 ```
 MariaDB [tendb_test]> create table  t1(
     ->     inf_id  int(11)  auto_increment    not  null,
@@ -131,7 +126,8 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-##### 如果有多个唯一键,不指定shard_key, 默认会用唯一键的第一个字段作为分区key。但需保证分区key是每个唯一键的第一个字段，否则无法建表。
+
+##### If there are multiple unique keys, without specified shard_key, the first column of the unique key will be used as the shard_key by default. But user need to ensure that the shard_key is the first column of each unique key, otherwise the table cannot be created.
 ```
 MariaDB [tendb_test]> create table t1(c1 int primary key,c2 int,unique key t(c1,c2));
 Query OK, 0 rows affected (0.05 sec)
@@ -163,10 +159,10 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12021, Detail Error Messa
 ```
 
 
-####  指定shard_key
+####  With specified shard_key
 
 
-##### shard_key必须是索引的一部分 
+##### Shard_key must be part of the index 
 
 ```
 MariaDB [tendb_test]> create table t1(
@@ -198,7 +194,7 @@ Create Table: CREATE TABLE `t1` (
 
 
 
-##### 如果多个唯一健（含主键),shard_key只能是其中的共同部分；否则无法建表
+##### If there are multiple unique keys (including the primary key), shard_key can only be the common part; otherwise, the table cannot be created
 ```
 MariaDB [tendb_test]>     create table t1 (
     ->         id int unsigned not null auto_increment, 
@@ -234,8 +230,7 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 
-##### 如果多个普通索引，则必须指定shard_key
-
+##### If there are multiple common indexes, user must specify shard_key
 ```
 MariaDB [tendb_test]> create table t1 (
     ->     id int unsigned not null auto_increment, 
@@ -275,24 +270,23 @@ Create Table: CREATE TABLE `t1` (
 
 
 
-### 1.2  建表约束
+### 1.2  Constraint of create table
 
-
-#### 不支持空间类型 GEOMETRY
+#### Not support GEOMETRY
 ```
 MariaDB [tendb_test]> create table if not exists t1(a int not null primary key, b geometry not null, d int ) engine=innodb;
 ERROR 4151 (HY000): Failed to execute ddl, Error code: 12027, Detail Error Messages: DETAIL ERROR INFO: 
 Spider Node Error:
 ```
 
-#### 不支持临时表
+#### Not support temporary table
 ```
 MariaDB [tendb_test]> create temporary table t1 (c int primary key, a char(1) ) engine=innodb;
 ERROR 4149 (HY000): SQL TYPE: CRREATE TEMPORARY TABLE ,can not be supported when set ddl_execute_by_ctl
 ```
 
 
-#### 不支持CREATE TABLE ... SELECT
+#### Not support `CREATE TABLE ... SELECT`
 
 ```
 MariaDB [tendb_test]>  create table if not exists t2(a int not null, b int, primary key(a)) engine=innodb;
@@ -300,7 +294,7 @@ MariaDB [tendb_test]>  create table if not exists t4(a int not null, b int, prim
 ERROR 4148 (HY000): SQL TYPE: CRREATE TABLE ... SELECT ,can not be supported when set ddl_execute_by_ctl
 ```
 
-#### 不支持blob列作为主键
+#### Not support blob columns as primary key
 ```
 CREATE TABLE bug58912 (a BLOB, b TEXT, PRIMARY KEY(a(1))) ENGINE=InnoDB;
 
@@ -309,7 +303,7 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12027, Detail Error Messa
 ```
 
 
-#### 不支持外键
+#### Not support Foreign key
 ```
 CREATE TABLE users (
  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -328,16 +322,15 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12021, Detail Error Messa
 ```
 
 
-## 2. alter table
+## 2. Alter table
 
-ALTER TABLE 语句用于对已有表进行修改，以符合新表结构。ALTER TABLE 语句可用于：
+`ALTER TABLE` statement is used to modify existing tables to new table structure which can be used to:
 ```
-ADD，DROP，或 RENAME 索引
-ADD，DROP，MODIFY 或 CHANGE 列
+ADD，DROP or  RENAME index
+ADD，DROP，MODIFY or CHANGE column
 ```
 
-<font color="#dd0000">需要注意的是，在TSpider侧，alter table 禁止修改分区键规则</font>   
-
+<font color="#dd0000">It should be noted that on the TSpider node, it is prohibited to modify the sharding rules when alter table</font> 
 ```
 MariaDB [tendb_test]> create table t1(c1 int , c2 int,primary key id(c1,c2));
 Query OK, 0 rows affected (0.04 sec)
@@ -366,7 +359,7 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12023, Detail Error Messa
 
 
 ### 2.1 ADD COLUMN
-ALTER TABLE.. ADD COLUMN 语句用于在已有表中添加列。
+`ALTER TABLE.. ADD COLUMN` statement is used to add columns to an existing table.
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT);
 MariaDB [tendb_test]> INSERT INTO t1 VALUES (NULL);
@@ -396,7 +389,7 @@ MariaDB [tendb_test]> SELECT * FROM t1;
 
 
 ### 2.2 DROP COLUMN
-DROP COLUMN 语句用于从指定的表中删除列。
+`DROP COLUMN` statement is used to delete columns from the specified table.
 
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, col1 INT NOT NULL, col2 INT NOT NULL);
@@ -428,7 +421,7 @@ MariaDB [tendb_test]> SELECT * FROM t1;
 ```
 
 
-<font color="#dd0000">注意：不能drop分区键</font>   
+<font color="#dd0000">Note:  cannot drop the shard_key</font>   
 ```
 MariaDB [tendb_test]> create table t1(c1 int , c2 int,primary key id(c1,c2));
 Query OK, 0 rows affected (0.04 sec)
@@ -456,7 +449,7 @@ Spider Node Error:
 ```
 
 ###  2.3 ADD INDEX
-ALTER TABLE.. ADD INDEX 语句用于在已有表中添加一个索引。
+`ALTER TABLE .. ADD INDEX` statement is used to add  index to an existing table.
 
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -495,8 +488,7 @@ CREATE TABLE `t1` (
 
 
 ### 2.4 DROP INDEX
-DROP INDEX 语句用于从指定的表中删除索引。
-
+`DROP INDEX` statement is used to delete the index from the specified table.
 
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -535,8 +527,7 @@ CREATE TABLE `t1` (
 
 
 ### 2.5 MODIFY COLUMN
-ALTER TABLE .. MODIFY COLUMN 语句用于修改已有表上的列，包括列的数据类型和属性
-
+`ALTER TABLE .. MODIFY COLUMN` statement is used to modify the columns on the existing table, including the column data type and attribute
 ```
 MariaDB [tendb_test]>CREATE TABLE t1 (id int not null primary key AUTO_INCREMENT, col1 INT);
 MariaDB [tendb_test]>show create table  t1;
@@ -576,9 +567,7 @@ PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", se
 
 
 ## 3. ALTER DATABASE
-
-ALTER DATABASE 用于修改指定或当前数据库的默认字符集和排序规则。ALTER SCHEMA 跟 ALTER DATABASE 操作效果一样。
-
+`ALTER DATABASE` is used to modify the default character set and collation of the specified or current database. `ALTER SCHEMA` has the same effect as `ALTER DATABASE`.
 
 ```
 MariaDB [tendb_test]> ALTER DATABASE  tendb_test CHARACTER SET  utf8;
@@ -597,8 +586,8 @@ MariaDB [tendb_test]> SHOW CREATE DATABASE  tendb_test;
 
 
 ## 4. CREATE TABLE LIKE
-CREATE TABLE LIKE 语句用于复制已有表的定义，但不复制任何数据。执行此SQL，TSpider会处理相应分片信息。
 
+`CREATE TABLE LIKE` statement is used to copy the definition of an existing table, but does not copy any data. When execute this SQL, TSpider will process the comment of the corresponded partition.
 ```
 MariaDB [tendb_test]>create table t1(c int primary key);
 MariaDB [tendb_test]>show create table t1\G;
@@ -635,14 +624,13 @@ PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t2", se
 
 
 
-#  二. 不开启Tdbctl
-
-当ddl_execute_by_ctl=OFF时，允许使用truncate table,但是ddl语句不会传给后端，需要分别在TSpider和TenDB上执行ddl语句。
+#  2. TenDB Cluster Without Tdbctl
 
 
-## 1. create table 
+When ddl_execute_by_ctl=OFF, `truncate table` is allowed, but ddl will not be routed to the TenDB node, and the ddl needs to be executed on TSpider and TenDB respectively.
 
-在TSpider侧建表：
+## 1. Create table 
+Create table  on TSpider node ：  
 
 ```
  MariaDB [tendb_test]> CREATE TABLE `t1` (
@@ -656,7 +644,7 @@ PARTITION `pt2` VALUES IN (2) COMMENT = 'database "tendb_test_2", table "t1", se
 PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", server "SPT3"' ENGINE = SPIDER)
 ```
 
-在TenDB侧建表
+Create table  on TenDB node ：  
 ```
 mysql> create table tendb_test_0.t1(c int primary key);
 mysql> create table tendb_test_1.t1(c int primary key);
@@ -667,9 +655,8 @@ mysql> create table tendb_test_3.t1(c int primary key);
 
 
 
-##  2. create table like 
-在TSpider节点上执行create table like时，忽略每个分区中comment信息。 避免TSpider使用create table like后的误操作。
-
+##  2. Create table like 
+ When execute `create table like` on the TSpider node, the comment information in each partition is ignored, so as to avoid misuse on TSpider node.
 
 ```
 MariaDB [tendb_test]>create table t2 like t1;
