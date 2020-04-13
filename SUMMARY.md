@@ -1,4 +1,4 @@
-# Summary
+# 目录 [English Manual](SUMMARY-en.md)
 
 * [Introduction](README.md)
 * 主要概念
