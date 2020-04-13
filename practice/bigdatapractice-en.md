@@ -27,4 +27,4 @@ In a big data cluster, bottlenecks usually lie on the storage layer. Below pract
 2. Use physical backup to backup your data.
 3. If old data need to be deleted periodically, It's suggested to use partitioned tables in storage instance.
 4. When dropping a partition, you can use the hard link trick to avoid influence on I/O performance.
-5. For non-SSD disks, queries that generate scatted IO should be avoided if possible, such as (#二级索引反查) or write to a heap table.
+5. For non-SSD disks, queries that generate scatted IO should be avoided if possible, such as additional PK lookup caused by non-covering secondary index or write to a heap table.
