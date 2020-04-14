@@ -20,7 +20,9 @@ MySQL glossary: https://dev.mysql.com/doc/refman/8.0/en/glossary.html
 |集群变更 | Cluster DDL operating     
 |分库分表 | database/table sharding   
 |在线扩缩容 | online scaling   
-|故障切换 | failover    
+|故障切换 | failover
+|主备故障切换 | master-slave failover    
+|切换（非故障） |switchover 
 |高可用 | high-availability (HA)
 | 集群创建 | Cluster Installation
 | 权限管理 | Account management
@@ -34,8 +36,7 @@ MySQL glossary: https://dev.mysql.com/doc/refman/8.0/en/glossary.html
 | 普通应用场景 | General Scenarios
 | 参数说明 | Variables Reference
 | 数据迁移 | Data Migration
-| 权限管理 | Account Management
-
+| 路由规则 | sharding rules
 
 
 

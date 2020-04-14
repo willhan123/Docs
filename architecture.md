@@ -21,7 +21,7 @@ Tdbctl的主要作用是集群路由配置管理、集群变更、集群切换�
 集群路由配置管理，是指维护TSpider到TenDB的路由指向，并保证路由配置的可用性和唯一性。   
 集群变更，是业务在TSpider执行的DDL会由TSpider转发到Tdbctl，在Tdbctl进行SQL改写后分别分发到TSpider/TenDB各节点执行。   
 集群监控，是Tdbctl会监控TenDB Cluster整个集群的权限、路由、表结构及可用性等。   
-Tdbctl是一个在MySQL基础上精减并改写的工具，因此在部署上我们使用3个及以上的Tdbctl节点，搭建成一个MGR集群，从而保证中控节点的高可用及路由配置的强一致。   
+Tdbctl是一个在MySQL基础上开发的工具，支持MySQL的MGR特性。因此在部署上我们使用3个及以上的Tdbctl节点，搭建成一个MGR集群，从而保证中控节点的高可用及路由配置的强一致。   
 ## TenDB Cluster Operator
 TenDB Cluster Operator提供在主流云基础设施（Kubernetes）上部署管理 TenDB Cluster集群的能力。它利用Kubernetes的容器编排能力和TenDB Cluster的集群管理能力，集成了一键部署、一键扩缩、故障切换、故障自愈等能力，极大的降低了用户管理和使用TenDB Cluster的成本。
 
