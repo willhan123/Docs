@@ -2,7 +2,7 @@
 The ability of transparent sharding and online scalability makes TenDB Cluster ideal for big data scenarios, especially for below:
 - Huge amount of data (50T+)
 - Number of reads overwhelms the number of writes
-- Scattered reads takes a large portion among the overall reads
+- Point select(select with shard key present in where clause) takes a large portion among the overall selects
 - Complexed calculations take a small portion
 - Data are to be expired and deleted periodically
 
