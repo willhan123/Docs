@@ -13,7 +13,7 @@ Below parameters should be considered when using transactions:
 3. To avoid the autocommit=0 option in the application framework, which may lead to unexpected behavior, parameter  [SPIDER_IGNORE_AUTOCOMMIT](../re-book/tspider-parameter-en.md/#SPIDER_IGNORE_AUTOCOMMIT) can be enabled.
 4. To avoid performance overhead, disable [SPIDER_WITH_BEGIN_COMMIT](../re-book/tspider-parameter-en.md/#SPIDER_WITH_BEGIN_COMMIT). Performance benefits can be gained by not issuing begin/commit to remote TSpider for non-explicit transactions.
 
-## Handling hanging transactions
+## Handling suspended transactions
 See [Distributed transactions](../re-book/mysql-compatibility-en.md#jump253)
 
 

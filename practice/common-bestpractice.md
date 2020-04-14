@@ -31,7 +31,7 @@
 
 ## **TSpider实例管理**
 对于TSpider实例的管理，有如下建议：
-1. 常见参数设置，参考下节:TSpider常用参数设置说明。
+1. 常见参数设置，参考下节:[TSpider常用参数设置说明](../re-book/tspider-parameter.md)
 2. 如果应用有拉取大量数据以及类似合服类的需求，建议增加临时TSpider节点来支持。
 
 

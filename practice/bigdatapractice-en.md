@@ -11,11 +11,11 @@ For TenDB Clusters with a large amount of data, It's important to avoid excessiv
 ### **Sharding number**
 All data in old shards must be re-organized to change the number of shards, which could make a heavy workload to the system. So it's crucial to choose a proper sharding number. Usually it's suggested to shard your data with 1.5 times to 2 times of expected data amount. To make it easier to scale up or scale down the cluster, It's suggested to use a sharding number with more submultiples, such as 48, 64, or 72.
 
-### **Table design and workload**
+### **Table design and manipulation**
 In a big data cluster, below tips are advised:
 1. By default, the first column of primary key/unique key will be used as a shard_key, if no primary key nor unique key is defined, you must designate a shard_key explicitly.
 2. When designating a shard_key, it's suggested that the distribution of mod(hash(shard_key)) should be even. Otherwise a skewed data distribution may lead to hot spots or bottleneck on part of the shards.
-3. Use merged write when writing data.
+3. Use multiple-row INSERT when writing data.
 4. Use shard_key on the right of == in query if possible.
 5. Avoid retrieving large amounts of data directly from Tspider node, which may lead to an OOM issue.
 6. Avoid requests with a heavy calculation workload.

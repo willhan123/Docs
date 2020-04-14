@@ -37,6 +37,9 @@ MySQL glossary: https://dev.mysql.com/doc/refman/8.0/en/glossary.html
 | 参数说明 | Variables Reference
 | 数据迁移 | Data Migration
 | 路由规则 | sharding rules
+| 批量写 | batch insert 
+| 批量更新 | batch update
+| 合并写 | multiple-row INSERT
 
 
 

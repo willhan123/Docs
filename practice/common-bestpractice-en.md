@@ -1,7 +1,7 @@
-# General guidelines
-Due to the ability to be compatible with MySQL protocol, making transparent partitions on both database or table level, and online scale up and scale down, TenDB cluster is suitable for most scenarios where MySQL is applicable whereas a shared layout is more adequate to handle large amount of data or requests.
+# General scenarios
+Due to the ability to be compatible with MySQL protocol, transparent database/table sharding, online scaling, TenDB cluster is suitable for most scenarios where MySQL is applicable whereas a shared layout is more adequate to handle large amount of data or requests.
 
-This document summarizes best practices on common tasks when using TenDB cluster, including table creation, SQL query, and instance management.
+This document summarizes best practices on general scenarios when using TenDB cluster, including table creation, SQL query, and instance management.
 
 ## **Create database or table**
 Below tips are advised when creating database or table on TenDB cluster:
@@ -18,19 +18,19 @@ Below tips are advised when creating database or table on TenDB cluster:
 
 ## **SQL requests**
 Below tips are advised when make requests to TenDB cluster:
-1. Use shard key on the right of == in your query, If not possible, it's suggested to create an index, and to throttle frequency of requests, massive scans that across partitions should be avoided if possible.
+1. Use shard key on the right of == in your query, if not possible, it's suggested to create an index, and to throttle frequency of requests, massive scans that across partitions should be avoided if possible.
 2. Avoid batch deletion.
 3. Avoid retrieving large amounts of data from TSpider node, which may lead to memory usage surge in TSpider node or even an OOM failure.
 4. Avoid aggregation queries(such as group by, etc.) of high frequency.
 5. Use straight_join to designate driving table when using join.
 6. Avoid to retrieve data in order by x limit m, n style.
-7. If data are to be retrieved frequently, such as configuration data, It's suggested to use a cache in the front layer to reduce the workload on database.
+7. If data are to be retrieved frequently, such as configuration data, it's suggested to use a cache in the front layer to reduce the workload on database.
 8. If business logic makes random limit n requests, SPIDER_RONE_SHARD switch could be turned on, when enabled, requests like select SPIDER_RONE_SHARD * from t limit n will be routered randomly to one of the backend shards.
 
  
 ## **TSpider instance management**
 Below tips are advised when manage TSpider instances:
-1. Setting common parameters, see the next section: Setting parameters for TSpider
+1. Setting common parameters, see the next section: [Setting parameters for TSpider](../re-book/tspider-parameter.md)
 2. When retrieving a large amount of data, or even the entire database, It's suggested to use temporary TSpider nodes to serve the request.
 
 ## **Setting parameters for TSpider**
