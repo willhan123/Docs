@@ -6,6 +6,7 @@ A TenDB Cluster is made up of multiple proxy layer TSpiders, and data layer TenD
 Although the spider engine used by TSpider is a MySQL engine, and is able to support most of the standard MySQL commands, there are several unsupported commands. Some features may differ to MySQL.
 
 The differences are summarized in the below table:
+
 |    | MySQL   | Tendb Cluster   |
 |:----|:----|:----|
 | Multiple unique keys   | Supported   | Unsupported   |
