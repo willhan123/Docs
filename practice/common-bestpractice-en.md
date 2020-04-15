@@ -1,9 +1,9 @@
-# General scenarios
+# General Scenarios
 Due to the ability to be compatible with MySQL protocol, transparent database/table sharding, online scaling, TenDB cluster is suitable for most scenarios where MySQL is applicable whereas a shared layout is more adequate to handle large amount of data or requests.
 
 This document summarizes best practices on general scenarios when using TenDB cluster, including table creation, SQL query, and instance management.
 
-## **Create database or table**
+## **Create Database or Table**
 Below tips are advised when creating database or table on TenDB cluster:
 1. Use the same character set for columns to the table when creating a table on TSpider.
 2. When creating a table on TSpider, by default the first column of primary key/unique key will be used as shard_key; if no primary key nor unique key is present, a shard key should be designated explicitly.
@@ -16,7 +16,7 @@ Below tips are advised when creating database or table on TenDB cluster:
 9. Store hot and cold data separately when designing a table.
 10. Store log data and data subject to change in separate storage, Such as different databases or clusters.
 
-## **SQL requests**
+## **SQL Requests**
 Below tips are advised when make requests to TenDB cluster:
 1. Use shard key on the right of == in your query, if not possible, it's suggested to create an index, and to throttle frequency of requests, massive scans that across partitions should be avoided if possible.
 2. Avoid batch deletion.
@@ -28,12 +28,12 @@ Below tips are advised when make requests to TenDB cluster:
 8. If business logic makes random limit n requests, SPIDER_RONE_SHARD switch could be turned on, when enabled, requests like select SPIDER_RONE_SHARD * from t limit n will be routered randomly to one of the backend shards.
 
  
-## **TSpider instance management**
+## **TSpider Instance Management**
 Below tips are advised when manage TSpider instances:
 1. Setting common parameters, see the next section: [Setting parameters for TSpider](../re-book/tspider-parameter.md)
 2. When retrieving a large amount of data, or even the entire database, It's suggested to use temporary TSpider nodes to serve the request.
 
-## **Setting parameters for TSpider**
+## **Setting Parameters for TSpider**
 
 ### spider_quick_mode
 > This parameter specifies where to cache data retrieved from backends, RemoteDB or local buffer.
@@ -62,13 +62,13 @@ And spider_max_connections * <TSpider count> should be less than the max_connect
 
 For more suggestions on TSpider parameter setting, see [TSpider parameters](./../re-book/tspider-parameter-en.md)
 
-## **Storage instance management**
+## **Storage Instance Management**
 Below tips are advised when manage TenDB storage instance:
 1. Use SSD/NVME disk to avoid I/O bottleneck.
 2. Use Binlog of ROW mode.
 3. Use a physical backup manner to back your data. It's suggested to switch upload Binlog to remote backup system, in every 5 minutes.
 4. When dropping a partition, use the hard link trick to avoid influence on I/O performance.
 
-## **Sharding number**
+## **Sharding Number**
 All data in old shards must be re-organized to change the number of shards, which could make a heavy workload to the system. So it's crucial to choose a proper sharding number. Usually it's suggested to shard your data with 1.5 times to 2 times of your expected data amount. To make it easier to scale up or scale down the cluster, It's suggested to use a sharding number with more submultiples, such as 12, 16 or 24.
 

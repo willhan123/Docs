@@ -84,6 +84,7 @@ Create Table: CREATE TABLE `t1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 1 row in set (0.00 sec)
 ```
+
 TenDB Cluster认为适当将一些细节暴露给用户，有助于用户理解集群内在逻辑，从而更合理有效的使用集群。
 
 #### ALTER TABLE
@@ -141,101 +142,10 @@ mysql> explain select * from t1 where c1=1;
 
 ### **事务**
 
-TenDB Cluster不支持XA事务，不支持Savepoint用法。   
-对于用户使用普通事务，出于性能考虑TenDB Cluster默认只支持单分片事务。仅当开启参数spider_internal_xa后，TSpider会将用户的普通事务转换为XA协议与各存储节点交互，从而保证分布式场景下的事务，其中参数spider_trans_rollback需要配合使用。下面进行详细说明。   
+TenDB Cluster支持事务（但不支持应用使用XA事务，不支持savepoint）。   
+默认配置下，接入层TSpider只有在接受到应用的显示事务请求，才会以`start transaction/commit`的显示事务方式与存储层TenDB进行交互，这样仅能保证单分片上的事务特性。 在要求数据强一致的场景下，可以通过启用参数`spider_internal_xa`让TSpider使用XA协议和存储层TenDB进行交互，从而保证分布式场景下的事务。   
 
-应用程序执行如下事务：
-```
-begin; 
-insert into t1(c1, c2) values(1, 2);
-update t2 set c2=3 where c1=2;
-commit;
-```
-TSpider对上述事务进行转换，使用XA协议与TenDB交互；对应SQL序列如下（表t1有两个分片，：
-```
-TenDB1: xa start xid;
-TenDB1: insert into rm1.t1(c1,c2) values(1,2); 
-TenDB2: xa start xid;
-TenDB2: update rm2.t2 set c2=3 where c1=2; 
-TenDB1: xa end xid; xa prepare xid; 
-TenDB2: xa end xid; xa prepare xid; 
-TenDB1: xa commit xid one phase with logs; 
-TenDB2: xa commit xid;
-```
-在应用开启事务后，执行的第一个请求(如上的insert)；TSpider会往后端发送xa start，并在路由到的节点执行insert； 后面每一个请求(如上的update)，TSpider都会往相关的TenDB节点发送请求； 应用发送commit/rollback，则TSpider使用xa end/xa prepare来预提交事务然后使用xa commit提交事务。
-
-<a id="jump251"></a>
-
-#### **xa commit xid one phase with logs**
-
-上述事务提交时，在TenDB1执行的提交语句是xa commit xid one phase with logs; 这个是TenDB实现的一个XA扩展功能。 该语句的作用是将xa事务提交，并将xid写入到本来的一个mysql.xa_commit_log中。   
-为什么需要记录这个xid的写入log呢 ？   
-因为XA事务在执行过程可能因为软硬件故障，导致存在xa prepare事务而不知道如何处理的情况；因此需要一个xa_commit_log作为参照，有写xa_commit_log的悬挂事务应该提交，没有写xa_commit_log的悬挂事务应该回滚。
-
-<a id="jump252"></a>
-
-#### **参数spider_trans_rollback**
-
-事务原子性定义如下：
-> 事务的原子性是指组成一个事务的多个数据库操作是一个不可分割的原子单元，只有所有的操作执行成功，整个事务才提交。事务中的任何一个数据库操作失败，已经执行的任何操作都必须被撤销，让数据库返回初始状态。
-
-但在MySQL InnoDB事务中，某个SQL执行出错，后面可以继续将执行成功的SQL的提交。
-```
-mysql> select * from t1;
-+----+------+
-| c1 | c2   |
-+----+------+
-|  1 | a    |
-|  2 | b    |
-|  3 | c    |
-+----+------+
-3 rows in set (0.00 sec)
-
-mysql> begin;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> insert into t1 values(4,'d');
-Query OK, 1 row affected (0.00 sec)
-
-mysql> update t1 set c2='aaa' where c3=1;
-ERROR 1054 (42S22): Unknown column 'c3' in 'where clause'
-mysql> commit;
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> select * from t1;
-+----+------+
-| c1 | c2   |
-+----+------+
-|  1 | a    |
-|  2 | b    |
-|  3 | c    |
-|  4 | d    |
-+----+------+
-4 rows in set (0.00 sec)
-```
-上述事务在TenDB Cluster中执行，同样是update语句执行出错；出错的原因会有很多种，但其中可能有一种是该update语句分发到后端某些分片执行成功且某些分片执行失败。   
-如果依照InnoDB的事务提交特点，后面的事务可以继续提交或者回滚，那么很可能导致某个语句（如上的update)部分成功。   
-因此如果严格遵循事务原子性，上述某个SQL执行失败后整个事务不能继续往下执行，直接回退。   
-参数*spider_trans_rollback*打开后，即事务中某个SQL请求失败则事务自动回滚；保证要么全部成功，要么全部失败。
-
-<a id="jump253"></a>
-
-#### **事务返回结果**
-
-TenDB Cluster定义应用层事务的3种返回结果，分别是：**成功**，**失败**，**超时**。   
-成功表示当前事务完全执行；   
-失败表示当前事务失败且未修改数据；  
-超时则表示当前事务可能成功也可能失败，需要业务主动确认。
-
-<a id="jump254"></a>
-
-#### **悬挂事务处理**
-
-TenDB中通过自己扩展的指令xa recover with time可以看到处于prepared状态的事务及该事务prepared状态持续的时间。   
-TenDB Cluster定义处于prepare状态超时30秒的视为需要干预的悬挂事务。悬挂事务需要提交或者回退。  
-在每个Tdbctl中会有一个后台线程探测当前集群中的TenDB是否存在PREPARED状态超过30秒的事务，然后去所有TenDB中查询该PREPARED状态事务的xid是否存在于提交日志xa_commit_log中，若存在于commit log则执行XA COMMIT xid，否则执行XA ROLLBACK xid。悬挂事务处理的流程图如下：
-
-![pic](../pic/xarecover.png)
+更多关于TenDB Cluster事务详细说明见章节 [事务](transaction.md)
 
 <a id="jump26"></a>
 

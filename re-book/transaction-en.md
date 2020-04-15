@@ -3,7 +3,7 @@
 <a id="usage"></a>
 
 TenDB Cluster supports transcations, but does not support XA transactions and savepoints.  
-With default configuration, the proxy layer (TSpider) only interacts with the storage layer (TenDB) using explicit transcations (starts with `start transaction` and ends with `commit`) when it receives the explicit transaction request from applications. Under this circumstance, only single shard is transactional.  
+With default configuration, the proxy layer (TSpider) only interacts with the data layer (TenDB) using explicit transcations (starts with `start transaction` and ends with `commit`) when it receives the explicit transaction request from applications. Under this circumstance, only single shard is transactional.  
 In the scenarios where strict consistency is required, the variable `spider_internal_xa` should be enabled, which can enable distributed transactions. 
  
 Details of transactions in TenDB Cluster are described blow.
@@ -18,9 +18,9 @@ begin/start transaction/set autocommit=0;
 dml;
 commit/rollback;
 ```
-If trasactions is not explicity specified in the applications, then TSpider will uses transactions implicitly. In addition, TSpider does not support the use of XA transactions in the application side, nor does it support savepoints.
+If trasaction is not explicity specified in the applications, then TSpider will use transactions implicitly. In addition, TSpider does not support the use of XA transactions in the application side, nor does it support savepoints.
 
-After receiving the transaction request from the application layer, TSpider will forward the transaction to the corresponding storage instance TenDB for execution. TSpider provides two types of transactions to interact with the storage instance (TenDB), namely *common transactions* and *distributed transactions*, which will be explained respectively below.
+After receiving the transaction request from the application layer, TSpider will forward the transaction to the corresponding data node(TenDB) for execution. TSpider provides two types of transactions to interact with the data node(TenDB), namely *common transactions* and *distributed transactions*, which will be explained respectively below.
 
 <a id="jump3"></a>
 
@@ -51,7 +51,7 @@ The request executed on TSpider is:
 ```sql 
 update t1 set c3=c3+1 where c2=1;
 ```
-The requests which TSpider distributed to storage instances are:
+The requests which TSpider distributed to data node are:
 ```sql 
 update `tendb_test_0`.`t1` set `c3` = (`c3` + 1) where (`c2` = 1)
 update `tendb_test_1`.`t1` set `c3` = (`c3` + 1) where (`c2` = 1)
@@ -161,7 +161,7 @@ mysql> select * from t1;
 +----+------+
 4 rows in set (0.00 sec)
 ```
-If the abvoe transaction is executed in TenDB Cluster, and the `update` query failed. It can be caused by the reason that, in the backend, execution were successful in some shards but also failed in some other shards. Under this circumstance, if we follow the InnoDB transactions' rules, where subsequent statements can be commited, then it is likely to cause certain statement (like the `update` above) to be partially successful.  
+If the above transaction is executed in TenDB Cluster, and the `update` query failed. It can be caused by the reason that, in the backend, execution were successful in some shards but also failed in some other shards. Under this circumstance, if we follow the InnoDB transactions' rules, where subsequent statements can be commited, then it is likely to cause certain statement (like the `update` above) to be partially successful.  
 
 Therefore, if the atomicity of the transaction is strictly followed, the entire transaction cannot continue to execute after one of the above SQL execution failures, and directly rolls back.
 

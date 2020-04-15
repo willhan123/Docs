@@ -1,4 +1,4 @@
-# Big data scenarios
+# Big Data Scenarios
 The ability of transparent sharding and online scalability makes TenDB Cluster ideal for big data scenarios, especially for below:
 - Huge amount of data (50T+)
 - Number of reads overwhelms the number of writes
@@ -8,10 +8,10 @@ The ability of transparent sharding and online scalability makes TenDB Cluster i
 
 For TenDB Clusters with a large amount of data, It's important to avoid excessive calculation load on TSpider layer and to avoid heavy IO load on TenDB storage layer. Best practices will be advised in this manual for clusters with large data amounts.
 
-### **Sharding number**
+### **Sharding Number**
 All data in old shards must be re-organized to change the number of shards, which could make a heavy workload to the system. So it's crucial to choose a proper sharding number. Usually it's suggested to shard your data with 1.5 times to 2 times of expected data amount. To make it easier to scale up or scale down the cluster, It's suggested to use a sharding number with more submultiples, such as 48, 64, or 72.
 
-### **Table design and manipulation**
+### **Table Design and Manipulation**
 In a big data cluster, below tips are advised:
 1. By default, the first column of primary key/unique key will be used as a shard_key, if no primary key nor unique key is defined, you must designate a shard_key explicitly.
 2. When designating a shard_key, it's suggested that the distribution of mod(hash(shard_key)) should be even. Otherwise a skewed data distribution may lead to hot spots or bottleneck on part of the shards.
@@ -21,7 +21,7 @@ In a big data cluster, below tips are advised:
 6. Avoid requests with a heavy calculation workload.
 7. Avoid join query that retrieves large amounts of data.
 
-### **Manage storage instance**
+### **Manage Storage Instance**
 In a big data cluster, bottlenecks usually lie on the storage layer. Below practices are suggested:
 1. Compress the data. Big data compress feature of TenDB is suggested. Or you can use TokuDB or other engines with high compress ratio.
 2. Use physical backup to backup your data.
