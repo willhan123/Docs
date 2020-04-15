@@ -40,7 +40,7 @@ MySQL glossary: https://dev.mysql.com/doc/refman/8.0/en/glossary.html
 | 批量写 | batch insert 
 | 批量更新 | batch update
 | 合并写 | multiple-row INSERT
-|全局非连续唯一|Globl non-continuous unique
+|全局非连续唯一|Global non-continuous unique
 |步长|step
 |访问控制|Access Control
 
