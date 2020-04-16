@@ -1,7 +1,7 @@
 # TenDB Cluster手工部署
 本章节描述如何在一个单机上部署TenDB Cluster集群
 下文将会部署一个2个TSpider节点，4个TenDB节点，3个Tdbctl节点(MGR方案)的集群
-<a id="manual-inastall"></a>
+<a id="manual-install"></a>
 ## 部署TenDB
 
 <a id="jump1"></a>
