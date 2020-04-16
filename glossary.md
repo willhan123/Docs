@@ -43,5 +43,5 @@ MySQL glossary: https://dev.mysql.com/doc/refman/8.0/en/glossary.html
 |全局非连续唯一|Global non-continuous unique
 |步长|step
 |访问控制|Access Control
-
-
+|分区键|shard_key
+|跨分片|Cross-shard

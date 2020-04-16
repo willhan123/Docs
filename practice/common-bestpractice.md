@@ -15,7 +15,7 @@
 7. Blob大字段类型，推荐使用压缩功能。
 8. 如果有数据过期或者清理需求，TenDB存储实例推荐使用分区表。
 9. 表设计时，建议将冷热数据分开独立存储。
-10. 状态类与日之类数据推荐分开存放，比如独立db或者独立集群部署。
+10. 状态类与日志类数据推荐分开存放，比如独立db或者独立集群部署。
 
 
 ## **SQL请求**
@@ -47,7 +47,7 @@
 ### spider_max_connections
 
 >此参数用来控制从Spider到RemoteDB的最大连接数。从实际运营经验来看，200这个值能满足绝大多数业务的需要。此值设置过大，会导致RemoteDB上连接数过多。
-另外，spider_max_connections * < tspider数量> 需要小于TenDB存储节点上max_connections的设置值。
+另外，spider_max_connections * <TSpider数量> 需要小于TenDB存储节点上max_connections的设置值。
 
 ### spider_bgs_mode
 
@@ -55,7 +55,7 @@
 
 ### spider_index_hint_pushdown
 
->此参数用以控制是否可以index hints的下放，比如force_index。建议设置为1。
+>此参数用以控制是否允许index hints的下放，比如force_index。建议设置为1。
 
 ### spider_get_sts_or_crd
 

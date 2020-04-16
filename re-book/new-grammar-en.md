@@ -1,23 +1,18 @@
-## TenDB Cluster新增语法
+## TenDB Cluster Added Grammer
+TSpider has added some grammer, the following will introduce how to use.
 
-TSpider新增了一些语法，下面将介绍如何使用
-
-### kill thread
-
-实现三种kill threads的方式:  
+### Kill thread
+Three ways to kill threads:    
 1). kill thread_id safe(kill 9 safe)  
-与直接kill thread_id不同的是，只有当该thread id是sleep状态且非事务中，才会被kill,  
-否则报错： ER_THREAD_IN_USING_OR_TRANSACTION , "thread %lu is in using or in transaction, can't be killed safe"  
+If  the `thread id` is in sleep condition and not in transaction, then can be killed. Otherwise print error:  ER_THREAD_IN_USING_OR_TRANSACTION , "thread %lu is in using or in transaction, can't be killed safe".   
 2). kill threads all  
-用来安全的kill当前threads。 sleep状态且非事务中的threads会被kill掉，其它thread则等待当前query执行完成或者事务结束才被kill  
-3). kill threads all force  
-用来kill当前所有运行的thread  
+  Kill all threads safely. The threads which are in sleep condition and not in transaction, can be killed. The others should be killed until query or transaction ended.  
+3). kill threads all force   
+kill all threads in the TSpider node.  
 
-增加一个会话级状态: 'Max_thread_id_on_kill'， 表示在执行kill threads all (force)时，当前最大的thread id  
-show status like 'Max_thread_id_on_kill';
+Add a session status: `Max_thread_id_on_kill`, which means the current max `thread id` when execute `kill threads all (force)`.    
 
-
-示例SQL：
+Examples are as follows:
 ```
 MariaDB [tendb_test]>  kill threads all force;
 Query OK, 1 row affected (0.00 sec)
@@ -31,24 +26,23 @@ MariaDB [tendb_test]> show status like 'Max_thread_id_on_kill';
 1 row in set (0.00 sec)
 ```
 
-### 新增语法 flush  table with write lock
+### Flush table with write lock
 <a id="write_lock"></a>
-对于分布式场景下的TSpider集群主备切换, `flush tables with read lock`已经不能保证数据的一致性了，为此新增语法`flush tables with write lock`,来获取事务级的锁，保证分布式场景下的主备安全切换。
+For the master-slave switch in distributed transaction scenario， `flush tables with read lock` can't make sure the the data consistency. So Tencent Game DBA add feature `flush tables with write lock` to get transaction lock  make sure the data consistency. 
 
->1.执行 flush  table with write lock 后，会申请事务级锁，阻塞新的事务开启。  
-2.在已有事务commit后，加锁成功,此时修改mysql.servers路由信息，并执行flush privileges使路由生效。  
-3.由unlock tables释放事务锁。解锁后，新的请求可以进入TSpider，此时TSpider侧的新连接会使用新路由规则来请求后端存储TenDB，切换完成。
+1. After execute `flush  table with write lock` on TSpider node, in the period of applying for transaction lock, the start of new transaction will be blocked.  
+2. After all the exist transactions committed, the above SQL will get transaction lock. Then user can modify mysql.servers and flush privileges.    
+3. Execute `unlock tables` to release transaction lock. After unlcok, new query can enter TSpider.  At this time, the new connection on the TSpider node will use the new sharding   rules to request the TenDB node and switch completed.
 
-<font color="#dd0000">注意:</font>   
->该特性仅在spider_internal_xa=ON时生效。
+<font color="#dd0000">Note</font>   
+>This feature only takes effect when spider_internal_xa = ON.
+
+### Cross-shard scanning information query
+Similar to percona, TSpider use QUERY_RESPONSE_TIME to count  the number of queries and the total time cost of the request time in a certain interval. In addition, TSpider additionally counts the response time of cross-shard operations. 
+The view of Cross-shard depends on two columns: P_COUNT, P_TOTAL.  P_COUNT means the number of cross-shard requests and P_TOTAL means the time spent on Cross-shard requests.
 
 
-### 跨分片扫描信息查询
-引入percona的QUERY_RESPONSE_TIME来统计请求时间在某个区间的query个数及总时间开销，另外TSpider额外统计了跨分区操作的响应时间。   
-跨分区时间视图依赖增加的P_COUNT，P_TOTAL两个字段，其中P_COUNT表示跨分区请求的个数，P_TOTAL表示跨分区请求花费的时间。   
-> 跨分区操作是指TSpider接受到的请求，需要分发到多于1个存储shard上请求才能返回结果      
-
-采用如下方式可以查看响应时间视图：
+User can get the response time view in the following ways:
 ```
 MariaDB [mysql]> show QUERY_RESPONSE_TIME;
 +----------------+-------+-----------------------+---------+-----------------------+
@@ -71,7 +65,8 @@ MariaDB [mysql]> show QUERY_RESPONSE_TIME;
 | TOO LONG       |     0 | Since 200316 14:57:02 |       0 | Since 200316 14:57:02 |
 +----------------+-------+-----------------------+---------+-----------------------+
 ```
-也可以通过INFORMATION_SCHEMA里面的表QUERY_RESPONSE_TIME查看:
+
+User can  also get the response time from information_schema.QUERY_RESPONSE_TIME:
 ```
 MariaDB [mysql]> SELECT * FROM information_schema.QUERY_RESPONSE_TIME;
 +----------------+-------+-----------------------+---------+-----------------------+
@@ -94,4 +89,4 @@ MariaDB [mysql]> SELECT * FROM information_schema.QUERY_RESPONSE_TIME;
 | TOO LONG       |     0 | Since 200316 14:57:02 |       0 | Since 200316 14:57:02 |
 +----------------+-------+-----------------------+---------+-----------------------+
 ```
-这里可以看到，响应时间介于0.000244秒和0.000488秒之间的query有42个，总响应时间为0.016067秒；跨分区SQL有6个，总响应时间为0.002419秒。
+It is clear that there are 42 SQL which  response time between 0.000244 seconds and 0.000488 seconds, the total response time is 0.016067 seconds; And  there are 6 Cross-shard  SQL, the total response time is  0.002419 seconds.
