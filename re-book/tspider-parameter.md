@@ -110,7 +110,7 @@ TSpider兼容MySQL的参数，下文主要介绍新增的参数。
 2 后端缓冲区，要求逐一的获得结果。获取完所有数据才中断。  
 3 本地缓冲区，当结果集比spider_quick_page_size大的时候,需要在磁盘上使用临时表。 
 
-**`SPIDER_IDLE_CONN_RECYCLE_INTERVAL`**
+**`SPIDER_IDLE_CONN_RECYCLE_INTERVAL`**   
 作用域: GLOBAL  
 默认值: 3600  
 值为3600，表示TSpider空闲连接的回收时间间隔为3600秒。
@@ -145,7 +145,7 @@ TSpider兼容MySQL的参数，下文主要介绍新增的参数。
 **`SPIDER_PARALLEL_LIMIT`**  
 作用域: GLOBA  
 默认值: OFF  
-值为ON表示对于包含limit、group by, order by的SQL启用并行执行功能，否则不开启。
+值为ON表示对于包含limit的SQL启用并行执行功能，否则不开启。
 
 
 **`SPIDER_PARALLEL_GROUP_ORDER`**  
@@ -292,7 +292,7 @@ spider_semi_split_read_limit=-1
 表示TSpider与后端TenDB建立连接时设置的字符集。
 
 
-**`SPIDER_REMOTE_AUTOCOMMIT`**
+**`SPIDER_REMOTE_AUTOCOMMIT`**  
 作用域: GLOBAL  
 默认值: -1  
 值为-1，表示不改变后端auto-commit值；值为0，表示改变后端auto-commit值为0；值为1，表示改变后端auto-commit值为1；
@@ -359,7 +359,7 @@ spider_semi_split_read_limit=-1
 **`SPIDER_DIRECT_LIMIT_IN_GROUP`**  
 作用域: GLOBAL  
 默认值: FALSE  
-值为FALSE，表示对gropu by + limit 的query，不分发limit 到后端TenDB。
+值为FALSE，表示对group by + limit 的query，不分发limit 到后端TenDB。
 
 
 **`SPIDER_MODIFY_STATUS_INTERVAL`**  
@@ -443,7 +443,7 @@ xid的类型
 **`SPIDER_LOG_RESULT_ERROR_WITH_SQL`**  
 作用域: GLOBAL  
 默认值: 3  
-值为3， 即在执行出错时，在错误日志中记录主线程query及分发到remote执行出错的query；
+日志级别，例如值为3， 即在执行出错时，在错误日志中记录主线程query及分发到remote执行出错的query；
 
 
 
