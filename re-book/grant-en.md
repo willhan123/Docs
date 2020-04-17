@@ -1,4 +1,4 @@
-# TenDB Cluster PRIVILEGE MANAGEMENT    
+# TenDB Cluster Account Management 
 The grammer of privilege management is the same as standard  MySQL.
 There is no much difference in use.  
 <font color="#dd0000">Note： </font>   

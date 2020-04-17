@@ -13,3 +13,8 @@ Through data relocation and master-slave switching, the existing TenDB hardware 
 ```
 
 Regardless of whether it is  access layer or storage layer  ,the expansion and contraction  relies on the central control node Tdbctl to modify the route, which is achieved after global overall management.
+
+
+[Proxy Layer Scaling](TSpider-scale-en.md)
+
+[Data Layer Scaling](TenDB-scale-en.md)
