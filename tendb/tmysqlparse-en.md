@@ -1,11 +1,12 @@
-# SQL审核工具
-TenDB Cluster基于MySQL 5.7的语法，开发SQL审核工具（tmysqlparse）。用于对TenDB Cluster的SQL语句进行语法分析，判定语法正确性及检测高危告警。
+# SQL Syntax Analysis Tool
+Based on the syntax of MySQL 5.7, TenDB Cluster developed a SQL grammatical analysis tool called *tmysqlparse*.  
+It is used for grammatical analysis for SQL statements of TenDB Cluster to determine the correctness of syntax and raise high-risk alarms if needed.
 
+## Introduction
+*tmysqlparse* is an independent component that is compatible with MySQL input (terminal / file, delimiter sentence breaking). It is compatible with MySQL5.7, TenDB3 syntaxs and with reserved words of multiple MySQL versions. It is able to extract statement types, including custom types (`CREATE_TABLE_WITHOUT_INDEX`), and can extract information such as libraries, tables, and indexes.
 
-## 使用介绍
-tmysqlparse 是一个独立组件，能够兼容 MySQL 的输入（终端/文件，delimiter 断句)。完全的支持MySQL语法（MySQL 5.7, TenDB 3），并兼容多个 MySQL 版本的保留字。能够提取语句类型，包括自定义类型（`CREATE_TABLE_WITHOUT_INDEX`），能够提取库、表、索引等信息。
-### 常用参数介绍
-SQL 解析组件有如下参数：
+### Variables
+Some variables are listed below:
 ```bash 
 [mysql@GCS-DEV2 ~/GCS/assistant_tools/jm/lib/tmysqlparse_v5.7]$  ./tmysqlparse.sh --help
 tmysqlparse Ver 2.0
@@ -34,21 +35,21 @@ Usage: /data/home/mysql/GCS/assistant_tools/jm/lib/tmysqlparse_v5.7/tmysqlparse
   -w, --show-create   convert the create table sql into SHOW CREATE TABLE.
   -b, --base64        convert the sql inputed in base64 format
 ```
-常用的参数有：  
->-f 指定输出目录  
-`-v` 指定版本，建议使用 `-v tmysql-5.7`  
-`-c` 指定字符集  
-`-w` 表示对建表语句按照TSpider的建表规则解析  
-`-W` 指定输出文件，与`-w`配合使用  
+Some common variables are：  
+>`-f`:  specifies the output directory;  
+`-v`:  specifies the version `-v tmysql-5.7` is recommended to use;  
+`-c`:  specifies the character set;  
+`-w`:  analyze creating table statements according to TSpider's rules  
+`-W`:  specifies the output file, should be used together with `-w`
 
 
 
 
-### SQL输入
-SQL审核工具tmysqlparse提供两种输入方式：
+### Input SQL
+There are two ways to input into *tmysqlparse*:
 
 
-#### 终端输入
+#### Input from the Terminal
 ```bash 
 [mysql@GCS-DEV2 ~/GCS/assistant_tools/jm/lib/tmysqlparse_v5.7]$  ./tmysqlparse.sh -c gbk  -v tmysql-5.7    test
 Welcome to the TMySQLParse monitor.  Commands end with ; or \g.
@@ -70,9 +71,9 @@ Writing history-file /data/home/mysql/.mysql_history
 Bye
 ```
 注：
->`./tmysqlparse.sh -c gbk  -v tmysql-5.7  test`中的`test`为指定的DB名
+>The `test` in `./tmysqlparse.sh -c gbk  -v tmysql-5.7  test` specifies the name of the database;
 
-#### 文本输入
+#### Input from Files
 ```bash
 [mysql@GCS-DEV2 ~/GCS/assistant_tools/jm/lib/tmysqlparse_v5.7]$ cat a.sql
 create table t(c1 int primary key,c2 int,unique key a(c2));
@@ -91,49 +92,49 @@ create table t(c1 int primary key,c2 int,unique key a(c2));
 
 ```
 
-### 结果输出
+### Results Ouput
 
-tmysqlparse以xml的形式输出SQL检查的结果，可以输出到终端，也可以输出到文件。
+*tmysqlparse* outputs the result of the SQL check in the form of xml, which can be output to the terminal or to a file.
 
-输出结果通过如下定义：
+The output format is as follows:
 ```html
-<result></result> 中包含tmysqlparse分析后的所有结果。 
-<syntax_failed></syntax_failed> 包含所有语法出错的信息。
-<failed_info></failed_info> 包含一条出错语句，里面再分 <sql>、<error_code>、<error_msg> 和 <line> 四部分来输出出错SQL语句的信息。
-<risk_warnings></risk_warnings> 包含所有的高危告警信息，产生告警的前提是语法正确，与 <syntax_failed></syntax_failed> 互相独立，不存在交集。
-<warning_info></warning_info> 包含一条产生高危告警的SQL语句信息。
-<type>、<name>、<text> 和 <line> 四部分给出告警SQL语句信息。
-<info></info> 则存储额外的信息
+<result></result> includes all result from tmysqlparse; 
+<syntax_failed></syntax_failed> covers all synatx errors;
+<failed_info></failed_info> specifies an error statement, and its details are covered in <sql>、<error_code>、<error_msg> and <line>
+<risk_warnings></risk_warnings> records all high-risk statements, this statement is grammaly correct, so they are not in the <syntax_failed></syntax_failed> field.
+<warning_info></warning_info> covers the information about high-risk SQL, and its details are covered in 
+<type>、<name>、<text> and <line>
+<info></info> stores some other information
 ```
-其中type中包含是产生告警的类型，常见的type有：  
->`DROP_DB`  删除数据库操作  
-`DROP_TABLE`  删除表操作  
-`DROP_VIEW` 删除视图操作  
-`TRUNCATE` 清空表操作  
-`DELETE_WITHOUT_WHERE` 删除操作不带where条件  
-`UPDATE_WITHOUT_WHERE` 更新操作不带where条件  
-`CREATE_TABLE_WITH_MUCH_BLOB` 创建表时blob/text字段数大于10  
-`ALTER_TABLE_ADD_MUCH_BLOB` 更改表增加的blob/text字段数大于10  
-`CREATE_TABLE_NOT_INNODB` 建表指定了非innodb引擎  
+Among them, the <type> field contains the type of alarm, some common types are:  
+>`DROP_DB`  drop databases  
+`DROP_TABLE`  drop tables  
+`DROP_VIEW`  delete views  
+`TRUNCATE`  clear tables  
+`DELETE_WITHOUT_WHERE`  deletion without `where` condition  
+`UPDATE_WITHOUT_WHERE`  update without `where` condition  
+`CREATE_TABLE_WITH_MUCH_BLOB`  there are more than 10 blob/text columns when creating the table  
+`ALTER_TABLE_ADD_MUCH_BLOB` there are more than 10 blob/text columns after altering the table  
+`CREATE_TABLE_NOT_INNODB`  the table under creation uses a storage engine other than InnoDB  
 
 
-使用示例：  
-tmysqlparse输入文件内容如下：
-```sql
+A practical example is as follows:  
+`tmysqlparse` input:
+```sql 
 create table t1(c1 int,c2 int);
 delete * from t1;
 delete  from t1;
 ```
 
-tmysqlparse 会审核这每条SQL语句，我们会发现其中1个语法错误:  
-`delete * from t1;`这条SQL多一个*  
+tmysqlparse will check the statement and detect a syntax(lexical) error:
+`delete * from t1;` where `*` is not needed.  
 
-2个高危SQL：  
-`create table t1(c1 int,c2 int);`建表没有索引  
-`delete  from t1;`没有where条件限制  
+And two high-risk SQL are detected：  
+`create table t1(c1 int,c2 int);` create a table without an explicit index.  
+`delete  from t1;` deletion without `where` condition.  
 
 结果如下：
-```sql
+```bash 
 [mysql@GCS-DEV2 ~/GCS/assistant_tools/jm/lib/tmysqlparse_v5.7]$  ./tmysqlparse.sh -c gbk  -v tmysql-5.7    test  -f  test.result  < ./a.sql
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <is_all_dml>FALSE</is_all_dml>
@@ -172,28 +173,28 @@ line 1</error_msg>
 
 
 
-### 使用建议
+### Some Suggestions
 
-#### TenDB变更SQL语法检查
-```bash
+#### Check Syntax fro TenDB:
+```bash 
 ./tmysqlparse.sh -c gbk  -v tmysql-5.7    test  -f  test.result  < ./a.sql
 ```
 
-#### TSpider变更SQL语法检查
-由于TSpider的DDL语法对于分区键有特殊的要求，会有一些不同于MySQL的语法报错，所以需要指定-w -W，来对TSpider进行SQL解析
+#### Check Syntax for TSpider
+Since TSpider's DDL syntax has special requirements for the partition key, there will be some syntax errors that are different from MySQL, so you need to specify `-w -W` to perform SQL analysis on TSpider.
 
-```bash
+```bash 
 ./tmysqlparse.sh -c gbk  -v tmysql-5.7    test  -w -W   test.result  < ./a.sql
 ```
 
 
 
-例如对于sql:
+For example, as for the following SQL:
 ```sql 
 create table test.t(c1 int primary key,c2 int,unique key a(c2));
 ```
 
-tmysqlparse 会解析到这个SQL在TSpider上建表是不合法的，输出结果如下：
+tmysqlparse will parse this SQL, determine whether it is grammaly valid, and output the result:
 ```html
 [mysql@GCS-DEV2 ~/GCS/assistant_tools/jm/lib/tmysqlparse_v5.7]$  ./tmysqlparse.sh -c gbk  -v tmysql-5.7    test  -w -W   test.result  < ./a.sql
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -223,13 +224,15 @@ tmysqlparse 会解析到这个SQL在TSpider上建表是不合法的，输出结�
 </result>
 ```
 
-其中parse_result为解析结果，常见的错误有：
+`parse_result` stores the result of analysis. 
+
+Some common errors are listed below:
 
 >ERROR: %s as TSpider key, but not exist  
-指定shard key不存在
+The specifed shard key does not exist.
 
 >ERROR: %s as TSpider key, but not in some unique key  
-shard key并不存在唯一键字段列表中
+The specified shard key is not a unique key.
 
 >ERROR: too more unique key with the different pre key  
-建表SQL中存在多个唯一键
+There are more than one unique key in the creating table statement.

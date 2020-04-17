@@ -70,7 +70,7 @@ Compact聚集索引记录的格式如下图，由记录头和记录内容组成�
 
 ### 数据字典
 InnoDB关于列的数据字典中并不包含默认值信息，默认值是存储在MySQL层的frm文件中  
-为了支持默认值的加字段操作，InnoDB存储引擎层需要存储新增列的默认值信息。一种办法是在原SYS_COLUMNS表增加def_val属性，表示默认值。但这必会带来跟官方版本兼容性问题，并且不是所有列的默认值都需要存储的，只需保存新增列的默认值信息。因此增一个系统表`SYS_ADDED_COLS_DEFAULT`，保存新增列的默认值，并通过(tableid,pos)与`SYS_COLUMNS`的列信息关联起来, 表结构信息如下
+为了支持默认值的加字段操作，InnoDB存储引擎层需要存储新增列的默认值信息。一种办法是在原`SYS_COLUMNS`表增加`def_val`属性，表示默认值。但这必会带来跟官方版本兼容性问题，并且不是所有列的默认值都需要存储的，只需保存新增列的默认值信息。因此增一个系统表`SYS_ADDED_COLS_DEFAULT`，保存新增列的默认值，并通过(`tableid`,`pos`)与`SYS_COLUMNS`的列信息关联起来, 表结构信息如下
 ```sql
 CREATE TEMPORARY TABLE `INNODB_SYS_ADDED_COLS_DEFAULT` (
   `TABLE_ID` bigint(21) unsigned NOT NULL DEFAULT '0',
@@ -82,13 +82,13 @@ CREATE TEMPORARY TABLE `INNODB_SYS_ADDED_COLS_DEFAULT` (
 ```
 表各字段说明如下
 
-| 列明 | 	说明|
+| 列名 | 	说明|
 | :--- | :----|
 |table_id|表的唯一标识|
 |pos|列号|
 |def_val|默认值的内容，以二进制保存，默认值的最大长度是65535，由上层frm格式保证；对于数字类型，使用大端存储；对于字符/二进制，均使用字节流保存。|
 |def_val_len|默认值占用的存储空间|
-默认值为NULL（无not null约束）的新增字段，不需记录在SYS_ADDED_COLS_DEFAULT字典表中，因为redundant格式NULL记录的DEF_VAL占用长度为65535，插入会报row_size_too_big
+默认值为NULL（无not null约束）的新增字段，不需记录在`SYS_ADDED_COLS_DEFAULT`字典表中，因为redundant格式`NULL`记录的`DEF_VAL`占用长度为65535，插入会报`row_size_too_big`。
 
 为了实现与官方版本兼容，SYS_ADDED_COLS_DEFAULT使用动态创建功能，即TenDB启动加载数据字典子系统时发现该表不存在，会动态创建。这样，从官方版本升级原地升级为TenDB时就不需考虑该表导致的不兼容问题
 

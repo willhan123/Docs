@@ -1,40 +1,46 @@
-# TenDB binlog压缩
-为了在不影响binlog各项功能的情况下，减少binlog的大小。在TenDB中,采用zlib实现了binlog压缩功能，该功能比较独立，可以在运行中开启和关闭，适用于statement，row，mixed各种格式。
+# Binlog Compression
+为了减小binlog的存储开销。在TenDB中,基于ZLIB算法实现了binlog压缩的功能。该功能可以在运行中开启和关闭，并且适用于statement，row，mixed格式。
 
-
-## 用法
+## 使用方法
 ### 压缩
 
-`set global log_bin_compress=ON `  
-表示开启Binlog压缩功能
+开启Binlog压缩：
+```sql 
+set global log_bin_compress=ON
+```
 
-`set global log_bin_compress_min_len=256 `  
-在开启压缩功能的前提下，binlog压缩字段长度大于256的event，符合压缩条件。
+Binlog压缩阈值：
+```sql 
+set global log_bin_compress_min_len=256
+```  
+在开启压缩功能的前提下，binlog字段长度大于256的event，符合压缩条件。
 
->启用binlog压缩功能，可以达到7~9的压缩比。在消耗较多CPU的同时，减少了IO。
+>经过测试，在通常情况下，启用binlog压缩功能，可以达到7-9的压缩比。是以CPU为代价缓解了IO压力的良好实践。
 
 ### 解压
 
-`set global relay_log_uncompress = ON`  
-表示binlog在IO线程中解压。
+有两种解压的方式可以选择：
+1. 让binlog在IO线程中解压：
+```sql 
+set global relay_log_uncompress = ON
+```  
 
-`set global relay_log_uncompress = OFF`  
-表示binlog在sql线程中解压 。
+2. 让binlog在sql线程中解压：
+```sql
+set global relay_log_uncompress = OFF
+```  
 
->如果slave机器，relay-log空间够，可以set global relay_log_uncompress=ON(默认配置)，在IO线程中解压。  
-如果slave机器，relay-log空间不够，可以set global relay_log_uncompress=OFF，在sql线程中解压，但是这样可能会导致sql线程变慢。  
-不过目前slave都有并行同步能力，一般不对sql线程速度造成较大影响。
+>如果slave机器，relay-log空间够，可以set global relay_log_uncompress=ON(默认配置)，在binlog在IO线程中解压。  
+如果slave机器，relay-log空间不够，可以set global relay_log_uncompress=OFF，让binlog在在sql线程中解压，但是这样可能会导致sql线程变慢。  
+但slave都有并行同步能力，所以在sql线程解压一般不会对运行速度有很大影响。
 
 
 ## 兼容性
 
-新增了4中事件类型，表示statement模式和row模式下的write和updates事件压缩后的event:
-```
-  QUERY_COMPRESSED_EVENT
-  WRITE_ROWS_COMPRESSED_EVENT
-  UPDATE_ROWS_COMPRESSED_EVENT
-  UPDATE_ROWS_COMPRESSED_EVENT 
-```
-所以推荐使用TenDB的mysqlbinlog工具进行binlog操作。
+新增了4种事件类型：
+`QUERY_COMPRESSED_EVENT`表示statement格式下压缩后的DML事件；
+`WRITE_ROWS_COMPRESSED_EVENT`，`UPDATE_ROWS_COMPRESSED_EVENT`和`DELETE_ROWS_COMPRESSED_EVENT`分别表示row格式下插入，更新和删除在压缩后的事件。
+
+>推荐使用TenDB的`mysqlbinlog`工具进行binlog操作。
 
 
