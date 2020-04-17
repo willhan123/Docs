@@ -62,9 +62,10 @@ Therefore, users should be very careful in choosing shard_key.</font>
 The below tips explain the default sharding rules of TSpider and how to specify shard_key.
 <a id="shard_key"></a>
 
-####  Without specified shard_key
+####  Without Specified Shard_key
 
-##### If there is only one unique key (including primary key), without specified shard_key, the first column of the unique key will be used as the shard_key by default
+##### If there is only one unique key (including primary key) and the shard_key is not specified, the first column of the unique key will be used as the shard_key by default.
+
 ```
 MariaDB [tendb_test]> create table  t1(
     ->      inf_id  int(11)  auto_increment    not  null,
@@ -95,7 +96,7 @@ Create Table: CREATE TABLE `t1` (
 
 
 
-##### If there is only one common index and without specified shard_key, the first column of the index will be used as the shard_key by default. 
+##### If there is only one secondary index and shard_key is not specified, the first column of the index will be used as the shard_key by default. 
 ```
 MariaDB [tendb_test]> create table  t1(
     ->     inf_id  int(11)  auto_increment    not  null,
@@ -125,7 +126,8 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 
-##### If there are multiple unique keys, without specified shard_key, the first column of the unique key will be used as the shard_key by default. But user need to ensure that the shard_key is the first column of each unique key, otherwise the table cannot be created.
+##### If there are multiple unique keys and shard_key is not specified, the first field of the unique key will be used as the shard key by default. But you need to ensure that the shard key is the first field of each unique key, otherwise the table cannot be created.
+
 ```
 MariaDB [tendb_test]> create table t1(c1 int primary key,c2 int,unique key t(c1,c2));
 Query OK, 0 rows affected (0.05 sec)
@@ -157,10 +159,10 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12021, Detail Error Messa
 ```
 
 
-####  With specified shard_key
+####  With Specified Shard_key
 
 
-##### Shard_key must be part of the index 
+##### Shard_key must be Part of the Index 
 
 ```
 MariaDB [tendb_test]> create table t1(
@@ -192,7 +194,8 @@ Create Table: CREATE TABLE `t1` (
 
 
 
-##### If there are multiple unique keys (including the primary key), shard_key can only be the common part; otherwise, the table cannot be created
+##### Shard_key can only be the common part of keys if there are multiple unique keys (including the primary key). Otherwise, the table cannot be created
+
 ```
 MariaDB [tendb_test]>     create table t1 (
     ->         id int unsigned not null auto_increment, 
@@ -228,7 +231,7 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 
-##### If there are multiple common indexes, user must specify shard_key
+##### If there are multiple secondary indexes and without unique key(including primary key), user must specify shard_key
 ```
 MariaDB [tendb_test]> create table t1 (
     ->     id int unsigned not null auto_increment, 
@@ -268,23 +271,23 @@ Create Table: CREATE TABLE `t1` (
 
 
 
-### 1.2  Constraint of create table
+### 1.2  Constraint of Create Table
 
-#### Not support GEOMETRY
+#### GEOMETRY is Unsupported
 ```
 MariaDB [tendb_test]> create table if not exists t1(a int not null primary key, b geometry not null, d int ) engine=innodb;
 ERROR 4151 (HY000): Failed to execute ddl, Error code: 12027, Detail Error Messages: DETAIL ERROR INFO: 
 Spider Node Error:
 ```
 
-#### Not support temporary table
+#### Temporary Table is Unsupported
 ```
 MariaDB [tendb_test]> create temporary table t1 (c int primary key, a char(1) ) engine=innodb;
 ERROR 4149 (HY000): SQL TYPE: CRREATE TEMPORARY TABLE ,can not be supported when set ddl_execute_by_ctl
 ```
 
 
-#### Not support `CREATE TABLE ... SELECT`
+#### `CREATE TABLE ... SELECT` is Unsupported
 
 ```
 MariaDB [tendb_test]>  create table if not exists t2(a int not null, b int, primary key(a)) engine=innodb;
@@ -292,7 +295,7 @@ MariaDB [tendb_test]>  create table if not exists t4(a int not null, b int, prim
 ERROR 4148 (HY000): SQL TYPE: CRREATE TABLE ... SELECT ,can not be supported when set ddl_execute_by_ctl
 ```
 
-#### Not support blob columns as primary key
+#### Blob Columns as Primary key is Unsupported
 ```
 CREATE TABLE bug58912 (a BLOB, b TEXT, PRIMARY KEY(a(1))) ENGINE=InnoDB;
 
@@ -301,7 +304,7 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12027, Detail Error Messa
 ```
 
 
-#### Not support Foreign key
+#### Foreign key is Unsupported
 ```
 CREATE TABLE users (
  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -320,9 +323,10 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12021, Detail Error Messa
 ```
 
 
-## 2. Alter table
+## 2. Alter Table
 
 `ALTER TABLE` statement is used to modify existing tables to new table structure which can be used to:
+
 ```
 ADD，DROP or  RENAME index
 ADD，DROP，MODIFY or CHANGE column
