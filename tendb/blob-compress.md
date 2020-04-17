@@ -11,7 +11,7 @@ create table t1 (
   C4 blob
 )engine=InnoDB;
 ```
-支持compressed属性的列类型包括：TINYBLOB，BLOB, MEDIUMBLOB，LONGBLOB, TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT和JSON。  
+支持compressed属性的列类型包括：TINYBLOB,BLOB, MEDIUMBLOB, LONGBLOB, TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT和JSON。  
 请注意，VARCHAR和VARBINARY类型不支持COMPRESSED属性，对VARCHAR/VARBINARY的压缩利用`alter table`转换成 BLOB/TEXT COMPRESSED; 
 ```sql
 create table t1 (
@@ -46,7 +46,7 @@ CREATE TABLE t1 (
 
 ## 压缩属性感知
 压缩列属性可以通过`show create table`中的/*!99104 COMPRESSED */来查看
-```
+```sql 
 mysql> show create table t1\G
 *************************** 1. row ***************************
        Table: t1
@@ -67,9 +67,5 @@ Default: NULL
   Extra: COMPRESSED COLUMN
 ```
 
-## 压缩参数控制
-TenDB提供了一些参数来对压缩列进行控制
-
-系统只读参数`blob_compressed`，开启后，会在创建大字段列时自动为其增加COMPRESSED属性。该参数默认值为OFF。
-
-InnoDB全局参数`innodb_min_blob_compress_length`，表示触发压缩存储的阈值。即插入具有COMPRESSED属性的列时，只有当数据长度超过此阈值，才会触发压缩逻辑。该参数默认值为256。
+## 压缩阈值控制
+TenDB提供了InnoDB全局参数`innodb_min_blob_compress_length`，表示触发压缩存储的阈值。即插入具有COMPRESSED属性的列时，只有当数据长度超过此阈值，才会触发压缩逻辑。该参数默认值为256。
