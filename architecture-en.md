@@ -12,7 +12,7 @@ TSpider was developed by the Tencent Game DBA team based on MariaDB's open sourc
 
 As a MySQL storage engine, TSpider naturally supports the MySQL protocol, and applications can request TSpider using the MySQL standard API.   
 
-After receiving  the application request, TSpider will rewrite the SQL through data sharding rules and distribute it to the corresponding TenDB data node for execution, and then process the returned result of data node and finally return it to the application.
+After receiving the application request, TSpider will distribue the query to Tdbctl and Tdbctl will rewrite the SQL through data sharding rules and distribute it to the corresponding TenDB data node for execution, and then process the returned result of data node and finally return it to the application.
 
 TSpider itself does not store data and it is basically stateless (the configuration of each TSpider node needs to be different), and can be expanded horizontally unlimitedly. The application can access multiple TSpider nodes through the unified access address provided by load balancing components (such as LVS, L5, and even DNS).
 

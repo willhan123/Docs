@@ -1,18 +1,18 @@
 # TenDB Cluster DDL
 
-TSpider supports range, hash, list sharding algorithm just like ordinary partitioned tables. TSpider expands comment field of the partition column, so as to specify the server name, database name, table name of the TenDB node. And TSpider will get TenDB's IP, PORT from mysql.servers  according to server name;  
+TSpider supports range, hash, list sharding algorithm just like MySQL partition table. TSpider expands comment field of the partition column, so as to specify the server name, database name, table name of the TenDB node. And TSpider will get TenDB's IP, PORT from mysql.servers  according to server name.    
 When ddl_execute_by_ctl=ON, the ddl on TSpider will be routed to Tdbctl, the Tdbctl will do ddl to all TSpider and TenDB, which means Cluster DDL operating.      
 When ddl_execute_by_ctl=OFF, the ddl on TSpider will not be  routed to Tdbctl, user should do ddl on TSpider and TenDB respectively.  
 
 # 1. TenDB Cluster With Tdbctl
 
-when dl_execute_by_ctl=ON, Tdbctl is responsible for Cluster DDL operating.    
-It should be noted : on default config, ddl on the databases, such as `performance_schema,information_schema,mysql,test,db_infobase`, will not be routed to  TSpider  and TenDB.
+When ddl_execute_by_ctl=ON, Tdbctl is responsible for Cluster DDL operating.    
+It should be noted: DDL in databases such as `performance_schema,information_schema,mysql,test,db_infobase`, will not be distributed to  TSpider  node and TenDB node by default.
 
 <a id="jump1"></a>
 
-## 1. Create table
-User can create table like standard MySQL,  but the created table is different from standard MySQL. For example, user create a innodb table, the SQL as follows:
+## 1. Create Table
+User can create table just like MySQL,  but the created table is different from MySQL. For example:
 ```
 MariaDB [tendb_test]>  create table t1(
     ->     c int primary key)
@@ -20,7 +20,7 @@ MariaDB [tendb_test]>  create table t1(
 Query OK, 0 rows affected (0.05 sec)
 ```
 
-The above SQL on TSpider will be routed to Tdbctl, the Tdbctl will do ddl to all TSpider and TenDB. After create table succeed, execute `show create table` in TSpider node, will get result:  
+The above SQL on TSpider will be distributed to Tdbctl, then Tdbctl will rewrite the SQL through data sharding rules and distribute it to the corresponding TenDB data node for execution. After create table succeed, we will get result of  executing `show create table` in TSpider:   
 ```
 MariaDB [tendb_test]> show create table t1\G;
 *************************** 1. row ***************************
@@ -36,8 +36,7 @@ PARTITION `pt2` VALUES IN (2) COMMENT = 'database "tendb_test_2", table "t1", se
 PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", server "SPT3"' ENGINE = SPIDER)
 ```
 
-Now, every TenDB node has schema `tendb_test_0、tendb_test_1、tendb_test_2、tendb_test_3` , and table `t1` in every above schema.
-
+At this time, each TenDB node has schema `tendb_test_0.t1, tendb_test_1.t1, tendb_test_2.t1, tendb_test_3.t1`.
 
 ```
 mysql> show create table t1\G;
@@ -51,11 +50,10 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 
-Analyse the table structure in TSpider:  
-1. TSpider will shard table according to shard_key. For example a cluster with 4 TenDB node, the sharding algorithm is `crc32(primary_key) % 4`. And `crc32` is supported by TSpider which make sure distribute data evenly;  
-2. column `c` is specified as shard_key;  
-3. So how does TSpider select the shard_key and how should the user specify the shard_key?
+As can be seen from the table structure on TSpider:   
+TSpider will shard table according to shard_key. For example a cluster with 4 TenDB node, the sharding algorithm is `crc32(primary_key) % 4`. And `crc32` is supported by TSpider which make sure distribute data evenly. The column `c` is specified as shard_key.
 
+So how does TSpider choose the shard_key and how should the user specify the shard_key ?
 
 ### 1.1 Shard_key
 

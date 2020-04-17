@@ -40,6 +40,8 @@ PARTITION `pt2` VALUES IN (2) COMMENT = 'database "tendb_test_2", table "t1", se
 PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", server "SPT3"' ENGINE = SPIDER)
 ```
 
+At this time, each data node TenDB has tendb_test_0.t1, tendb_test_1.t1, tendb_test_2.t1, tendb_test_3.t1.
+
 此时，各存储实例TenDB分别有库tendb_test_0、tendb_test_1、tendb_test_2、tendb_test_3，每个库下都有一个t1表。
 
 
@@ -54,9 +56,9 @@ Create Table: CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-分析TSpider侧表结构可以看出:  
-TSpider会按照表分区键来进行数据切片，如4个存储节点的集群，分片算法是crc32(primary_key) % 4；其中crc32是TSpider额外支持的，是为了保证int/char都可以进行求模，并均衡打散数据；  
-字段 `c` 被选为TSpider分区键；  
+从TSpider上的表结构可以看出:  
+TSpider会按照表分区键来进行数据切片，如4个存储节点的集群，分片算法是crc32(primary_key) % 4；其中crc32是TSpider额外支持的，是为了保证int/char都可以进行求模，并均衡打散数据；  字段 `c` 被选为TSpider分区键。
+
 那么TSpider是如何选取分区键以及用户该怎么显示指定分区键呢？
 
 
