@@ -1,4 +1,4 @@
-# Binlog Compression
+# TenDB binlog压缩
 为了减小binlog的存储开销。在TenDB中,基于ZLIB算法实现了binlog压缩的功能。该功能可以在运行中开启和关闭，并且适用于statement，row，mixed格式。
 
 ## 使用方法
@@ -31,7 +31,7 @@ set global relay_log_uncompress = OFF
 ```  
 
 >如果slave机器，relay-log空间够，可以set global relay_log_uncompress=ON(默认配置)，在binlog在IO线程中解压。  
-如果slave机器，relay-log空间不够，可以set global relay_log_uncompress=OFF，让binlog在在sql线程中解压，但是这样可能会导致sql线程变慢。  
+如果slave机器，relay-log空间不够，可以set global relay_log_uncompress=OFF，让binlog在sql线程中解压，但是这样可能会导致sql线程变慢。  
 但slave都有并行同步能力，所以在sql线程解压一般不会对运行速度有很大影响。
 
 

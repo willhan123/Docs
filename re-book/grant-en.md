@@ -1,12 +1,10 @@
 # TenDB Cluster Account Management 
-The grammer of privilege management is the same as standard  MySQL.
-There is no much difference in use.  
+The grammer of ccount management is the same as ordinary MySQL. There is no much difference in use.  
 <font color="#dd0000">Note： </font>   
 >ddl_execute_by_ctl=0  
-When execute grant sql on TSpider node, will only grant for current TSpider node,
-which is no difference from standard MySQL.   
+Execute the grant statement on the TSpider node, only grant for current node,  which is no difference from ordinary MySQL.  
 ddl_execute_by_ctl=1    
-If Tdbctl node exists, and ddl_execute_by_ctl=1. When execute grant sql on TSpider node, will grant for all TSpider nodes.  TSpider will distribute the grant sql to Tdbctl, and then Tdbctl will grant for all TSpider nodes.
+If Tdbctl node exists, and ddl_execute_by_ctl=1. Execute the grant statement on the TSpider node, will grant for all TSpider nodes.  TSpider will distribute the grant sql to Tdbctl, and then Tdbctl will  grant for all TSpider nodes.
 
 ## FLUSH PRIVILEGES
 `FLUSH PRIVILEGES` sql can reload privileges.

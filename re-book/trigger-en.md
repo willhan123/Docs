@@ -6,7 +6,7 @@ A trigger is a named database object that is associated with a table, and that a
 > It is not recommended to use complex stored procedures, triggers, functions in TenDB Cluster.  
 When using stored procedures or triggers in the scenarios that require high data consistency, it is recommended to configure distributed transactions; otherwise, TenDB Cluster can only support local transactions.
 
-## Create trigger
+## Create Trigger
 ```
 delimiter $$
     CREATE TRIGGER upd_check BEFORE UPDATE ON account
@@ -21,7 +21,7 @@ delimiter $$
 delimiter ;
 ```
 
-## Call trigger
+## Call Trigger
 ```
 MariaDB [tendb_test]> CREATE TABLE account (acct_num INT primary key, amount DECIMAL(10,2));
 MariaDB [tendb_test]> show create table account;
@@ -76,7 +76,7 @@ MariaDB [tendb_test]> select * from account;
 +----------+---------+
 ```
 
-## Drop trigger
+## Drop Trigger
 ```
 MariaDB [tendb_test]> DROP TRIGGER upd_check;
 Query OK, 0 rows affected (0.04 sec)

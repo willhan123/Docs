@@ -151,7 +151,7 @@ MariaDB [tendb_test]> select  spider_rone_shard  id from test_tspider   limit 1;
 
 新增参数spider_query_one_shard，spider_transaction_one_shard
 
-当spider_query_one_shard指定为true时,控制update/delete/select必须带等值的shard_key作为条件。对于两表的join，如果其中一个表指定shard_key，在spider_query_one_shard为true亦可支持。  
+当spider_query_one_shard指定为true时,控制update/delete/select必须带等值的shard_key作为条件。对于两表的join，如果其中一个表指定shard_key，也可以符合此参数要求。  
 当spider_transaction_one_shard指定为true时，控制事务中多个query必须路由到同一个shard中。
 另外增加 config_table语法，指定某表为config_table，则跳过spider_query_one_shard的限制，但不能跳过spider_transaction_one_shard的限制。config_table用法如下。
 ```
