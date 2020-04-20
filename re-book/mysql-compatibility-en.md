@@ -16,7 +16,7 @@ The differences are summarized in the below table:
 | CREATE TEMPORARY TABLE   | Supported      | Unsupported   |
 | XA transaction | Supported    | Unsupported |
 | SAVEPOINT | Supported   | Unsupported |
-| Auto-increment column | Supported   | Supported   (TSpider only guarantees uniqueness of auto-increment columns, and no guarantee that they are ordered and increment globally)
+| Auto-increment column | Supported   | Supported   (TSpider only guarantees uniqueness of auto-increment columns, and not guarantees that they are continuous and increment globally)
 | Stored Procedure/Trigger/Function/View   | Supported   | Supported (But not suggested)   |
 | KILL THREADS ALL/ALL SAFE| Unsupported | Supported |
 | KILL thread_id SAFE | Unsupported | Supported |
@@ -87,10 +87,10 @@ Create Table: CREATE TABLE `t1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 1 row in set (0.00 sec)
 ```
-TenDB cluster exposed appropriate inner details to user, which may help user to understand TSpider better thus to utilize it better.
+TenDB Cluster exposed appropriate inner details to user, which may help user to understand TSpider better thus to utilize it better.
 
 #### ALTER TABLE
-As demonstrated above, An InnoDB table created in TenDB cluster will be transformed into a partitioned table using spider engine. As a partitioned table, certain rules should be followed, such as partition key must be part of a unique index. Therefore below SQL that adds unique key will not be supported:
+As demonstrated above, An InnoDB table created in TenDB Cluster will be transformed into a partitioned table using spider engine. As a partitioned table, certain rules should be followed, such as partition key must be part of a unique index. Therefore below SQL that adds unique key will not be supported:
 ```
 mysql> alter table t1 add unique(c2);
 ERROR 1503 (HY000): A UNIQUE INDEX must include all columns in the table's partitioning function
@@ -100,36 +100,38 @@ However, if the new unique key contains the partition key, the alter table state
 mysql> alter table t1 add unique(c1,c2);
 Query OK, 0 rows affected (0.01 sec)
 ```
-The consideration behind this constraint is that partitioned tables can not make sure that the uniqueness still holds after merging data from other partitions. For the same reason, Each partitioned table corresponds to one TenDB storage instance, and TenDB cluster can not guarantee data uniqueness after merging data from instances neither.
+The consideration behind this constraint is that partitioned tables can not make sure that the uniqueness still holds after merging data from other partitions. For the same reason, Each partitioned table corresponds to one TenDB storage instance, and TenDB Cluster can not guarantee data uniqueness after merging data from instances neither.
 
 <a id="jump22"></a>
 
 ### **Storage Engine**
-Tables created in TenDB cluster with InnoDB/MyISAM/etc. will be transformed into spider engine unanimously, by TSpider proxy layer. Whereas the TenDB instance who stores the actual data will use the storage engine specified by users.
+Tables created in TenDB Cluster with InnoDB/MyISAM/etc. will be transformed into spider engine unanimously, by TSpider proxy layer. Whereas the TenDB instance who stores the actual data will use the storage engine specified by users.
 
 <a id="jump23"></a>
 
 ### **Auto_increment Column**
 
-TenDB cluster guarantees only the uniqueness of the auto-increment column, and no guarantee for continuity and incremental are made.
-In TenDB cluster, a table will be distributed in multiple TenDB storage instances, and multiple TSpider nodes will read and write this table equally and simultaneously. Differing from single instance MySQL, an auto-increment column needs to be maintained by multiple TenDB instances together.
+TenDB Cluster only guarantees the uniqueness of the auto-increment column,  and not guarantees that they are continuous and increment globally.  
+In TenDB Cluster, a table will be distributed in multiple TenDB storage instances, and multiple TSpider nodes will read and write this table equally and simultaneously. Differing from single instance MySQL, an auto-increment column needs to be maintained by multiple TSpider nodes together.
 
-To achieve the same behavior with that in single instance MySQL, All tables in TenDB cluster must be locked when TSpider nodes update auto-increment column, or use third-party resource as a critical resource to ensure the uniqueness. Both solutions will introduce noticeable performance overhead, therefore it is not suitable for production environments.
+To achieve the same behavior with that in single instance MySQL, All tables in TenDB Cluster must be locked when TSpider nodes update auto-increment column, or use third-party resource as a critical resource to ensure the uniqueness. Both solutions will introduce noticeable performance overhead, therefore it is not suitable for production environments.
 
-The implementation strategy of auto-increment in TenDB cluster is, to let each TSpider node to maintain its own auto-increment column, and to make sure that the increment generated in each TSpider node is different to that generated in other nodes. Due to this autonomy, it can not be guaranteed that the auto-increment column is continuous and incremental in cluster aspect, however, this approach has low cost in maintaining auto-increment column and high efficiency during updating them.
+The implementation strategy of auto-increment in TenDB Cluster is, to let each TSpider node maintain its own auto-increment column, and to make sure that the increment generated in each TSpider node is different to that generated in other nodes. Due to this autonomy, it can not be guaranteed that the auto-increment column is continuous and incremental in Cluster aspect, however, this approach has low cost in maintaining auto-increment column and high efficiency during updating them.   
+In a word, TSpider will generate a global non-continuous unique identity for auto-increment.
 
 There are 3 parameters in each TSpider related to auto-increment column:
-> spider_auto_increment_mode_switch: wether to enable auto-increment column feature on TSpider
-> spider_auto_increment_step: step size of TSpider auto-increment
-> spider_auto_increment_mode_value: the remainder of auto-increment column value modulo of spider_auto_increment_step
+> spider_auto_increment_mode_switch: Whether the auto-increment is enabled. The value can be 0 (or OFF) to disable or 1 (or ON) to enable. If on, TSpider will generate a global non-continuous unique identity for new rows. Identity only ensure incremental on the same TSpider node.    
+> spider_auto_increment_step: The step of the global non-continuous unique identity generated by TSpider node.  All TSpider nodes must be the same.    
+
+> spider_auto_increment_mode_value: TSpider node generate global non-continuous unique identity's start number. All TSpider's value must be different. Valid value can be computed by TSpider's increment value modulo spider_auto_increment_step.     
 
 With auto-increment column enabled, given spider_auto_increment_step size of 17, and spider_auto_increment_mode_value=3, then the auto-increment sequence generated on that TSpider node will be 3, 3+17, 3+17+17, ...
-> According to above, with the same spider_auto_increment_mode_switch setting, TSpider nodes within a cluster should have the same spider_auto_increment_step and differet spider_auto_increment_mode_value.
+> According to above, with the same spider_auto_increment_mode_switch setting, TSpider nodes within a cluster should have the same spider_auto_increment_step and different spider_auto_increment_mode_value.
 
 <a id="jump24"></a>
 
 ### **Query Plan**
-Proxy layer of TenDB cluster focuses on how to forward users requests to backend storage efficiently, instead of how the SQL will be executed on the storage node. Therefore when reviewing a query plan on TSpider with explain, you may find even a query with a primary key can request a full table scan, in below example, where t1 table have a primary key c1, and explain results as followed:
+Proxy layer of TenDB Cluster focuses on how to forward users requests to backend storage efficiently, instead of how the SQL will be executed on the storage node. Therefore when reviewing a query plan on TSpider with explain, you may find even a query with a primary key can request a full table scan, in below example, where t1 table have a primary key c1, and explain results as followed:
 
 ```
 mysql> explain select * from t1 where c1=1;

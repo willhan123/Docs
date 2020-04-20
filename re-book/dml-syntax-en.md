@@ -1,5 +1,5 @@
 # TenDB Cluster DML
-The DML on the TSpider node will be directly routed to the TenDB node. The below tips, use table `test_tspider` as an example to describe the usage of `select, update, insert, and delete`.
+The DML on the TSpider node will be directly distributed to the TenDB node. The below tips, use table `test_tspider` as an example to describe the usage of `select, update, insert, and delete`.
 
 ```
 CREATE TABLE `test_tspider` (
@@ -21,30 +21,29 @@ CREATE TABLE `test_tspider` (
 
 
 ## SELECT
-`SELECT` statement is used to get data from the TenDB node. The following will explain the usage and principle of several common types of `SELECT` statements.
+`SELECT` is used to retrieve rows selected from one or more tables from the TenDB nodes. The below tips  explain the usage and principle of several  types of `SELECT` statements.
 
-### With shard_key
+### With Shard_key
 select * from test_spider where id = 1 ;   
-If shard_key is specified in the where condition, TSpider recognizes the shard_key according to the sharding rules, and routes the sql to the designated TenDB node.
+If shard_key is specified in the where condition, TSpider  will distribue the query to the corresponding TenDB node,  according to the sharding rules.
 
-### Without shard_key
+### Without Shard_key
 ```
 select * from test_spider where level > 3;  
-SQL will be routed to all TenDB nodes for execution, and the result will be merged and returned on TSpider node.
+Query will be distribued to all TenDB nodes for execution, and the result will be merged and returned on TSpider node.
 ```
 
-### order by  
+### Order by  
 ```
 select * from test_spider where level > 3 order by age desc;  
-SQL will be routed to all TenDB nodes to execute `select * from test_spider where level> 3`, and the result will be sorted on TSpider node.
+`select * from test_spider where level> 3` will be distribued to all TenDB nodes for execution , and the result will be sorted on TSpider node.
 
 ```
 
-### count/min/max/sum 
+### COUNT/MIN/MAX/SUM 
 ```
 select count(*) from test_spider where age > 10 group by level;  
-SQL will be routed to all TenDB nodes to execute  `select count(*), level from test_spider where age > 10 group by level`,
-and the results of the same level will be added on TSpider node.  
+`select count(*), level from test_spider where age > 10 group by level` will be distribued to all TenDB nodes for execution,  and the results of the same `level` will be added on TSpider node.  
 ```
 
 ##  INSERT
@@ -88,19 +87,19 @@ Empty set (0.00 sec)
 ```
 
 
->For `select, insert, update, delete`, if the shard_key is specified in the where condition, TSpider will route SQL to the designated TenDB node according to the sharding rules. If not specified, SQL will be routed to all TenDB nodes for execution.  
-when `select` sql will be  routed to several TenDB nodes, if [spider_bgs_mode](tspider-parameter-en.md/#spider_bgs_mode) equals 0,
+>For `select, insert, update, delete`, if the shard_key is specified in the where condition, TSpider will distribue query to the corresponding TenDB node according to the sharding rules. If not specified, query will be distribued to all TenDB nodes for execution.  
+when `select` query will be  distribued to several TenDB nodes, if [spider_bgs_mode](tspider-parameter-en.md/#spider_bgs_mode) equals 0,
 then distribute request serially; if equals 1, then distribute request parallelly.  
-when `insert, update, delete` sql will be  routed to several TenDB nodes, if [spider_bgs_dml](tspider-parameter-en.md/#spider_bgs_dml) equals 0, then distribute request serially; if equals 1, then distribute request parallelly.
+when `insert, update, delete` query will be  distribued to several TenDB nodes, if [spider_bgs_dml](tspider-parameter-en.md/#spider_bgs_dml) equals 0, then distribute request serially; if equals 1, then distribute request parallelly.
 
 
 
 
 
 
-## New usage
+## New Usage
 
-### Random select
+### Random Select
 Add global parameter `SPIDER_RONE_SHARD_SWITCH`, which is default enabled, means retrieve  date from one partition randomly.
 Such as `select spider_rone_shard from test_tspider limit 1` , retrieve date from one partition of test_tspider randomly.
 
@@ -145,10 +144,10 @@ MariaDB [tendb_test]> select  spider_rone_shard  id from test_tspider   limit 1;
 ```
 
 
-### Specify equivalent shard_key
-Add global parameter `spider_query_one_shard，spider_transaction_one_shard`
-When `spider_query_one_shard=true`, restrict `update, delete, select` must have equivalent shard_key as a condition. For join sql related to 2 tables, if one of the tables specifies shard_key, it can also be supported if spider_query_one_shard is true.  
-when spider_transaction_one_shard=true, restrict queries in the transaction must be routed to the same shard.  
+### Specify Equivalent Shard_key
+Add global parameter `spider_query_one_shard，spider_transaction_one_shard`   
+When `spider_query_one_shard=true`, `update, delete, select` query need to have equivalent shard_key as a condition. It is also supported that, one of the tables specifies shard_key in join queries.   
+when spider_transaction_one_shard=true, queries in the transaction must be distributed to the same shard.  
 In addition, add grammer for `config_table`, if specify a table as config_table, then skip the restriction from spider_query_one_shard, but can not skip the restriction from spider_transaction_one_shard. The usage of config_table is as follows: 
 ```
     CREATE TABLE `t6` (
@@ -190,4 +189,4 @@ ERROR 1734 (HY000): Transaction across different partitions denied to user 'use'
 ## Suggestions
 1. seldom update shard_key(update shard_key frequently affect performance, the same to the below tips)  
 2. avoid full table join
-3. use sum/count insead of avg
+3. use sum/count instead of avg

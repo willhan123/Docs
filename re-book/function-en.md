@@ -8,7 +8,7 @@ The function is a collection of sql in the database, calling function can reduce
 When using stored procedures or triggers in the scenarios that require high data consistency, it is recommended to configure distributed transactions; otherwise, TenDB Cluster can only support local transactions.
 
 
-## Create function
+## Create Function
 ```
 MariaDB [tendb_test]> DELIMITER //
 MariaDB [tendb_test]> CREATE FUNCTION GetEmployeeInformationByID(id INT)
@@ -19,7 +19,7 @@ MariaDB [tendb_test]> CREATE FUNCTION GetEmployeeInformationByID(id INT)
 Query OK, 0 rows affected (0.03 sec)
 ```
 
-## Call function
+## Call Function
 ```
 MariaDB [tendb_test]> create table employees
     -> (
@@ -48,7 +48,7 @@ MariaDB [tendb_test]> select  GetEmployeeInformationByID(1);
 
 ```
 
-## Drop function
+## Drop Function
 ```
 MariaDB [tendb_test]> DROP FUNCTION GetEmployeeInformationByID;
 Query OK, 0 rows affected (0.04 sec)

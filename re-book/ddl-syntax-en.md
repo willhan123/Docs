@@ -126,7 +126,7 @@ Create Table: CREATE TABLE `t1` (
 ```
 
 
-##### If there are multiple unique keys and shard_key is not specified, the first field of the unique key will be used as the shard key by default. But you need to ensure that the shard key is the first field of each unique key, otherwise the table cannot be created.
+##### If there are multiple unique keys and shard_key is not specified, the first field of the unique key will be used as the shard key by default. But user need to ensure that the shard key is the first field of each unique key, otherwise the table cannot be created.
 
 ```
 MariaDB [tendb_test]> create table t1(c1 int primary key,c2 int,unique key t(c1,c2));
@@ -325,14 +325,14 @@ ERROR 4151 (HY000): Failed to execute ddl, Error code: 12021, Detail Error Messa
 
 ## 2. Alter Table
 
-`ALTER TABLE` statement is used to modify existing tables to new table structure which can be used to:
+ALTER TABLE changes the structure of a table. For example, user can add or delete columns, create or destroy indexes, change the type of existing columns, or rename columns or the table itself. user can also change characteristics such as the storage engine used for the table or the table comment. 
 
 ```
 ADD，DROP or  RENAME index
 ADD，DROP，MODIFY or CHANGE column
 ```
 
-<font color="#dd0000">It should be noted that on the TSpider node, it is prohibited to modify the sharding rules when alter table</font> 
+<font color="#dd0000">Noted: on the TSpider node, it is prohibited to modify the sharding rules when alter table</font> 
 ```
 MariaDB [tendb_test]> create table t1(c1 int , c2 int,primary key id(c1,c2));
 Query OK, 0 rows affected (0.04 sec)
@@ -391,7 +391,7 @@ MariaDB [tendb_test]> SELECT * FROM t1;
 
 
 ### 2.2 DROP COLUMN
-`DROP COLUMN` statement is used to delete columns from the specified table.
+`DROP COLUMN` statement is used to delete columns from the table.
 
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, col1 INT NOT NULL, col2 INT NOT NULL);
@@ -451,7 +451,7 @@ Spider Node Error:
 ```
 
 ###  2.3 ADD INDEX
-`ALTER TABLE .. ADD INDEX` statement is used to add  index to an existing table.
+`ALTER TABLE .. ADD INDEX` statement is used to create  index .
 
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -490,7 +490,7 @@ CREATE TABLE `t1` (
 
 
 ### 2.4 DROP INDEX
-`DROP INDEX` statement is used to delete the index from the specified table.
+`ALTER TABLE .. DROP INDEX` statement is used to delete  index.
 
 ```
 MariaDB [tendb_test]> CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, c1 INT NOT NULL);
@@ -569,7 +569,7 @@ PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", se
 
 
 ## 3. ALTER DATABASE
-`ALTER DATABASE` is used to modify the default character set and collation of the specified or current database. `ALTER SCHEMA` has the same effect as `ALTER DATABASE`.
+`ALTER DATABASE` enables user to change the overall characteristics of a database. These characteristics are stored in the db.opt file in the database directory. This statement requires the ALTER privilege on the database. ALTER SCHEMA is a synonym for ALTER DATABASE. 
 
 ```
 MariaDB [tendb_test]> ALTER DATABASE  tendb_test CHARACTER SET  utf8;
@@ -589,7 +589,8 @@ MariaDB [tendb_test]> SHOW CREATE DATABASE  tendb_test;
 
 ## 4. CREATE TABLE LIKE
 
-`CREATE TABLE LIKE` statement is used to copy the definition of an existing table, but does not copy any data. When execute this SQL, TSpider will process the comment of the corresponded partition.
+`CREATE TABLE ... LIKE` is used to create an empty table based on the definition of another table, including any column attributes and indexes defined in the original table. And TSpider will process the comment of the corresponded partition.
+
 ```
 MariaDB [tendb_test]>create table t1(c int primary key);
 MariaDB [tendb_test]>show create table t1\G;
@@ -628,10 +629,9 @@ PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t2", se
 
 #  2. TenDB Cluster Without Tdbctl
 
+When ddl_execute_by_ctl=OFF, `truncate table` is allowed. But Tdbctl will not distribute ddl to the TenDB node, user needs to execute  ddl on TSpider and TenDB respectively.
 
-When ddl_execute_by_ctl=OFF, `truncate table` is allowed, but ddl will not be routed to the TenDB node, and the ddl needs to be executed on TSpider and TenDB respectively.
-
-## 1. Create table 
+## 1. Create Table 
 Create table  on TSpider node ：  
 
 ```
@@ -657,8 +657,8 @@ mysql> create table tendb_test_3.t1(c int primary key);
 
 
 
-##  2. Create table like 
- When execute `create table like` on the TSpider node, the comment information in each partition is ignored, so as to avoid misuse on TSpider node.
+##  2. Create Table like 
+ When execute `create table like` on the TSpider node, the comment information of each partition is ignored, so as to avoid misuse on TSpider node.
 
 ```
 MariaDB [tendb_test]>create table t2 like t1;

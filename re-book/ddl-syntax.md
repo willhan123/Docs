@@ -40,7 +40,6 @@ PARTITION `pt2` VALUES IN (2) COMMENT = 'database "tendb_test_2", table "t1", se
 PARTITION `pt3` VALUES IN (3) COMMENT = 'database "tendb_test_3", table "t1", server "SPT3"' ENGINE = SPIDER)
 ```
 
-At this time, each data node TenDB has tendb_test_0.t1, tendb_test_1.t1, tendb_test_2.t1, tendb_test_3.t1.
 
 此时，各存储实例TenDB分别有库tendb_test_0、tendb_test_1、tendb_test_2、tendb_test_3，每个库下都有一个t1表。
 

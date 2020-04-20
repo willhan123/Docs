@@ -1,7 +1,7 @@
 ## TenDB Cluster Added Grammer
 TSpider has added some grammer, the following will introduce how to use.
 
-### Kill thread
+### Kill Thread
 Three ways to kill threads:    
 1). kill thread_id safe(kill 9 safe)  
 If  the `thread id` is in sleep condition and not in transaction, then can be killed. Otherwise print error:  ER_THREAD_IN_USING_OR_TRANSACTION , "thread %lu is in using or in transaction, can't be killed safe".   
@@ -26,18 +26,18 @@ MariaDB [tendb_test]> show status like 'Max_thread_id_on_kill';
 1 row in set (0.00 sec)
 ```
 
-### Flush table with write lock
+### FLUSH TABLE WITH WRITE LOCK
 <a id="write_lock"></a>
 For the master-slave switch in distributed transaction scenario， `flush tables with read lock` can't make sure the the data consistency. So Tencent Game DBA add feature `flush tables with write lock` to get transaction lock  make sure the data consistency. 
 
 1. After execute `flush  table with write lock` on TSpider node, in the period of applying for transaction lock, the start of new transaction will be blocked.  
 2. After all the exist transactions committed, the above SQL will get transaction lock. Then user can modify mysql.servers and flush privileges.    
-3. Execute `unlock tables` to release transaction lock. After unlcok, new query can enter TSpider.  At this time, the new connection on the TSpider node will use the new sharding   rules to request the TenDB node and switch completed.
+3. Execute `unlock tables` to release transaction lock. After unlcok, application can send request to TSpider node.  At this time, the new connection on the TSpider node will use the new sharding rules to request the TenDB node and switch completed.
 
 <font color="#dd0000">Note</font>   
 >This feature only takes effect when spider_internal_xa = ON.
 
-### Cross-shard scanning information query
+### Cross-shard Scanning Information Query
 Similar to percona, TSpider use QUERY_RESPONSE_TIME to count  the number of queries and the total time cost of the request time in a certain interval. In addition, TSpider additionally counts the response time of cross-shard operations. 
 The view of Cross-shard depends on two columns: P_COUNT, P_TOTAL.  P_COUNT means the number of cross-shard requests and P_TOTAL means the time spent on Cross-shard requests.
 

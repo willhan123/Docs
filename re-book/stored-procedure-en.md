@@ -7,7 +7,7 @@ Stored Procedure is a database object that stores complex procedures in the data
 > It is not recommended to use complex stored procedures, triggers, functions in TenDB Cluster.  
 When using stored procedures or triggers in the scenarios that require high data consistency, it is recommended to configure distributed transactions; otherwise, TenDB Cluster can only support local transactions.
 
-## Create stored procedure
+## Create Stored Procedure
 
 ```
 MariaDB [tendb_test]> DELIMITER // 
@@ -20,7 +20,7 @@ MariaDB [tendb_test]> CREATE PROCEDURE delete_matches(IN p_playerno INTEGER)
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-## Call stored procedure
+## Call Stored Procedure
 ```
 MariaDB [tendb_test]> create table PLAYERS(id int primary key,playerno int);
 MariaDB [tendb_test]> show  create table PLAYERS;
@@ -57,7 +57,7 @@ MariaDB [tendb_test]> select * from PLAYERS where playerno=1;
 Empty set (0.00 sec)
 ```
 
-## Drop stored procedure
+## Drop Stored Procedure
 ```
 MariaDB [tendb_test]> drop PROCEDURE delete_matches;
 Query OK, 0 rows affected (0.02 sec)

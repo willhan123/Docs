@@ -33,7 +33,7 @@ mysql> select * from t;
 ```
 
 ## TenDB在线加字段原理
-InnoDB作为MySQL最常用的事务性存储引擎，为了满足不同应用场景的性能需求，提供了四种行格式，分别为Redudant、Compact、Dynamic和Compressed，并且Compact是官方MySQL版本的默认存储格式。要做到快速加字段，其中TenDB的在线加字段就是通过扩展Compact、Dynamic的记录头来记录在线加字段的信息，做到快速加字段。 
+InnoDB作为MySQL最常用的事务性存储引擎，为了满足不同应用场景的性能需求，提供了四种行格式，分别为Redudant、Compact、Dynamic和Compressed，并且Compact是官方MySQL版本的默认存储格式。其中TenDB是通过扩展Compact、Dynamic的记录头来记录在线加字段的信息，来实现快速加字段的。 
 
 ### 记录格式
 下面以Compact格式为例讲解在线加字段的实现细节  
