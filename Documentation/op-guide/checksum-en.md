@@ -1,4 +1,4 @@
-## Use pt-table-checksum To Checksum Data Between Master-Slave And TenDB Cluster
+# Use pt-table-checksum To Checksum Data Between Master-Slave And TenDB Cluster
 
 ### Database Servers Information
 
