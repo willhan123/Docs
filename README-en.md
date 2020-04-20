@@ -17,7 +17,7 @@ TenDB Cluster is a MySQL distributed relational database solution provided by th
 > docker-compose
 
 ## Documentation
-For details, see [Reference Manual](SUMMARY-en.md)
+For details, see [Reference Manual](Documentation/SUMMARY-en.md)
 
 
 ## Contact us

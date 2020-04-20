@@ -12,7 +12,7 @@ TenDB Cluster是腾讯游戏DBA团队提供的MySQL分布式关系型数据库�
 > docker-compose使用方式
 
 ## 使用文档
-具体见[参考手册](SUMMARY.md)
+具体见[参考手册](Documentation/SUMMARY.md)
 
 ## 联系我们
 对TenDB Cluster的任何问题或者意见，欢迎通过提issue的方式反馈：   
