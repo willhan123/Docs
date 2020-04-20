@@ -1,21 +1,26 @@
 # TenDB Cluster
-TenDB Cluster是腾讯DBA团队提供的MySQL分布式关系型数据库解决方案，主要包括三个核心组件：TSpider，TenDB 、Tdbctl。   
-TSpider是TenDB Cluster的接入层，是腾讯游戏DBA基于MariaDB 10.3.7开发定制的版本，主要完善并定制spider这一分布式MySQL存储引擎；TSpider [github地址](https://github.com/TencentDBA/TendbCluster3)  
-TenDB是TenDB Cluster的存储层，是腾讯游戏DBA基于Percona 5.7.20开定制的MySQL分支，主要提供一些更贴近业务运营的基础能力； TenDB [github地址](https://github.com/TencentDBA/TenDB3)  
-Tdbctl是集群的中控节点，提供集群路由管理、集群变更、集群监控等能力。Tdbctl [github地址](https://github.com/TencentDBA/Tdbctl)  
-TenDB Cluster Operator则提供在主流云基础设施（Kubernetes）上部署管理TenDB Cluster集群的能力。TenDB Cluster Operator [github地址]()  
+TenDB Cluster is a MySQL distributed relational database solution provided by the Tencent Game DBA team. It mainly includes three core components: TSpider, TenDB and Tdbctl.   
 
-## TenDB Cluster简介
-TenDB Cluster是腾讯游戏DBA团队提供的MySQL分布式关系型数据库解决方案，主要特点包括：透明分库分表、高可用的MySQL集群服务，透明及在线的扩容及缩容；使得开发者可以仅专注于业务逻辑的开发及运营，无需编写数据分片逻辑，在海量用户并发情况下，也无须关心DB存储层的负载压力。
+TSpider is the proxy layer of TenDB Cluster. It is a customized version developed by Tencent Game DBA based on MariaDB 10.3.7. It mainly improves and customizes the distributed MySQL storage engine of spider; TSpider [github page](https://github.com/TencentDBA/TendbCluster3)
 
-## 快速体验
-> docker-compose使用方式
+TenDB is the data layer of TenDB Cluster. It is a customized MySQL branch of Tencent Game DBA based on Percona 5.7.20. It mainly provides some basic capabilities that are closer to business operations; TenDB [github page](https://github.com/TencentDBA/TenDB3)
 
-## [使用文档](Documentation/SUMMARY.md)
-具体见[参考手册](Documentation/SUMMARY.md)
+Tdbctl is the control layer of TenDB Cluster, providing cluster routing management, cluster DDL operating, cluster monitoring and other capabilities. Tdbctl [github page](https://github.com/TencentDBA/Tdbctl)
 
-## 联系我们
-对TenDB Cluster的任何问题或者意见，欢迎通过提issue的方式反馈：   
+TenDB Cluster Operator provides the ability to deploy and manage TenDB Cluster on mainstream cloud infrastructure (Kubernetes). TenDB Cluster Operator [github page]()
+
+
+## Introduction to TenDB Cluster
+TenDB Cluster is a MySQL distributed relational database solution provided by the Tencent Game DBA team. The main features include: transparent database/table sharding、 high-availability、  online scaling ; so that developers can only focus for the development and operation of business logic and there is no need to write data sharding logic. In the case of massive user concurrency, there is no need to care about the load pressure of the DB storage layer.
+
+## Quick start
+> docker-compose
+
+## [Documentation](Documentation/SUMMARY-en.md)
+For details, see [Reference Manual](Documentation/SUMMARY-en.md)
+
+## Contact us
+For any questions or comments about TenDB Cluster, please feel free to submit feedback via issue:     
 TSpider:  https://github.com/TencentDBA/TendbCluster3/issues   
 TenDB:    https://github.com/TencentDBA/TenDB3/issues   
 Tdbctl:   https://github.com/TencentDBA/Tdbctl/issues 
