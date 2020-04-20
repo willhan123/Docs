@@ -3,7 +3,7 @@
 * [Introduction](README-en.md)
 * Main Concepts
     * [Architecture](architecture-en.md)
-    * [Main Features](key-features-en.md)
+    * [Key Features](key-features-en.md)
 * Operation Guide
     * [Quick Start]()
         * [Deployment with Docker Compose]
