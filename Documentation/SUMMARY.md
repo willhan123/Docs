@@ -83,6 +83,12 @@
     * [扩缩容]
     * [高可用]
     * [常见问题]
+* [TenDB Cluster with Ansible](op-ansible/tendbcluster-with-ansible.md)
+    * [Ansible 快速部署 TenDBCluster](op-ansible/ansible-deploy-tendbcluster.md)
+    * [Ansible 对存储层扩缩容](op-ansible/ansible-scale-up-tendb.md)
+    * [Ansible 对接入层扩缩容](op-ansible/ansible-scale-out-tspider.md)
+    * [Ansible 常用运维操作](op-ansible/ansible-with-cluster-op.md)
+    * [Ansible playbook说明](op-ansible/ansible-def-inventory-vars.md)
 * 最佳实践
     * [普通应用](practice/common-bestpractice.md)
     * [大数据应用](practice/bigdatapractice.md)
