@@ -147,16 +147,16 @@ MySQL [(none)]> select * from mysql.servers;
 +-------------+----------------+----+--------------+--------------+-------+--------+---------+-------+
 | Server_name | Host           | Db | Username     | Password     | Port  | Socket | Wrapper | Owner |
 +-------------+----------------+----+--------------+--------------+-------+--------+---------+-------+
-| SPIDER0     | 100.117.60.106 |    | tendbcluster | tendbcluster | 25000 |        | SPIDER  |       |
-| SPIDER1     | 9.66.213.26    |    | tendbcluster | tendbcluster | 25000 |        | SPIDER  |       |
-| SPIDER2     | 9.79.161.2     |    | tendbcluster | tendbcluster | 25000 |        | SPIDER  |       |
-| SPT0        | 9.66.244.95    |    | tendbcluster | tendbcluster | 20000 |        | mysql   |       |
-| SPT1        | 9.66.244.95    |    | tendbcluster | tendbcluster | 20001 |        | mysql   |       |
-| SPT2        | 9.79.161.2     |    | tendbcluster | tendbcluster | 20002 |        | mysql   |       |
-| SPT3        | 9.79.161.2     |    | tendbcluster | tendbcluster | 20003 |        | mysql   |       |
-| TDBCTL0     | 9.66.213.26    |    | tendbcluster | tendbcluster | 26000 |        | TDBCTL  |       |
-| TDBCTL1     | 9.79.161.2     |    | tendbcluster | tendbcluster | 26000 |        | TDBCTL  |       |
-| TDBCTL2     | 100.117.60.106 |    | tendbcluster | tendbcluster | 26000 |        | TDBCTL  |       |
+| SPIDER0     | 192.168.1.106  |    | tendbcluster | tendbcluster | 25000 |        | SPIDER  |       |
+| SPIDER1     | 192.168.1.26   |    | tendbcluster | tendbcluster | 25000 |        | SPIDER  |       |
+| SPIDER2     | 192.168.1.2    |    | tendbcluster | tendbcluster | 25000 |        | SPIDER  |       |
+| SPT0        | 192.168.1.95   |    | tendbcluster | tendbcluster | 20000 |        | mysql   |       |
+| SPT1        | 192.168.1.95   |    | tendbcluster | tendbcluster | 20001 |        | mysql   |       |
+| SPT2        | 192.168.1.2    |    | tendbcluster | tendbcluster | 20002 |        | mysql   |       |
+| SPT3        | 192.168.1.2    |    | tendbcluster | tendbcluster | 20003 |        | mysql   |       |
+| TDBCTL0     | 192.168.1.26   |    | tendbcluster | tendbcluster | 26000 |        | TDBCTL  |       |
+| TDBCTL1     | 192.168.1.2    |    | tendbcluster | tendbcluster | 26000 |        | TDBCTL  |       |
+| TDBCTL2     | 192.168.1.106  |    | tendbcluster | tendbcluster | 26000 |        | TDBCTL  |       |
 +-------------+----------------+----+--------------+--------------+-------+--------+---------+-------+
 10 rows in set (0.00 sec)
 
@@ -164,9 +164,9 @@ MySQL [(none)]> select * from performance_schema.replication_group_members;
 +---------------------------+--------------------------------------+----------------+-------------+--------------+
 | CHANNEL_NAME              | MEMBER_ID                            | MEMBER_HOST    | MEMBER_PORT | MEMBER_STATE |
 +---------------------------+--------------------------------------+----------------+-------------+--------------+
-| group_replication_applier | 4b3fecb6-8547-11ea-8533-1405094fa102 | 9.79.161.2     |       26000 | ONLINE       |
-| group_replication_applier | 4b7e4a68-8547-11ea-901a-14050942d51a | 9.66.213.26    |       26000 | ONLINE       |
-| group_replication_applier | 4b80af29-8547-11ea-b347-140564753c6a | 100.117.60.106 |       26000 | ONLINE       |
+| group_replication_applier | 4b3fecb6-8547-11ea-8533-1405094fa102 | 192.168.1.2    |       26000 | ONLINE       |
+| group_replication_applier | 4b7e4a68-8547-11ea-901a-14050942d51a | 192.168.1.26   |       26000 | ONLINE       |
+| group_replication_applier | 4b80af29-8547-11ea-b347-140564753c6a | 192.168.1.106  |       26000 | ONLINE       |
 +---------------------------+--------------------------------------+----------------+-------------+--------------+
 3 rows in set (0.00 sec)
 ```

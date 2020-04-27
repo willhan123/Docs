@@ -20,12 +20,12 @@ TenDB Node 扩缩容
 ```
 #### SPT1 ####
 [SPT1]
-tendb-spt1 ansible_host=9.66.244.95 mysql_shard=SPT1 mysql_port=20001 role=master
-tendb-spt1-1 ansible_host=100.117.56.147 mysql_shard=SPT1 mysql_port=20001 role=slave master=tendb-spt1
+tendb-spt1 ansible_host=192.168.1.95 mysql_shard=SPT1 mysql_port=20001 role=master
+tendb-spt1-1 ansible_host=192.168.1.147 mysql_shard=SPT1 mysql_port=20001 role=slave master=tendb-spt1
 
 # the new tendb pair machines that have higher performance
-tendb-spt1-2 ansible_host=9.66.239.6 mysql_shard=SPT1 role=slave master=tendb-spt1 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
-tendb-spt1-3 ansible_host=9.3.49.210 mysql_shard=SPT1 role=slave master=tendb-spt1-2 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
+tendb-spt1-2 ansible_host=192.168.1.6 mysql_shard=SPT1 role=slave master=tendb-spt1 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
+tendb-spt1-3 ansible_host=192.168.1.210 mysql_shard=SPT1 role=slave master=tendb-spt1-2 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
 ```
 这里手动指定了 `innodb_buffer_pool_size_mb` 和 `mysql_data_dir`，如果期望自动计算 buffer pool，你需要将目标ip上其它将要扩容的实例，都写进去，因为自动计算是按照 inventory group `tendb` 的 `ansible_host` 汇总的
 
@@ -92,8 +92,8 @@ Master   ^
 ```
 #### SPT1 ####
 [SPT1]
-tendb-spt1-2 ansible_host=9.66.239.6 mysql_shard=SPT1 role=master innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
-tendb-spt1-3 ansible_host=9.3.49.210 mysql_shard=SPT1 role=slave master=tendb-spt1-2 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
+tendb-spt1-2 ansible_host=192.168.1.6 mysql_shard=SPT1 role=master innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
+tendb-spt1-3 ansible_host=192.168.1.210 mysql_shard=SPT1 role=slave master=tendb-spt1-2 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
 ```
 
 ## 1.5 部分扩容时，修改 其它分片配置（可选）

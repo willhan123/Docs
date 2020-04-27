@@ -7,9 +7,9 @@ TSpider 接入层节点可水平扩展，下面演示添加一个 TSpider node `
 ```
 #### SPIDER ####
 [tspider]
-tspider-node-01 ansible_host=100.117.60.106 mysql_port=25000
-tspider-node-02 ansible_host=9.66.213.26 mysql_port=25000
-tspider-node-03 ansible_host=9.79.161.2 mysql_port=25000
+tspider-node-01 ansible_host=192.168.1.106 mysql_port=25000
+tspider-node-02 ansible_host=192.168.1.26 mysql_port=25000
+tspider-node-03 ansible_host=192.168.1.2 mysql_port=25000
 ```
 
 运行 playbook
