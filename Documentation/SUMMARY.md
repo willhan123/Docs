@@ -83,7 +83,7 @@
     * [扩缩容]
     * [高可用]
     * [常见问题]
-* [TenDB Cluster with Ansible](op-ansible/tendbcluster-with-ansible.md)
+* [TenDB Cluster with Ansible](op-ansible/readme.md)
     * [Ansible 快速部署 TenDBCluster](op-ansible/ansible-deploy-tendbcluster.md)
     * [Ansible 对存储层扩缩容](op-ansible/ansible-scale-up-tendb.md)
     * [Ansible 对接入层扩缩容](op-ansible/ansible-scale-out-tspider.md)
