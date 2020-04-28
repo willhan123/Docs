@@ -107,6 +107,10 @@ ansible-playbook -i hosts.tendbcluster init_common.yml
 ```
 ansible-playbook -i hosts.tendbcluster install_tendb.yml
 ansible-playbook -i hosts.tendbcluster build_slave.yml
+
+# if you set mysql password encrpyted:
+ansible-playbook -i hosts.tendbcluster install_tendb.yml --vault-id password_file
+ansible-playbook -i hosts.tendbcluster build_slave.yml --vault-id password_file
 ```
 _install_tendb.yml_ 主要完成:
 - TenDB master/slave 的安装，启动 TenDB node

@@ -44,6 +44,7 @@ tendb-spt1-3 ansible_host=192.168.1.210 mysql_shard=SPT1 role=slave master=tendb
 
 ## 1.2 做链式 slave
 ```
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 init_common.yml
 ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave_new.yml
 ```
 使用 `-l` 指定要操作的新 TenDB node。
