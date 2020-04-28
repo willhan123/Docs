@@ -44,7 +44,7 @@ tendb-spt1-3 ansible_host=192.168.1.210 mysql_shard=SPT1 role=slave master=tendb
 
 ## 1.2 做链式 slave
 ```
-ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave.yml
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave_new.yml
 ```
 使用 `-l` 指定要操作的新 TenDB node。
 
@@ -72,7 +72,7 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-2 -e "master_tgt
 
 ## 1.4 停止老实例
 ```
-ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 stop_tendb.yml
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 --tags=stop stop_tendb.yml
 ```
 如果一切正常，停止原机器上的主备实例
 ```

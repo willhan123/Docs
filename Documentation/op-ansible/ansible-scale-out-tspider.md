@@ -23,12 +23,12 @@ _add_tspider.yml_ 主要内容：
 - 写入 Tdbctl 的路由表`mysql.servers`，刷新路由
 
 
-# 2 tspider 缩容
+# 2 TSpider 缩容
 删除 TSpider 节点相对简单：
 - 从 Tdbctl 中删除路由记录，刷新路由
 - 停止 TSpider 节点
 
-演示删除 tspider-node-03 :
+演示删除 `tspider-node-03` :
 ```
 ansible-playbook -i hosts.tendbcluster -l tspider-node-03 del_tspider.yml
 ```

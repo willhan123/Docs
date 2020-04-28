@@ -40,9 +40,9 @@ TenDB Cluster Ansible playbook 仓库：https://git.code.oa.com/tenstack/TenDBCl
 [all:vars]
 ansible_ssh_user=root
 ansible_ssh_port=36000
-ansible_ssh_private_key_file=/root/ansible-playbook-hadoop/id_rsa
+ansible_ssh_private_key_file=/root/.ssh/tendbcluster_rsa
 # set the ssh public key to remote hosts
-ansible_ssh_public_key_file=/root/ansible-playbook-hadoop/id_rsa.pub
+ansible_ssh_public_key_file=/root/.ssh/tendbcluster_rsa.pub
 
 [tendbcluster:vars]
 tendbcluster_name=test
