@@ -1,6 +1,6 @@
-TSpider Node 扩缩容
+# Ansible 接入层扩缩容
 
-## 1 TSpider 扩容
+## 1 TSpider扩容
 
 TSpider 接入层节点可水平扩展，下面演示添加一个 TSpider node `tspider-node-03`:
 更新好 inventory
@@ -23,7 +23,7 @@ _add_tspider.yml_ 主要内容：
 - 写入 Tdbctl 的路由表`mysql.servers`，刷新路由
 
 
-# 2 TSpider 缩容
+## 2 TSpider缩容
 删除 TSpider 节点相对简单：
 - 从 Tdbctl 中删除路由记录，刷新路由
 - 停止 TSpider 节点

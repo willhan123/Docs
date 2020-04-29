@@ -1,12 +1,12 @@
-Ansible 快速部署 TenDBCluster
+# Ansible快速部署TenDBCluster
 
-# 1. 准备工作
+## 1. 准备工作
 
 关于 host inventory 和 group_vars 的定义，参考 [Ansible playbook说明](ansible-def-inventory-vars.md)。
 
-## 1.1 介质包
+### 1.1 介质包
 
-ansible playbook 通过 http get 方式下载安装包，如果能访问github，可以直接指定 `fileserver` 为github地址。如果在私有网络，需要搭建一个 http file server。
+Ansible playbook 通过 http get 方式下载安装包，如果能访问github，可以直接指定 `fileserver` 为github地址。如果在私有网络，需要搭建一个 http file server。
 
 介质包：
 ```
@@ -15,14 +15,14 @@ mariadb-10.3.7-linux-x86_64-tspider-3.4.5-gcs.tar.gz
 tdbctl-1.4-linux-x86_64.tar.gz
 ```
 
-## 1.2 ansible中控机
+### 1.2 Ansible中控机
 下载并安装 ansible-2.6.13-1.el6.noarch.rpm 。
 ansible 版本要求大于 2.4 。
 
-## 1.3 配置ssh互信或密码
+### 1.3 配置ssh互信或密码
 目前我们是基于 root 用户来安装、维护 TenDBCluster 的。
 
-### 生成秘钥对
+#### 生成秘钥对
 ```
 ssh-keygen -t rsa -b 2048 -f tendbcluster_rsa
 ```
@@ -30,7 +30,7 @@ ssh-keygen -t rsa -b 2048 -f tendbcluster_rsa
 
 你可以手动分发 ssh key 设置互信，跳过本节即可，也可使用 playbook *add_sshkey.yml* 在提供root密码情况下，添加 public key 到root。
 
-### 分发公钥
+#### 分发公钥
 在 ansible inventory 中设置 `ansible_ssh_public_key_file`：（这个是我们自定义变量，跟ansible内置变量无关）
 ```
 ansible_ssh_user=root
@@ -48,7 +48,7 @@ ansible-playbook -i hosts.tendbcluster add_sshkey.yml -u root -k
 `-k` 提示输入 root 密码，`ansible_ssh_private_key_file`需要注释，避免ansible优先使用它来登录
 
 
-### 秘钥分发成功后
+#### 秘钥分发成功后
 1. 可以修改root密码
 2. 设置 `ansible_ssh_private_key_file` 变量开启，后续的操作通过这个 priviate key 进行，不需要root密码
 
@@ -60,7 +60,7 @@ ansible_ssh_private_key_file=/root/.ssh/tendbcluster_rsa
 ansible_ssh_public_key_file=/root/.ssh/tendbcluster_rsa.pub
 ```
 
-## 1.4 mysql 密码加密
+### 1.4 MySQL密码加密
 考虑大安全因素，使用 ansible-vault 对 MySQL 的 admin/replication 用户加密。
 设置管理密码，这个密码用于加解密 mysql 用户的密码：
 ```
@@ -82,9 +82,9 @@ ansible-vault encrypt_string --vault-id mysql@password_file xxxxxx --name tendbc
 
 如果图方便，也可以直接将 `tendbcluster_user_admin_pass`、`tendbcluster_user_repl_pass` 设置为明文，那么在运行playbook时便不需要每次指定 `vault-id`
 
-# 2 分步部署 TenDBCluster
+## 2 部署TenDBCluster
 
-## 2.1 初始化环境
+### 2.1 初始化环境
 ```
 ansible-playbook -i hosts.tendbcluster init_common.yml
 ```
@@ -103,7 +103,7 @@ ansible-playbook -i hosts.tendbcluster init_common.yml
 - 创建 mysql 用户
 - 获取真实机器内存（使用 ansible 自带的 facts 在Docker富容器下可能获取的内存不对 ）
 
-## 2.2 部署 TenDB
+### 2.2 部署TenDB
 ```
 ansible-playbook -i hosts.tendbcluster install_tendb.yml
 ansible-playbook -i hosts.tendbcluster build_slave.yml
@@ -125,7 +125,7 @@ _build_slave.yml_ 主要根据 role 和 master ，创建slave:
 
 用户可以根据自己的喜好和实际情况，实现自己的slave重建逻辑编写 playbook，比如从冷备中心拉取物理备份，恢复出新 slave ，维护好 inventory host 里面的信息正确即可。
 
-## 2.3 部署 TSpider
+### 2.3 部署TSpider
 ```
 ansible-playbook -i hosts.tendbcluster install_tspider.yml
 ```
@@ -135,7 +135,7 @@ _install_tspider.yml_ 主要完成：
 - my.cnf 配置生成，包括自动生成 autoinc_value 
 - 给集群内访问来源授权用户权限
 
-## 2.4 部署 Tdbctl
+### 2.4 部署Tdbctl
 ```
 ansible-playbook -i hosts.tendbcluster install_tdbctl.yml
 ```
@@ -175,7 +175,7 @@ MySQL [(none)]> select * from performance_schema.replication_group_members;
 3 rows in set (0.00 sec)
 ```
 
-## 2.5 部署监控-暂缺
+### 2.5 部署监控-暂缺
 
 ```
 ansible-playbook -i hosts.tendbcluster deploy_monitor.yml
@@ -184,7 +184,7 @@ ansible-playbook -i hosts.tendbcluster deploy_monitor.yml
 可以登录任意一台 TSpider，创建库表验证一下。
 
 
-# 3 一键部署
+## 3 一键部署
 一键部署将上面的步骤串在 `deploy_tendbcluster.yml` 一个 playbook 里
 ```
 ansible-playbook -i hosts.tendbcluster deploy_tendbcluster.yml

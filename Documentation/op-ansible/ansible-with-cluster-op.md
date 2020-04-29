@@ -1,8 +1,8 @@
-# 常用运维操作
+# Ansible 常用运维操作
 
-## 修改 tendb 配置文件
+## 修改 TenDB 配置文件
 
-> 不要在目标 tendb 机器上直接修改的配置文件，在运行改 playbook 后将被覆盖
+> 不要在目标TenDB机器上直接修改的配置文件，在运行改playbook后将被覆盖
 > 暂未实现 set global xxx=xx 动态修改
 
 比如修改 TenDB 的最大连接数 _group_vars/tendb_ :
@@ -21,7 +21,7 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2 update_config_tendb.yml
 ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2 update_config_tendb.yml -e "restart=true"
 ```
 
-## 重启tendb节点
+## 重启TenDB节点
 ```
 # 关闭
 ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 tendb_stop.yml
@@ -34,7 +34,7 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1-3 tendb_restart.yml
 ```
 
 
-## 重建tendb slave
+## 重建TenDB slave
 
 - 重建 slave 要求 slave 没有在运行
 - 目前采用 `mysqldump --single-transaction` 的方式，在 master 上进行备份
@@ -46,7 +46,7 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 init_common.
 ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave.yml
 ```
 
-## 手动主备切换tendb
+## 手动主备切换TenDB
 ```
 ansible-playbook -i hosts.tendbcluster -l tendb-spt3-2,tendb-spt3 -e "master_tgt=tendb-spt3-2" switch_master_slave.yml
 ```
@@ -68,20 +68,20 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1-3 -e "master_tgt=tendb-spt1
 ```
 change master 之后需要修改 inventory 中的 role/master 信息，保持一致。
 
-## 同步tspider表结构
+## 同步TSpider表结构
 将 `tspider` 组里面第一个节点的表结构，导入到 `tdbctl-node-03`
 ```
 ansible-playbook -i hosts.tendbcluster -l tdbctl-node-03 sync_tspider_schema.yml
 ```
 
-## 更新 Tdbctl 路由
+## 更新Tdbctl路由
 根据 inventory 里面的信息，更新 Tdbctl `mysql.servers` 。
 采用 `REPLACE INTO` 方式，一定要确保 inventory 中 `role` 和 `master` 设置正确。
 ```
 ansible-playbook -i hosts.tendbcluster -l tdbctl update_config_tdbctl.yml
 ```
 
-## tendb 故障恢复
+## TenDB故障恢复
 tendb 在 slave 故障时，目前不需要特殊处理（slave未提供读服务）。
 
 tendb 在 master 故障时，需要第三方机制完成主备切换，成功将 slave 提升为 master 后，需要修改 Tdbctl 里面的路由。

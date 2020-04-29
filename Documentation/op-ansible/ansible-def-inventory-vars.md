@@ -1,8 +1,9 @@
-Ansible host inventory 说明，以及 `group_vars` 变量说明。
+# Ansible playbook说明
 
+Ansible host inventory 说明，以及 `group_vars` 变量说明。
 TenDB Cluster Ansible playbook 仓库：https://git.code.oa.com/tenstack/TenDBCluster-Ansible 。
 
-# inventory hosts 说明
+## Inventory hosts说明
 
 定义一个如下拓扑的 TenDB Cluster
 ```
@@ -103,21 +104,21 @@ tendb-spt3-1 ansible_host=192.168.1.130 mysql_shard=SPT3 mysql_port=20003 role=s
 
 **说明：**
 
-1. 所有 inventory_hostname 不得相同
+1. 所有inventory_hostname不得相同
 
 2. Tdbctl, TSpider, TenDB 三个组件的主机名和端口( `ansible_host`:`mysql_port` ) 不得相同
   TenDB 同一分片下的 server_id 自动生成，所以在 GTID 主备环境下，server_id 不会相同。
   但注意如果增删 TenDB 节点，或者修改了 host 顺序之后，根据 `groups[mysql_shard].index(inventory_hostname)` 生成的 server_id 会变，如果没有同步重启 TenDB，可能会导致server_id 相同。
   最安全的情况是，这里给每个 host 设置 `server_id` 变量
 
-3. TenDB 同一分片下的 host 变量 `mysql_shard` 必须相同，且必须是 _`SPT` + 序号_ 格式
+3. TenDB同一分片下的 host 变量 `mysql_shard` 必须相同，且必须是 _`SPT` + 序号_ 格式
 
-4. TenDB 的各分片 host role 必须正确配置是 master 还是 slave。
+4. TenDB的各分片 host role 必须正确配置是 master 还是 slave。
   包括如果后续做了主备切换，这里必须及时更新，否则可能引起整个集群问题
 
-5. TenDB 推荐同一个分片，端口相同，不同副本/主从分布于不同机器
+5. TenDB推荐同一个分片，端口相同，不同副本/主从分布于不同机器
 
-6. TSpider 的变量 `autoinc_value` 每加一个节点，保持自增。
+6. TSpider的变量 `autoinc_value` 每加一个节点，保持自增。
   在不是 TSpider 时会自动按照 index 来维持，所以部署好后，不要轻易改变这里的顺序
   同理 TSpider 的 server_id 也是自动生成的。
 
@@ -149,7 +150,7 @@ tendb-spt3-1 ansible_host=192.168.1.130 mysql_shard=SPT3 mysql_port=20003 role=s
       在 *group_vars* 里面设置变量 `innodb_buffer_pool_size_pct_total`，默认使用总内存的 0.8 。
       当为特定实例设置不同的 buffer pool 时，直接在 host 上设置该变量来覆盖全局配置，单位 MB。
 
-# group_vars 变量说明
+## group_vars变量说明
 
 group_vars/all
 
@@ -233,11 +234,11 @@ tendbcluster_user_root_pass: "{{tendbcluster_user_admin_pass}}"
   注意 my.cnf 的生成没有完全依赖这个 mycnf_mysqld ，在 `roles/tendb/templates/my.cnf.tendb.j2` 里面内置了一些配置。使用时以防重复
 
 - `backup_dir`
-  mysql备份目录，主要用在自动 build slave 时，mysqldump 的存放的备份的地址
+  MySQL备份目录，主要用在自动 build slave 时，mysqldump 的存放的备份的地址
 
 - `tendbcluster_user_admin`, `tendbcluster_user_repl`
   集群运行所必须要创建的两个用户，在部署集群时，会自动创建，在后续维护集群时，也要用到管理用户。
-  - `tendbcluster_user_admin` 指定管理用户名，创建 admin 用户时会限制访问ip。后续 tdbctl 会用这个用户在各个节点创建表
+  - `tendbcluster_user_admin` 指定管理用户名，创建 admin 用户时会限制访问ip。后续  Tdbctl 会用这个用户在各个节点创建表
   - `tendbcluster_user_admin_pass` 指定 admin 用户密码，建议使用 ansible-vault 加密，见上文
   - `tendbcluster_user_repl` 指定 mysql replication 的用户名，授权 `%` 。
   - `tendbcluster_user_repl_pass` 指定复制用户的密码
