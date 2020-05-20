@@ -20,7 +20,7 @@ ansible-playbook -i hosts.tendbcluster -l tspider-node-03 add_tspider.yml
 
 *add_tspider.yml* mainly does:
 - Install, configure, grant and boot TSpider nodes;
-- Sync table structure from the first TSpider node in the `tspider` group;
+- Synchronize table schema from the first TSpider node in the `tspider` group;
 - Write to Tdbctl's routing table `mysql.servers` and flush routing information.
 
 ## 2. TSpider Scaling In

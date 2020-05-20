@@ -56,7 +56,7 @@ The playbook verifies whether specified hosts belong to the same shard; if not, 
 
 For now, the implementation of this playbook is simplified and it does not verify data integrity.
 
-You can implement this playbook yourself to ensure data integrity. After switching is completed, routing information need be updated (see ansible role `switch_master_slave`)
+You can implement this playbook yourself to ensure data integrity. After switching is completed, routing information need be flushed (see ansible role `switch_master_slave`)
 
 Once switching is completed, remember to manually update the role/master information in the inventory, so as to avoid routing information in Tdbctl being incoherent.
 
@@ -71,25 +71,25 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1-3 -e "master_tgt=tendb-spt1
 
 After the change, make sure to update the role/master information in the inventory to ensure consistency.
 
-## Synchronize TSpider Table Structure
+## Synchronize TSpider Table Schema
 
-Eg., import table structure of the first node in the `tspider` group to `tdbctl-node-03`:
+Eg., import table schema of the first node in the `tspider` group to `tdbctl-node-03`:
 ```
 ansible-playbook -i hosts.tendbcluster -l tdbctl-node-03 sync_tspider_schema.yml
 ```
 
-## Update Tdbctl Routing
+## Flush Tdbctl Routing
 
 The `mysql.servers` table in Tdbctl is updated in accordance with the inventory. This task is approached using `REPLACE INTO`. Make sure the `role` and `master` are set correctly in the inventory.
 ```
 ansible-playbook -i hosts.tendbcluster -l tdbctl update_config_tdbctl.yml
 ```
 
-## TenDB Failure Recovery
+## TenDB Failover
 
 For now, a TenDB slave breakdown does not need to be particularly handled (slaves do not offer read service yet).
 
-When a TenDB master undergoes a breakdown, a third-party mechanism is needed to perform a master/slave switch. After its slave is switched to the new master, the routing in Tdbctl need be updated. The next time the playbook is run, since one of the master/slave roles has changed, if information in the inventory is inconsistent with the Tdbctl routes, the execution will be forced to abort.
+When a TenDB master undergoes a breakdown, a third-party mechanism is needed to perform a master/slave switch. After its slave is switched to the new master, the routing in Tdbctl need be flushed. The next time the playbook is run, since one of the master/slave roles has changed, if information in the inventory is inconsistent with the Tdbctl routes, the execution will be forced to abort.
 
 Once the original master is fixed and started, you can run `change_master.yml` to restore the original master-slave relationship.
 

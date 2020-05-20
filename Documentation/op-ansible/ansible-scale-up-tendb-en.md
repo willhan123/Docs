@@ -76,7 +76,7 @@ Use the `-l` to specify the two TenDB nodes to switch and set the `master_tgt` v
                                                     
 ```
 
-After switching, the routing information in Tdbctl will be updated at the same time.
+After switching, the routing information in Tdbctl will be flushed at the same time.
 
 ### 1.4 Stop Old Instances
 
