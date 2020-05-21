@@ -1,4 +1,4 @@
-# Using Ansible to Fast Deploy TenDBCluster
+# Fast Deploy TenDBCluster Using Ansible
 
 ## 1. Prerequisites
 

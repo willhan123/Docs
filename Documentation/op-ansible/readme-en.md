@@ -1,6 +1,6 @@
 A series of Ansible playbooks for deploying and maintaining TenDBCluster:
 
-* [Using Ansible to Fast Deploy TenDBCluster](ansible-deploy-tendbcluster-en.md)
+* [Fast Deploy TenDBCluster Using Ansible](ansible-deploy-tendbcluster-en.md)
 * [Data Layer Scaling Using Ansible](ansible-scale-out-tspider.md)
 * [Proxy Layer Scaling Using Ansible](ansible-scale-out-tspider-en.md)
 * [Common Operations and Maintenance Using Ansible](ansible-with-cluster-op-en.md)
