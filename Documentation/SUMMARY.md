@@ -6,7 +6,7 @@
     * [主要特性](key-features.md)
 * 操作指南
     * [快速上手]()
-        * [使用Docker Compose快速部署]
+        * [使用Docker Compose快速部署](op-guide/docker-compose-tendbcluster.md)
         * [基本操作]
     * 软硬件环境
         * [软件介质]
