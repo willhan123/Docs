@@ -31,8 +31,7 @@ $ curl ${NodeIP}:30900/metrics
 ![pic](../pic/kube-prometheus-targets.png)
 
 # Grafana性能数据可视化
-查看kube-Prometheus资源中，service/grafana的端口信息，通过prometheus的NodeIP和grafana端口访问grafana，默认端口30902。
-导入对应DB的grafana模板之后，即可查看DB的性能数据。
+查看kube-Prometheus资源中，service/grafana的端口信息，通过prometheus的NodeIP和grafana端口访问grafana，默认端口30902。导入对应DB的grafana模板之后，即可查看DB的性能数据。
 
 如下为TenDBCluster的性能数据，包括TenDBCluster pod资源使用的情况，请求吞吐情况，请求性能表现，连接情况，Buffer Pool的使用情况以及Innodb log。
 ![pic](../pic/kube-grafana-tendbcluster.png)
