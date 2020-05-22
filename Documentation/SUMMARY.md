@@ -1,6 +1,6 @@
-# 目录 [English Manual](SUMMARY-en.md)
+# 目录 [English Manual](../SUMMARY-en.md)
 
-* [Introduction](README.md)
+* [Introduction](../README-cn.md)
 * 主要概念
     * [整体架构](architecture.md)
     * [主要特性](key-features.md)
@@ -33,6 +33,12 @@
     * 数据迁移
         * [从单机MySQL到集群](op-guide/Data-migrate.md/#jump1)
         * [从集群到单机MySQL](op-guide/Data-migrate.md/#jump3)
+    * [使用Ansible管理集群](op-ansible/readme.md)
+        * [Ansible 快速部署 TenDBCluster](op-ansible/ansible-deploy-tendbcluster.md)
+        * [Ansible 对存储层扩缩容](op-ansible/ansible-scale-up-tendb.md)
+        * [Ansible 对接入层扩缩容](op-ansible/ansible-scale-out-tspider.md)
+        * [Ansible 常用运维操作](op-ansible/ansible-with-cluster-op.md)
+        * [Ansible playbook说明](op-ansible/ansible-def-inventory-vars.md)
 * 参考手册
     * [SQL语法](re-book/sql-grammar.md)   
       * [DDL](re-book/ddl-syntax.md)   
@@ -77,18 +83,12 @@
     * [TenDB Cluster Operator简介](kubernetes/cluster-operator.md)
     * [部署]
     * [配置]
-    * [监控]
+    * [监控](kubernetes/monitor.md)
     * [运维]
     * [升级]
     * [扩缩容]
     * [高可用]
     * [常见问题]
-* [TenDB Cluster with Ansible](op-ansible/readme.md)
-    * [Ansible 快速部署 TenDBCluster](op-ansible/ansible-deploy-tendbcluster.md)
-    * [Ansible 对存储层扩缩容](op-ansible/ansible-scale-up-tendb.md)
-    * [Ansible 对接入层扩缩容](op-ansible/ansible-scale-out-tspider.md)
-    * [Ansible 常用运维操作](op-ansible/ansible-with-cluster-op.md)
-    * [Ansible playbook说明](op-ansible/ansible-def-inventory-vars.md)
 * 最佳实践
     * [普通应用](practice/common-bestpractice.md)
     * [大数据应用](practice/bigdatapractice.md)
