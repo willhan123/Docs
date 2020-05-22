@@ -1,4 +1,4 @@
-DB on Kubernetes的监控基于社区kube-prometheus（https://github.com/coreos/kube-prometheus）部署实现，性能数据采集基于定制的DB exporter，使用Grafana进行数据可视化展示。
+DB on Kubernetes的监控基于社区kube-prometheus(https://github.com/coreos/kube-prometheus) 部署实现，性能数据采集基于定制的DB exporter，使用Grafana进行数据可视化展示。
 
 # Kube-Prometheus介绍
 Kube-Prometheus实际由以下几部分组成：
