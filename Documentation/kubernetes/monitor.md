@@ -9,11 +9,12 @@ Kube-Prometheus实际由以下几部分组成：
 * Prometheus Adapter for Kubernetes Metrics APIs
 * kube-state-metrics
 * Grafana
+
 其中Prometheus Operator为核心组件，如下为Prometheus operator的结构图，作为一个控制器，他会去创建Prometheus、ServiceMonitor、AlertManager以及PrometheusRule4个CRD资源对象，然后会一直监控并维持这4个资源对象的状态
 
 ![pic](../pic/kube-prometheus-arch.png)
 
-其中ServiceMonitor和PodMonitor则搜集相应资源对象的数据，在DB on Kubernetes方案中，db和对应的db exporter部署在一个pod中，Pod Monitor搜集exporter采集的数据上报到Prometheus存储，Grafana进行数据可视化展示。
+ServiceMonitor和PodMonitor则搜集相应资源对象的数据，在DB on Kubernetes方案中，db和对应的db exporter部署在一个pod中，Pod Monitor搜集exporter采集的数据上报到Prometheus存储，Grafana进行数据可视化展示。
 
 # 性能数据采集
 部署完kube-Prometheus之后，性能数据存储在Prometheus中，可以通过如下命令查看kube-Prometheus的资源信息：
