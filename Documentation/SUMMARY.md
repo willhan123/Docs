@@ -83,7 +83,7 @@
     * [TenDB Cluster Operator简介](kubernetes/cluster-operator.md)
     * [部署]
     * [配置]
-    * [监控]
+    * [监控](kubernetes/monitor.md)
     * [运维]
     * [升级]
     * [扩缩容]
