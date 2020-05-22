@@ -48,7 +48,7 @@ mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P25000
 > insert into t(c1) values(1),(1),(1),(1),(1),(1),(1),(1);
 
 // connect to the second TSpider node, and check the schema auto-created
-mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P25000
+mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P25001
 
 // connect to the first Tendb node, and check the data
 mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P20000
