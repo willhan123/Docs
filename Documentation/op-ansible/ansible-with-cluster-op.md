@@ -95,6 +95,11 @@ tendb 在 master 故障时，需要第三方机制完成主备切换，成功将
 ansible-playbook -i hosts.tendbcluster start_tendbcluster.yml
 ```
 
+或者重启整个集群：
+```
+ansible-playbook -i hosts.tendbcluster start_tendbcluster.yml -e "restart=true"
+```
+
 ## 停止集群
 停止集群所有实例（tendb, tspider, Tdbctl）
 ```
