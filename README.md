@@ -16,6 +16,10 @@ TenDB Cluster is a MySQL distributed relational database solution developed and 
 ## [Documentation](Documentation/SUMMARY-en.md)
 For details, see [Reference Manual](Documentation/SUMMARY-en.md)
 
+## Quick Start
+More detail see chapter: [Quick Deployment With Docker Compose](Documentation/op-guide/docker-compose-tendbcluster-en.md)
+
+
 ## Flexible Deployment
 It is recommended to use TSpider + TenDB + Tdbctl to deploy TenDB Cluster.   
 However, developers can also flexibly deploy TenDB Cluster according to their own online situation. Currently, companies use TSpider + Tencent Cloud RDS or TSpider + AWS RDS to deploy TenDB Cluster clusters.

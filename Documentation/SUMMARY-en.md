@@ -5,6 +5,8 @@
     * [Architecture](architecture-en.md)
     * [Key Features](key-features-en.md)
 * Operation Guide
+    * Quick Start
+        * [Quick Deployment With Docker Compose](op-guide/docker-compose-tendbcluster-en.md)
     * Software and Hardware Environment
         * [Source Code Compilation](op-guide/compile-en.md)
         * [Hardware Requirements](op-guide/system-en.md)
