@@ -45,12 +45,14 @@ mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P25000
 > select * from mysql.servers;
 > create database dbtest; use dbtest;
 > create table t(id int auto_increment primary key, c1 int);
+> show create table t\G
 > insert into t(c1) values(1),(1),(1),(1),(1),(1),(1),(1);
 
 // connect to the second TSpider node, and check the schema auto-created
-mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P25001
+> mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P25001
+> show create table dbtest.t\G
 
-// connect to the first Tendb node, and check the data
+// connect to the first Tendb node, and check the sharded data
 mysql -utendbcluster -ptendbclusterpass -h127.0.0.1 -P20000
 > select * from dbtest_0.t;
 ```

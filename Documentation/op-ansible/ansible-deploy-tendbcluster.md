@@ -64,7 +64,7 @@ ansible_ssh_public_key_file=/root/.ssh/tendbcluster_rsa.pub
 ```
 
 ### 1.4 MySQL密码加密
-考虑大安全因素，使用 ansible-vault 对 MySQL 的 admin/replication 用户加密。
+考虑到安全因素，使用 ansible-vault 对 MySQL 的 admin/replication 用户加密。
 设置管理密码，这个密码用于加解密 mysql 用户的密码：
 ```
 echo 'VaultPass123' > password_file
@@ -118,6 +118,8 @@ ansible-playbook -i hosts.tendbcluster build_slave.yml
 ansible-playbook -i hosts.tendbcluster install_tendb.yml --vault-id password_file
 ansible-playbook -i hosts.tendbcluster build_slave.yml --vault-id password_file
 ```
+以上两个playbook会检查实例进程是否已经在运行，如果端口被监听，会退出。如果要重新跑，可以加上`-e force=true`
+
 _install_tendb.yml_ 主要完成:
 - TenDB master/slave 的安装，启动 TenDB node
 - my.cnf 配置生成，包括 server_id 和 buffer pool 计算

@@ -29,7 +29,7 @@ tendb-spt1-2 ansible_host=192.168.1.6 mysql_shard=SPT1 role=slave master=tendb-s
 tendb-spt1-3 ansible_host=192.168.1.210 mysql_shard=SPT1 role=slave master=tendb-spt1-2 innodb_buffer_pool_size_mb=4096 mysql_data_dir=/data1/mysqldata/{{mysql_port}}
 ```
 
-Here we manually specify `innodb_buffer_pool_size_mb` and `mysql_data_dir`. If you expect the buffer pool size to be automatically calculated, the other instances that need scaling up on the target host should be written in the inventory, since auto calculation is based on the `tendb` group's `ansible_host` in the inventory.
+Here we manually specify `innodb_buffer_pool_size_mb` and `mysql_data_dir`. If you expect the buffer pool size to be automatically calculated, the other instances that will be installed on the target host should be added in the inventory file, since auto calculation is based on the `tendb` group's `ansible_host` in the inventory.
 
 Also note that, when joining the shard, the two new hosts have `role=slave` but point to different masters. Therefore, the master/slave switch between `tendb-spt1` and `tendb-spt1-2` later can be achieved in one step.
 
@@ -49,7 +49,7 @@ Also note that, when joining the shard, the two new hosts have `role=slave` but 
 
 ```
 ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 init_common.yml
-ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave_new.yml
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave.yml
 ```
 
 The `-l` option is to specify the new TenDB nodes for the operation.
@@ -81,7 +81,7 @@ After switching, the routing information in Tdbctl will be flushed at the same t
 ### 1.4 Stop Old Instances
 
 ```
-ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 --tags=stop stop_tendb.yml
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 stop_tendbcluster.yml
 ```
 
 If everything is working fine, stop the master/slave instances on the old hosts.
@@ -127,7 +127,7 @@ ansible-playbook -i hosts.tendbcluster -l SPT0 update_config_tendb.yml -e "resta
 We put the slave chaining and master/slave switch in one playbook so that scaling up can be achieved within one step. However, please note that the configuration in the inventory should be set up correctly beforehand, and that old hosts should be deleted and role/master should be updated.
 
 ```
-ansible-playbook -i hosts.tendbcluster -l SPT1 -e "master_tgt=tendb-spt1-2" migrate_tendb.yml
+ansible-playbook -i hosts.tendbcluster -l SPT1 -e "master_tgt=tendb-spt1-2" tendb_migrate.yml
 ```
 
 ## 2 TenDB Scaling Down

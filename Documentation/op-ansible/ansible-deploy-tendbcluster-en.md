@@ -17,7 +17,7 @@ tdbctl-1.4-linux-x86_64.tar.gz
 
 ### 1.2 Ansible Manager Node
 
-Download and install `ansible-2.6.13-1.el6.noarch.rpm` (make sure your Ansible version is newer than v2.4).
+Download and install `ansible-2.6.13-1.el6.noarch.rpm`. Also we suggest Ansible version is between 2.4 and 2.9).
 
 ### 1.3 Configure SSH Communication
 
@@ -48,7 +48,7 @@ Here we use root to distribute the public key. We suggest using a same root pass
 ```
 ansible-playbook -i hosts.tendbcluster add_sshkey.yml -u root -k
 ```
-The `-k` option prompts input for root password. Note that the `ansible_ssh_private_key_file` needs to be commented at this step so that Ansible will not try to use it for login first.
+The `-k` option prompts input for root password. Note that the `ansible_ssh_private_key_file` needs to be commented at this step so that Ansible will not try to use it for login later.
 
 #### After Public Key Distribution
 
@@ -93,19 +93,18 @@ If you are in for convenience, you can just set the `tendbcluster_user_admin_pas
 ansible-playbook -i hosts.tendbcluster init_common.yml
 ```
 
-You need to perform initialization every time a new host joins.
+You need to perform host initialization every time a new host joins.
 
 The operations during initialization include:
 - Modifying `nofile` in *limits.conf*;
 - Disabling `SELinux`;
 - Disabling `HugePage`;
-- Disabling `IpTables`;
 - Setting `vm.swappiness=1`;
 - Setting other variables like `ip_local_port_range` and `tcp_tw_recycle` etc.
 
 Additionally, it:
-- Creates MySQL users;
-- Obtains real memory usage on machines (because using Ansible's built-in `facts` on a Docker container to do so may lead to wrong results).
+- Creates essential MySQL users;
+- Gathers physical memory size from machines (because using Ansible's built-in `facts` on a Docker container to do so may lead to wrong value).
 
 ### 2.2 Deploy TenDB
 
@@ -117,17 +116,18 @@ ansible-playbook -i hosts.tendbcluster build_slave.yml
 ansible-playbook -i hosts.tendbcluster install_tendb.yml --vault-id password_file
 ansible-playbook -i hosts.tendbcluster build_slave.yml --vault-id password_file
 ```
+This two playbooks will check if the instance is already runing. You may need to add `-e force=true` to re-run the playbooks when failed.
 
 *install_tendb.yml* mainly does:
 - Install TenDB masters/slaves and start TenDB nodes;
 - Generate *my.cnf* file, including calculation of `server_id` and `buffer pool`;
-- Grant privileges to access (by admin/replication users) within the cluster, using registered ips in the host inventory.
+- Grant privileges for user admin/replication user to access within the cluster, using registered ip addresses in the host inventory.
 
 *build_slave.yml* builds slaves in accordance with roles and masters, which mainly does:
 - Create backups for tables on masters via `mysqldump --single-transaction`;
-- Replicate backups to slaves via `scp -3` on a Tdbctl node;
-- Retrieve data via MySQL on slaves;
-- Build the mater-slave relationship via `change master` with GTID.
+- Copy backups to slaves via `scp -3` on a Tdbctl node;
+- Restore data from TenDB slave side via `mysql` client;
+- Build the mater-slave replication with GTID mode by running `change master`.
 
 You can rewrite the playbook to construct slaves based on your own interest or situation. For instance, you can pull physical backups from a cold-backup site and build slaves, as long as the configuration in the host inventory is set up correctly.
 
@@ -151,7 +151,7 @@ ansible-playbook -i hosts.tendbcluster install_tdbctl.yml
 *install_tdbctl.yml* mainly does:
 - Install and start Tdbctl nodes, grant access to TSpider nodes;
 - Generate *my.cnf* file, enables MGR if number of nodes >= 3;
-- Write routing information to the `mysql.servers` table on Tdbctl nodes in accordance with the host inventory, executes `tdbctl flush routing`.
+- Write routing information to the `mysql.servers` table on Tdbctl nodes in accordance with the host inventory, and execute `tdbctl flush routing`.
 
 At this step you can login to Tdbctl nodes to see if the routing information is right and MGR is working correctly.
 ```

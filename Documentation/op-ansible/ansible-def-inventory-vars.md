@@ -184,9 +184,6 @@ mycnf_mysql:
 
 backup_dir: /data/dbbak
 mysql_charset: utf8mb4
-mysql_basedir: /usr/local/mysql
-tspider_basedir: /usr/local/tspider
-tdbctl_basedir: /usr/local/tdbctl
 mysql_conf_dir: /home/mysql/etc
 
 mysql_socket: "{{mysql_data_dir}}/mysql.sock"

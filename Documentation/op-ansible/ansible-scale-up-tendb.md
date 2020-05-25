@@ -45,7 +45,7 @@ tendb-spt1-3 ansible_host=192.168.1.210 mysql_shard=SPT1 role=slave master=tendb
 ### 1.2 做链式slave
 ```
 ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 init_common.yml
-ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave_new.yml
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1-2,tendb-spt1-3 build_slave.yml
 ```
 使用 `-l` 指定要操作的新 TenDB node。
 
@@ -73,7 +73,7 @@ ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-2 -e "master_tgt
 
 ### 1.4 停止老实例
 ```
-ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 --tags=stop stop_tendb.yml
+ansible-playbook -i hosts.tendbcluster -l tendb-spt1,tendb-spt1-1 stop_tendbcluster.yml
 ```
 如果一切正常，停止原机器上的主备实例
 ```
@@ -115,7 +115,7 @@ ansible-playbook -i hosts.tendbcluster -l SPT0 update_config_tendb.yml -e "resta
 一键扩容是将上面的做slave与主备切换串起来，但同样需要开始前设置好 inventory 信息，结束后删除旧的host并更新role/master：
 
 ```
-ansible-playbook -i hosts.tendbcluster -l SPT1 -e "master_tgt=tendb-spt1-2" migrate_tendb.yml
+ansible-playbook -i hosts.tendbcluster -l SPT1 -e "master_tgt=tendb-spt1-2" tendb_migrate.yml
 ```
 
 ## 2 TenDB缩容
