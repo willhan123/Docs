@@ -106,17 +106,25 @@ Note:
 
 1. All `inventory_hostname`s must be distinct.
 
-2. Hostname-Port (`ansible_host` : `mysql_port`) pairs of Tdbctl, TSpider and TenDB nodes must be distinct. The `server_id` under the same shard of TenDB is auto generated; therefore, in a GTID master-slave environment, `server_id`s are guaranteed distinct. Please note that if some TenDB nodes are added or deleted, or the order of hosts are changed, the `server_id` generated based on `groups[mysql_shard].index(inventory_hostname)` will change accordingly; in this case, if TenDB nodes are not restarted, it may lead to duplicate `server_id`s. The safest way to approach this is to set the `server_id` variable for every host.
+2. Hostname-Port (`ansible_host` : `mysql_port`) pairs of Tdbctl, TSpider and TenDB nodes must be distinct. 
+  The `server_id` under the same shard of TenDB is auto generated; therefore, in a GTID master-slave environment, `server_id`s are guaranteed distinct. 
+  Please note that if some TenDB nodes are added or deleted, or the order of hosts are changed, the `server_id` generated based on `groups[mysql_shard].index(inventory_hostname)` will change accordingly; in this case, if TenDB nodes are not restarted, it may lead to duplicate `server_id`s. 
+  The safest way to approach this is to set the `server_id` variable for every host.
 
 3. The `mysql_shard` variable of hosts under the same shard of TenDB must be the same, and has to follow a format of *`SPT`+sequence_number*.
 
-4. Each host of TenDB must have a role configured to either a master or slave. If a master/slave switch takes place later, the configured roles have to be updated in time, otherwise it may cause problems for the entire cluster.
+4. Each host of TenDB must have a role configured to either a master or slave. 
+  If a master/slave switch takes place later, the configured roles have to be updated in time, otherwise it may cause problems for the entire cluster.
 
-5. For TenDB, we suggest a slave use the same port as its master's. A master and a slave should be deployed on different hosts.
+5. For TenDB, we suggest a slave use the same port as its master's. 
+  A master and a slave should be deployed on different hosts.
 
-6. In TSpider, the `autoinc_value` variable auto increases every time a new node joins. If not in TSpider, it is maintained based on indexes. Therefore, it is not recommended to change the indexes. Similarly, the `server_id` in TSpider is auto generated and auto increases as such.
+6. In TSpider, the `autoinc_value` variable auto increases every time a new node joins. 
+  If not in TSpider, it is maintained based on indexes. Therefore, it is not recommended to change the indexes. 
+  Similarly, the `server_id` in TSpider is auto generated and auto increases as such.
 
-7. If there are at least 3 Tdbctl nodes, Tdbctl will be automatically configured to MGR mode during installation. In production, we suggest Tdbctl be in MGR mode, otherwise DDL operations will fail if Tdbctl ever undergoes a breakdown.
+7. If there are at least 3 Tdbctl nodes, Tdbctl will be automatically configured to MGR mode during installation. 
+  In production, we suggest Tdbctl be in MGR mode, otherwise DDL operations will fail if Tdbctl ever undergoes a breakdown.
 
 8. Global variables:
     - `tendbcluster_shard_num`
@@ -174,9 +182,6 @@ mycnf_mysql:
 
 backup_dir: /data/dbbak
 mysql_charset: utf8mb4
-mysql_basedir: /usr/local/mysql
-tspider_basedir: /usr/local/tspider
-tdbctl_basedir: /usr/local/tdbctl
 mysql_conf_dir: /home/mysql/etc
 
 mysql_socket: "{{mysql_data_dir}}/mysql.sock"
@@ -208,17 +213,20 @@ tendbcluster_user_root_pass: "{{tendbcluster_user_admin_pass}}"
 Note:
 
 - `fileserver`
-Url for downloading packages for installation.
+The http url for downloading packages for installation.
 
 - `mysql_version`, `mysql_pkg`, `mysql_pkg_md5`
 TenDB package's version, name and MD5 checksum. Similarly, TSpider and Tdbctl packages are specified as such.
 
 - `innodb_buffer_pool_size_pct_total`
-Percentage of TenDB's memory usage to total memory on a host. For example, say a host has a total memory of `16384 MB`, the size of buffer pool is then set as `int(16384 * 0.8) = 13107 MB`. If 4 shards are deployed on this host, then each instance's `innodb_buffer_pool_size` is `int(13107 / 4) = 3276 MB`. You can also manually set a specific size in the host inventory; in this case, the result of auto calculation will be overwritten.
+  Percentage of TenDB's memory usage to total memory on a host. 
+  For example, say a host has a total memory of `16384 MB`, the size of buffer pool is then set as `int(16384 * 0.8) = 13107 MB`. If 4 shards are deployed on this host, then each instance's `innodb_buffer_pool_size` is `int(13107 / 4) = 3276 MB`. 
+  You can also manually set a specific size in the host inventory; in this case, the result of auto calculation will be overwritten.
 
 - `mycnf_mysqld`
-Use it to customize the `mysqld` configuration in the *my.cnf* file.
-If you want to have different configurations for TenDB and TSpider, modify `group_vars/tendb` and `group_vars/tspider` respectively. Note that the generation of *my.cnf* file does not completely depend on `mycnf_mysqld`; there are some built-in configurations in the *roles/tendb/templates/my.cnf.tendb.j2* file.
+  Use it to customize the `mysqld` section in the *my.cnf* file.
+  If you want to have different configurations for TenDB and TSpider, modify `group_vars/tendb` and `group_vars/tspider` respectively. 
+  Note that the generation of *my.cnf* file does not completely depend on `mycnf_mysqld`; there are some built-in configurations in the *roles/tendb/templates/my.cnf.tendb.j2* file.
 
 - `backup_dir`
 Directory for MySQL backups. It is mainly used to store backups from `mysqldump` during "build slave".

@@ -33,3 +33,5 @@ Here is a example of removing `tspider-node-03`:
 ```
 ansible-playbook -i hosts.tendbcluster -l tspider-node-03 del_tspider.yml
 ```
+
+After the scale-in finish, remember removing the host information from ansible inventory.
