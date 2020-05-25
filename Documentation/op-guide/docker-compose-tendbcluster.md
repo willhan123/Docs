@@ -1,9 +1,9 @@
-使用 docker-compose 快速搭建 TenDB Cluster
+# 使用 docker-compose 快速搭建 TenDB Cluster
 
 > docker-compose 只适合在单机上一键部署 TenDB Cluster 测试集群，方便用户快速体验 TenDB Cluster。不要用在生成环境。
 
 
-# 准备环境
+## 准备环境
 
 - Docker: 版本17.x及以上
 - docker-compose: 下载地址 https://github.com/docker/compose/releases
@@ -18,7 +18,7 @@ helm: 2.16.7
 docker-compose: 1.25.5
 ```
 
-# 快速部署
+## 快速部署
 
 1. **克隆仓库，拉取镜像**
 ```
@@ -71,7 +71,7 @@ $ docker-compose down
 // 手动删除数据目录
 ```
 
-# 自定义部署
+## 自定义部署
 以上默认部署的是 4节点 TenDB，2节点 TSpider，1节点 Tdbctl，如果想体验其它数量分片如12节点 TenDB，不建议直接修改 docker-compose.yml，而是使用 helm template 来生成 `docker-compose.yml` 和 `tdbctl-routing-flush.sql`。
 
 例：
@@ -84,7 +84,7 @@ tendb:
   innodbBufferPoolSize: 1024M
 ```
 
-## 修改 values.yaml，生成 docker-compose.yml
+### 修改 values.yaml，生成 docker-compose.yml
 
 包括如果想修改数据目录、镜像路径、镜像版本，都通过修改 `compose/values.yaml` 后再 helm 来生成，避免出错。
 
