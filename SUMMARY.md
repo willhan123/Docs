@@ -27,8 +27,8 @@
         * [存储层高可用](Documentation/op-guide/TenDB-failover.md)
         * [中控节点高可用](Documentation/op-guide/Tdbctl-failover.md)
     * 数据迁移
-        * [从单机MySQL到集群](Documentation/op-guide/Data-migrate.md/#jump1)
-        * [从集群到单机MySQL](Documentation/op-guide/Data-migrate.md/#jump3)
+        * [从单机MySQL到集群](Documentation/op-guide/Data-migrate.md#jump1)
+        * [从集群到单机MySQL](Documentation/op-guide/Data-migrate.md#jump3)
     * [使用Ansible管理集群](Documentation/op-ansible/readme.md)
         * [Ansible 快速部署 TenDBCluster](Documentation/op-ansible/ansible-deploy-tendbcluster.md)
         * [Ansible 对存储层扩缩容](Documentation/op-ansible/ansible-scale-up-tendb.md)
