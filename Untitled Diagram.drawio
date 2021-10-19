@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-19T03:25:54.972Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="t2IMarOEm2u1kO7TKhjb" version="15.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-19T03:27:50.165Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="8O3ThC2yrZHDeEN174_I" version="15.0.3" type="github">
   <diagram id="ivneqpC2ktw9vgJXLVSB" name="Page-1">
     <mxGraphModel dx="1422" dy="915" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -79,7 +79,7 @@
         <mxCell id="soRaxVJ8dTag2EYTceL_-33" value="HDFS&lt;br&gt;Alluxio&lt;br&gt;MySQL&lt;br&gt;Redis&lt;br&gt;Tcaplus&lt;br&gt;..." style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="soRaxVJ8dTag2EYTceL_-144">
           <mxGeometry x="324" y="546" width="170" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="soRaxVJ8dTag2EYTceL_-35" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-align: left ; direction: ltr ; unicode-bidi: embed ; word-break: normal&quot;&gt;&lt;span style=&quot;font-size: 11pt ; font-weight: bold ; font-style: italic&quot;&gt;cloud-native cluser&lt;/span&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="soRaxVJ8dTag2EYTceL_-144">
+        <mxCell id="soRaxVJ8dTag2EYTceL_-35" value="&lt;p style=&quot;margin-top: 0pt ; margin-bottom: 0pt ; margin-left: 0in ; text-align: left ; direction: ltr ; unicode-bidi: embed ; word-break: normal&quot;&gt;&lt;span style=&quot;font-size: 11pt ; font-weight: bold ; font-style: italic&quot;&gt;cloud-native cluster&lt;/span&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="soRaxVJ8dTag2EYTceL_-144">
           <mxGeometry x="284" y="379" width="150" height="20" as="geometry" />
         </mxCell>
         <mxCell id="soRaxVJ8dTag2EYTceL_-38" value="资源隔离" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="soRaxVJ8dTag2EYTceL_-144">
