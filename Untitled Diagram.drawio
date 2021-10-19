@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-19T03:00:52.573Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="euKjCoHEvlVTSoHeLDfo" version="15.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-19T03:02:18.420Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="v3GDvDX1-1d9AlJJDfkP" version="15.0.3" type="github">
   <diagram id="ivneqpC2ktw9vgJXLVSB" name="Page-1">
     <mxGraphModel dx="1422" dy="2050" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -7,8 +7,22 @@
         <mxCell id="soRaxVJ8dTag2EYTceL_-34" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="490" y="623" width="460" height="100" as="geometry" />
         </mxCell>
+        <mxCell id="soRaxVJ8dTag2EYTceL_-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="soRaxVJ8dTag2EYTceL_-1" target="soRaxVJ8dTag2EYTceL_-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="soRaxVJ8dTag2EYTceL_-1" value="&lt;span style=&quot;color: rgba(0 , 0 , 0 , 0.75) ; font-family: &amp;#34;helvetica neue&amp;#34; , &amp;#34;helvetica&amp;#34; , sans-serif ; font-size: 16px ; text-align: left ; background-color: rgb(255 , 255 , 255)&quot;&gt;Coordinator&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="330" y="463" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="soRaxVJ8dTag2EYTceL_-71" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="soRaxVJ8dTag2EYTceL_-2" target="soRaxVJ8dTag2EYTceL_-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="soRaxVJ8dTag2EYTceL_-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.4;entryY=0.1;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="soRaxVJ8dTag2EYTceL_-2" target="soRaxVJ8dTag2EYTceL_-33">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="780" />
+              <mxPoint x="608" y="780" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="soRaxVJ8dTag2EYTceL_-2" value="Workers" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="330" y="663" width="120" height="60" as="geometry" />
@@ -71,7 +85,7 @@
           <mxGeometry x="340" y="253" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="soRaxVJ8dTag2EYTceL_-32" value="Clickhouse Cluster" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="330" y="833" width="110" height="40" as="geometry" />
+          <mxGeometry x="335" y="837" width="110" height="40" as="geometry" />
         </mxCell>
         <mxCell id="soRaxVJ8dTag2EYTceL_-33" value="HDFS&lt;br&gt;Alluxio&lt;br&gt;MySQL&lt;br&gt;Redis&lt;br&gt;Tcaplus&lt;br&gt;..." style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="540" y="800" width="170" height="130" as="geometry" />
