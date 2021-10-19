@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-19T03:21:01.367Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="68itt8m7eNFFSuph4KXr" version="15.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-19T03:21:34.004Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="xnrNPJjaovnje-5wxXCp" version="15.0.3" type="github">
   <diagram id="ivneqpC2ktw9vgJXLVSB" name="Page-1">
     <mxGraphModel dx="1422" dy="881" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -163,7 +163,7 @@
         <mxCell id="soRaxVJ8dTag2EYTceL_-141" value="接受ANSI SQL&lt;br&gt;请求" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="452" y="264" width="97" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="soRaxVJ8dTag2EYTceL_-143" value="资源调度" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="soRaxVJ8dTag2EYTceL_-143" value="弹性调度" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="394" y="565" width="56" height="20" as="geometry" />
         </mxCell>
       </root>
