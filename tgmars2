@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-29T06:44:37.188Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="PSTXRk6wiPU61FWYaHR5" version="15.5.5" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-29T06:45:26.496Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="eB6D5N-YZ7OqKo3x4sqD" version="15.5.5" type="github">
   <diagram id="2gt1XU39aFN9RMX-U9aE" name="Page-1">
     <mxGraphModel dx="2249" dy="2051" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -114,6 +114,12 @@
             <mxPoint x="290.5" y="690" as="sourcePoint" />
             <mxPoint x="290.5799999999999" y="740" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="ooi4nAkgXaJhPbzVWCE_-38" value="用spark-submit运行tgmars app的jar" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;" vertex="1" parent="1">
+          <mxGeometry x="290" y="690" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ooi4nAkgXaJhPbzVWCE_-39" value="运行sparksql" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;" vertex="1" parent="1">
+          <mxGeometry x="570" y="690" width="90" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
