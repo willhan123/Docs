@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-29T06:52:57.948Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="tO7wbV56wj2dGI6GKh2H" version="15.5.5" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-29T06:55:20.024Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="C3van0G4u4sDUCLVN5bc" version="15.5.5" type="github">
   <diagram id="2gt1XU39aFN9RMX-U9aE" name="Page-1">
     <mxGraphModel dx="1422" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -141,10 +141,10 @@
         <mxCell id="ooi4nAkgXaJhPbzVWCE_-41" value="&lt;span style=&quot;background-color: rgb(255 , 255 , 255)&quot;&gt;&lt;code style=&quot;padding: 0.1em ; margin: 0px ; border-radius: 0.3em ; font-size: 14px ; text-align: left&quot;&gt;over_lord&lt;/code&gt;&lt;span style=&quot;font-family: &amp;#34;helvetica neue&amp;#34; , &amp;#34;arial&amp;#34; , &amp;#34;hiragino sans gb&amp;#34; , &amp;#34;stheiti&amp;#34; , &amp;#34;microsoft yahei&amp;#34; , &amp;#34;wenquanyi micro hei&amp;#34; , sans-serif ; font-size: 14px ; text-align: left&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;fillColor=#FFFFFF;" vertex="1" parent="1">
           <mxGeometry x="196" y="1000" width="200" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="ooi4nAkgXaJhPbzVWCE_-42" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;fillColor=#FFFFFF;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="540" width="60" height="420" as="geometry" />
+        <mxCell id="ooi4nAkgXaJhPbzVWCE_-42" value="&lt;span style=&quot;background-color: rgb(255 , 255 , 255)&quot;&gt;&lt;code style=&quot;padding: 0.1em ; margin: 0px ; border-radius: 0.3em ; font-size: 14px ; text-align: left&quot;&gt;consul&lt;br&gt;&lt;/code&gt;&lt;span style=&quot;font-family: &amp;#34;helvetica neue&amp;#34; , &amp;#34;arial&amp;#34; , &amp;#34;hiragino sans gb&amp;#34; , &amp;#34;stheiti&amp;#34; , &amp;#34;microsoft yahei&amp;#34; , &amp;#34;wenquanyi micro hei&amp;#34; , sans-serif ; font-size: 14px ; text-align: left&quot;&gt;&amp;nbsp;&lt;br&gt;服务&lt;br&gt;发现，管理&lt;br&gt;右侧&lt;br&gt;全部&lt;br&gt;服务&lt;br&gt;&lt;/span&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;fillColor=#FFFFFF;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="540" width="50" height="420" as="geometry" />
         </mxCell>
-        <mxCell id="ooi4nAkgXaJhPbzVWCE_-43" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;fillColor=#FFFFFF;dashed=1;" vertex="1" parent="1">
+        <mxCell id="ooi4nAkgXaJhPbzVWCE_-43" value="yarn&lt;br&gt;&lt;br&gt;管理&lt;br&gt;spark&lt;br&gt;资源&lt;br&gt;调度" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;fillColor=#FFFFFF;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="740" y="540" width="60" height="420" as="geometry" />
         </mxCell>
         <mxCell id="ooi4nAkgXaJhPbzVWCE_-52" value="多个tgstoarge节点，维护同一套元数据" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=#000000;" vertex="1" parent="1">
