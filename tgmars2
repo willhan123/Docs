@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-10-29T06:52:18.011Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="su9GH75xvq3wLgHMlkfV" version="15.5.5" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-29T06:52:57.948Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="tO7wbV56wj2dGI6GKh2H" version="15.5.5" type="github">
   <diagram id="2gt1XU39aFN9RMX-U9aE" name="Page-1">
     <mxGraphModel dx="1422" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -146,6 +146,9 @@
         </mxCell>
         <mxCell id="ooi4nAkgXaJhPbzVWCE_-43" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=none;fillColor=#FFFFFF;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="740" y="540" width="60" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="ooi4nAkgXaJhPbzVWCE_-52" value="多个tgstoarge节点，维护同一套元数据" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;labelBackgroundColor=#FFFFFF;fontSize=12;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="331" y="962" width="124" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
