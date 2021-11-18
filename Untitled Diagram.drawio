@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-11-18T05:18:00.954Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="t0UHUqhnw46Q7IqI7KqX" version="15.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-18T05:21:30.309Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="Y6ReEg1NKDs4fSFMvS9D" version="15.6.8" type="github">
   <diagram id="bAvVbgtw7CrFP0fsrt8A" name="Page-1">
     <mxGraphModel dx="1422" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -11,6 +11,9 @@
           <mxGeometry x="280" y="170" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;" edge="1" parent="1" source="UX4nBrqBXpAxso1pjOPX-3" target="UX4nBrqBXpAxso1pjOPX-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;" edge="1" parent="1" source="UX4nBrqBXpAxso1pjOPX-3" target="UX4nBrqBXpAxso1pjOPX-26">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-3" value="create/alter/delete catalog接口实现" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -39,6 +42,24 @@
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-17" value="3. 参数、配置管理的相关实现" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="450" y="346" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-26" value="数据源配置表" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="50" y="280" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-28" value="数据源落地" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="190" y="282" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-29" value="http请求" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="368" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;" edge="1" parent="1" source="UX4nBrqBXpAxso1pjOPX-31" target="UX4nBrqBXpAxso1pjOPX-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-31" value="服务重启时，要读数据源配置" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="35" y="440" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-33" value="取数据源配置信息" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="390" width="130" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
