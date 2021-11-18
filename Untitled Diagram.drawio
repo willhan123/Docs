@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-11-18T04:56:45.216Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="B19fUeP-mafaSX2y4b6x" version="15.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-18T05:16:11.883Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="YHSqXTOB-tDUER3PeXeF" version="15.6.8" type="github">
   <diagram id="bAvVbgtw7CrFP0fsrt8A" name="Page-1">
     <mxGraphModel dx="1422" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -8,19 +8,31 @@
           <mxGeometry x="280" y="170" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-3" value="create/alter/delete catalog接口实现" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="280" y="340" width="150" height="60" as="geometry" />
+          <mxGeometry x="280" y="290" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="UX4nBrqBXpAxso1pjOPX-4" value="catalog变化下发到worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="280" y="480" width="150" height="60" as="geometry" />
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-4" value="&lt;div&gt;catalog内部http接口：&lt;/div&gt;&lt;span style=&quot;color: rgb(23 , 43 , 77) ; font-family: , &amp;#34;blinkmacsystemfont&amp;#34; , &amp;#34;segoe ui&amp;#34; , &amp;#34;roboto&amp;#34; , &amp;#34;oxygen&amp;#34; , &amp;#34;ubuntu&amp;#34; , &amp;#34;fira sans&amp;#34; , &amp;#34;droid sans&amp;#34; , &amp;#34;helvetica neue&amp;#34; , sans-serif ; font-size: 14px ; background-color: rgb(255 , 255 , 255)&quot;&gt;如v1/catalog/put&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="410" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-5" value="server启动时加载catalog" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="50" y="350" width="120" height="60" as="geometry" />
+          <mxGeometry x="30" y="326" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="UX4nBrqBXpAxso1pjOPX-6" value="catalog落地mysql及本地文件" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="340" width="100" height="60" as="geometry" />
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-10" value="worker生效" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="520" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="UX4nBrqBXpAxso1pjOPX-9" value="相关配置管理" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="260" width="100" height="60" as="geometry" />
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-11" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="430" y="260" width="20" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-13" value="&lt;font style=&quot;font-size: 14px&quot;&gt;1. 基于presto-spi，以plugin方式实现&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="450" y="266" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-15" value="&lt;font style=&quot;font-size: 14px&quot;&gt;2. catalog更改可落地本地文件与远程mysql&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="450" y="306" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-16" value="&lt;span style=&quot;color: rgba(0 , 0 , 0 , 0) ; font-family: monospace ; font-size: 0px&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%26lt%3Bfont%20style%3D%26quot%3Bfont-size%3A%2014px%26quot%3B%26gt%3B2.%20catalog%E6%9B%B4%E6%94%B9%E5%8F%AF%E8%90%BD%E5%9C%B0%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E4%B8%8E%E8%BF%9C%E7%A8%8Bmysql%26lt%3B%2Ffont%26gt%3B%22%20style%3D%22text%3Bhtml%3D1%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3Bresizable%3D0%3Bpoints%3D%5B%5D%3Bautosize%3D1%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22450%22%20y%3D%22300%22%20width%3D%22280%22%20height%3D%2220%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="590" y="346" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-17" value="3. 参数、配置管理的相关实现" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="450" y="346" width="200" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
