@@ -1,22 +1,28 @@
-<mxfile host="app.diagrams.net" modified="2021-11-18T05:16:11.883Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="YHSqXTOB-tDUER3PeXeF" version="15.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-18T05:18:00.954Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36" etag="t0UHUqhnw46Q7IqI7KqX" version="15.6.8" type="github">
   <diagram id="bAvVbgtw7CrFP0fsrt8A" name="Page-1">
     <mxGraphModel dx="1422" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;" edge="1" parent="1" source="UX4nBrqBXpAxso1pjOPX-1" target="UX4nBrqBXpAxso1pjOPX-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-1" value="create/alter/delete/show catalog语法支持" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="280" y="170" width="150" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;" edge="1" parent="1" source="UX4nBrqBXpAxso1pjOPX-3" target="UX4nBrqBXpAxso1pjOPX-4">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-3" value="create/alter/delete catalog接口实现" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="280" y="290" width="150" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;" edge="1" parent="1" source="UX4nBrqBXpAxso1pjOPX-4" target="UX4nBrqBXpAxso1pjOPX-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-4" value="&lt;div&gt;catalog内部http接口：&lt;/div&gt;&lt;span style=&quot;color: rgb(23 , 43 , 77) ; font-family: , &amp;#34;blinkmacsystemfont&amp;#34; , &amp;#34;segoe ui&amp;#34; , &amp;#34;roboto&amp;#34; , &amp;#34;oxygen&amp;#34; , &amp;#34;ubuntu&amp;#34; , &amp;#34;fira sans&amp;#34; , &amp;#34;droid sans&amp;#34; , &amp;#34;helvetica neue&amp;#34; , sans-serif ; font-size: 14px ; background-color: rgb(255 , 255 , 255)&quot;&gt;如v1/catalog/put&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="280" y="410" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="UX4nBrqBXpAxso1pjOPX-5" value="server启动时加载catalog" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="30" y="326" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="UX4nBrqBXpAxso1pjOPX-10" value="worker生效" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="UX4nBrqBXpAxso1pjOPX-10" value="worker接受到请求，loadCatalog&lt;br&gt;生效" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="280" y="520" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="UX4nBrqBXpAxso1pjOPX-11" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
